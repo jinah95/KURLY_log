@@ -79,14 +79,14 @@ const Navbar = () => {
                     </ButtonWrapper>
                 </TitleDiv>
                 <MenuNav>
-                    <Link href="/" passHref>
+                    <Link href="/kurlylog" passHref>
                         <PageATag onClick={(e) => setTargetTab(e.target.id)}>
                             <PageNameSpan id="kurlioncer" targetTab={targetTab}>
                                 컬리 언서
                             </PageNameSpan>
                         </PageATag>
                     </Link>
-                    <Link href="/" passHref>
+                    <Link href="/risingreview" passHref>
                         <PageATag onClick={(e) => setTargetTab(e.target.id)}>
                             <PageNameSpan id="rising" targetTab={targetTab}>
                                 샛별 리뷰

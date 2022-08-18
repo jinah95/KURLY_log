@@ -1,8 +1,8 @@
 import React from "react";
-import MyKurly from "../components/MyKurly";
+import KurlyLog from "../components/KurlyLog";
 
 const kurlyLog = () => {
-    return <MyKurly />;
+    return <KurlyLog />;
 };
 
 export default kurlyLog;
