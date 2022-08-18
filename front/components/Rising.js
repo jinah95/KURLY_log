@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 40%;
-    background: url("images/risingAD.png");
+    background: url("risingAD.png");
     background-size: cover;
     color: white;
     display: grid;
