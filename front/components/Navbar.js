@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 import KurlyLogo from "../public/images/KurlyLogo.png";
@@ -6,6 +7,9 @@ import cart from "../public/images/cart.png";
 import spot from "../public/images/spot.png";
 
 const Navbar = () => {
+    const [targetPage, setTargetPage] = useState("market");
+    const [targetTab, setTargetTab] = useState("kurlioncer");
+
     return (
         <>
             {" "}
@@ -21,9 +25,12 @@ const Navbar = () => {
                     </LogoWrapper>
                     <PageTab>
                         <WrapLabel
-                            color="#4c4c4c"
-                            for="market"
-                            onClick={() => console.log("hello")}
+                            htmlFor="market"
+                            id="market"
+                            targetPage={targetPage}
+                            onClick={(e) => {
+                                setTargetPage(e.target.id);
+                            }}
                         >
                             <PageTitle
                                 type="radio"
@@ -34,8 +41,12 @@ const Navbar = () => {
                         </WrapLabel>
                         <WrapLabel
                             color="#fff"
-                            for="beauty"
-                            onClick={() => console.log("BEAUTY")}
+                            htmlFor="beauty"
+                            id="beauty"
+                            targetPage={targetPage}
+                            onClick={(e) => {
+                                setTargetPage(e.target.id);
+                            }}
                         >
                             <PageTitle
                                 type="radio"
@@ -46,8 +57,12 @@ const Navbar = () => {
                         </WrapLabel>
                         <WrapLabel
                             color="#fff"
-                            for="review"
-                            onClick={() => console.log("BEAUTY")}
+                            htmlFor="review"
+                            id="review"
+                            targetPage={targetPage}
+                            onClick={(e) => {
+                                setTargetPage(e.target.id);
+                            }}
                         >
                             <PageTitle
                                 type="radio"
@@ -56,15 +71,36 @@ const Navbar = () => {
                             />
                             컬리로그
                         </WrapLabel>
-                        <TapSpan />
+                        <TapSpan targetPage={targetPage} />
                     </PageTab>
                     <ButtonWrapper>
-                        <Image src={spot} alt="logo" width={33} height={33} />
-
-                        <Image src={cart} alt="logo" width={33} height={33} />
+                        <Image src={spot} alt="logo" width={25} height={26} />
+                        <Image src={cart} alt="logo" width={25} height={26} />
                     </ButtonWrapper>
                 </TitleDiv>
-                <MenuNav></MenuNav>
+                <MenuNav>
+                    <Link href="/" passHref>
+                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
+                            <PageNameSpan id="kurlioncer" targetTab={targetTab}>
+                                컬리 언서
+                            </PageNameSpan>
+                        </PageATag>
+                    </Link>
+                    <Link href="/" passHref>
+                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
+                            <PageNameSpan id="rising" targetTab={targetTab}>
+                                샛별 리뷰
+                            </PageNameSpan>
+                        </PageATag>
+                    </Link>
+                    <Link href="/myKurly/:id" passHref>
+                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
+                            <PageNameSpan id="kurlyLog" targetTab={targetTab}>
+                                내 컬리log
+                            </PageNameSpan>
+                        </PageATag>
+                    </Link>
+                </MenuNav>
             </NavWrapper>
             <ParDiv></ParDiv>
         </>
@@ -100,17 +136,18 @@ const TitleDiv = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-    width: 21%;
+    width: 26%;
     display: flex;
     align-item: center;
 `;
 
-const MenuNav = styled.div`
-    min-height: 44px;
+const MenuNav = styled.nav`
+    height: 44px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0px 1.5rem;
 `;
 
 const PageTab = styled.div`
@@ -121,8 +158,7 @@ const PageTab = styled.div`
     display: flex;
     justify-content: center;
     align-item: center;
-    width: 300px;
-    margin-left: 16px;
+    margin: 0 10px;
 `;
 
 const PageTitle = styled.input`
@@ -134,12 +170,17 @@ const PageTitle = styled.input`
 const TapSpan = styled.span`
     background-color: rgb(95, 0, 128);
     position: absolute;
-    width: 76px;
+    width: 80px;
     height: 28px;
     border-radius: 14px;
     top: 0px;
-    left: unset;
-    right: 0px;
+    left: ${(props) =>
+        props.targetPage === "market"
+            ? "0px"
+            : props.targetPage === "beauty"
+            ? "33%"
+            : "unset"};
+    right: ${(props) => (props.targetPage === "market" ? "unset" : "0px")};
     bottom: 0px;
 `;
 
@@ -149,7 +190,7 @@ const WrapLabel = styled.label`
     align-items: center;
     width: 100%;
     z-index: 1;
-    // padding: 0px 18px 0px 10px;
+    padding: 0px 12px 0px 7px;
     font-size: 13px;
     font-weight: 600;
     font-stretch: normal;
@@ -157,6 +198,7 @@ const WrapLabel = styled.label`
     line-height: 1.69;
     letter-spacing: normal;
     word-break: keep-all;
+    color: ${(props) => (props.id === props.targetPage ? "white" : "black")};
 `;
 
 const ButtonWrapper = styled.div`
@@ -165,5 +207,31 @@ const ButtonWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding-left: 16px;
+`;
+
+const PageATag = styled.a`
+    background-color: transparent;
+    text-decoration: none;
+`;
+
+const PageNameSpan = styled.span`
+    position: relative;
+    height: 44px;
+    display: flex;
+    align-items: center;
+
+    ${(props) => !(props.id === props.targetTab)} && {
+        font-weight: 600;
+        color: rgb(95, 0, 128);
+        ::after {
+            content: " ";
+            position: absolute;
+            left: -2px;
+            right: 0;
+            bottom: 0;
+            background-color: rgb(95, 0, 128);
+            height: 2px;
+            width: calc(100% + 4px);
+        }
+    }
 `;
