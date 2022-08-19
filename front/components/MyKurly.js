@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Profile from "../public/profile.png";
+import PreviewCard from "./Cards/PreviewCard";
 
 const MyKurly = () => {
     const title = "SSAP의 컬리log";
@@ -35,6 +36,14 @@ const MyKurly = () => {
             </Introduce>
             <Popular>
                 <Title>인기글</Title>
+                <CardWrapper>
+                    <CardView>
+                        {/* 터치 슬라이더 추가하기*/}
+                        <PreviewCard />
+                        <PreviewCard />
+                        <PreviewCard />
+                    </CardView>
+                </CardWrapper>
             </Popular>
             <Contents>
                 <Title>전체글</Title>
@@ -80,14 +89,14 @@ const UserProfile = styled.div`
 `;
 
 const Introduce = styled.div`
-    height: 100px;
+    height: 150px;
     background: white;
     margin-top: 10px;
     padding: 20px;
 `;
 
 const Popular = styled.div`
-    height: 200px;
+    height: auto;
     background: white;
     margin-top: 10px;
     padding: 20px;
@@ -103,4 +112,19 @@ const Contents = styled.div`
 const Title = styled.div`
     font-weight: bold;
     margin-bottom: 10px;
+`;
+
+const CardWrapper = styled.div`
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    touch-action: auto;
+`;
+
+const CardView = styled.div`
+    width: 500px;
+    height: 100%;
+    margin-bottom: 1px;
+    display: flex;
+    flex-wrap: nowrap;
 `;
