@@ -5,7 +5,9 @@ export default (sequelize, DataTypes) => {
     "follow",
     {
       follow_id: {
+        fields: "follow_id",
         type: DataTypes.INTEGER,
+        unique: true,
         allowNull: false,
         primaryKey: true,
       },
@@ -25,7 +27,6 @@ export default (sequelize, DataTypes) => {
     {
       tableName: "follow",
       timestamps: false,
-      indexes: [{ unique: true, fields: ["follow_id"] }],
     }
   );
   return follow;

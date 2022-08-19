@@ -4,7 +4,9 @@ export default (sequelize, DataTypes) => {
     "products",
     {
       product_id: {
+        fields: "product_id",
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         primaryKey: true,
       },
@@ -16,7 +18,6 @@ export default (sequelize, DataTypes) => {
     {
       tableName: "products",
       timestamps: false,
-      indexes: [{ unique: true, fields: ["product_id"] }],
     }
   );
   return products;

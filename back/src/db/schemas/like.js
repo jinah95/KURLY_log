@@ -5,7 +5,9 @@ export default (sequelize, DataTypes) => {
     "likes",
     {
       like_id: {
+        fields: "like_id",
         type: DataTypes.INTEGER,
+        unique: true,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -34,7 +36,6 @@ export default (sequelize, DataTypes) => {
     {
       tableName: "likes",
       timestamps: false,
-      indexes: [{ unique: true, fields: ["like_id"] }],
     }
   );
   return likes;

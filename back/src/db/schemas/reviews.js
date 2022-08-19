@@ -5,7 +5,9 @@ export default (sequelize, DataTypes) => {
     "reviews",
     {
       review_id: {
+        field: "review_id",
         type: DataTypes.INTEGER,
+        unique: true,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -58,7 +60,6 @@ export default (sequelize, DataTypes) => {
     {
       tableName: "reviews",
       timestamps: false,
-      indexes: [{ unique: true, fields: ["review_id"] }],
     }
   );
   return reviews;

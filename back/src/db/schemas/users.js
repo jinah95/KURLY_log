@@ -4,8 +4,10 @@ export default (sequelize, DataTypes) => {
     "users",
     {
       user_id: {
+        field: "user_id",
         type: DataTypes.UUID,
         allowNull: false,
+        unique: true,
         primaryKey: true,
       },
       nickname: {
@@ -40,7 +42,6 @@ export default (sequelize, DataTypes) => {
     {
       tableName: "users",
       timestamps: false,
-      indexes: [{ unique: true, fields: ["user_id"] }],
     }
   );
   return users;

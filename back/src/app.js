@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import db from "./db/index.js";
+import { userRouter } from "./routers/userRouter.js";
 
 const app = express();
 
@@ -19,5 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (req, res) => {
   res.send("안녕하세요, SSAP 입니다.");
 });
+
+app.use(userRouter);
 
 export { app };
