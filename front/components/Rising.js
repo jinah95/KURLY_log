@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import RisingReviews from "./RisingReviews";
+import initialItems from "./mock.json";
 
 const Rising = () => {
+    const [risingState, setRisingState] = useState({
+        items: initialItems,
+        moreItemsLoading: false,
+        hasNextPage: true,
+    });
+    const loadMore = () => {
+        setRisingState({ ...risingState, moreItemsLoading: true });
+        const newItems = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+        setRisingState({
+            ...risingState,
+            moreItemsLoading: false,
+            items: [...risingState.items, ...newItems],
+        });
+        console.log(risingState.items);
+    };
+    const { items, moreItemsLoading, hasNextPage } = risingState;
     return (
         <Wrapper>
             <Header></Header>
@@ -17,6 +35,14 @@ const Rising = () => {
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <>
+                <RisingReviews
+                    items={items}
+                    moreItemsLoading={moreItemsLoading}
+                    loadMore={loadMore}
+                    hasNextPage={hasNextPage}
+                />
+            </>
         </Wrapper>
     );
 };
@@ -87,3 +113,10 @@ const PageMoveSubTitle = styled.span`
     line-height: 1.29;
     margin-top: 4px;
 `;
+
+// const InfiniteWrapper = styled.div`
+//     ::-webkit-scrollbar {
+//         width: 0;
+//         background: transparent;
+//     }
+// `;

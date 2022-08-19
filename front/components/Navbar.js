@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
@@ -7,6 +8,9 @@ import cart from "../public/images/cart.png";
 import spot from "../public/images/spot.png";
 
 const Navbar = () => {
+    // const router = useRouter();
+    // const pathQuery = router.pathname.slice(1);
+    // console.log(pathQuery); // 페이지 새로고침 시 이미지 변경 부분에 대하여
     const [targetPage, setTargetPage] = useState("market");
     const [targetTab, setTargetTab] = useState("kurlioncer");
 
