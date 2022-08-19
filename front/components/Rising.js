@@ -11,13 +11,21 @@ const Rising = () => {
     });
     const loadMore = () => {
         setRisingState({ ...risingState, moreItemsLoading: true });
-        const newItems = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+        const newItems = [
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+        ];
         setRisingState({
             ...risingState,
             moreItemsLoading: false,
             items: [...risingState.items, ...newItems],
         });
-        console.log(risingState.items);
     };
     const { items, moreItemsLoading, hasNextPage } = risingState;
     return (
@@ -58,7 +66,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 40%;
-    background: url("risingAD.jpg");
+    background: url("/risingAD.jpg");
     background-size: cover;
     color: white;
     display: grid;
@@ -67,7 +75,7 @@ const Header = styled.div`
 `;
 
 const BestKurlioncer = styled.div`
-    margin: 16px 0px;
+    margin: 16px 0;
 `;
 
 const KurlioncerPageMove = styled.a`

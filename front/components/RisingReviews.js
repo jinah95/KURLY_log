@@ -26,7 +26,7 @@ const RisingReviews = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
                     className="fixed-style"
                     height={1000}
                     itemCount={itemCount}
-                    itemSize={items.length}
+                    itemSize={200}
                     onItemsRendered={onItemsRendered}
                     ref={ref}
                     style={{ width: "100%", height: "100%" }}
