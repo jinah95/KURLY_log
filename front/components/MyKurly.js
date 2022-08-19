@@ -3,15 +3,15 @@ import styled from "styled-components";
 import Image from "next/image";
 import Profile from "../public/profile.png";
 
-const Intro = () => {
-    const title = 'SSAP의 컬리log';
-    const user = 'SSAP';
+const MyKurly = () => {
+    const title = "SSAP의 컬리log";
+    const user = "SSAP";
 
     return (
         <Wrapper>
             <Header>
                 <LogInfo>
-                    <span>오늘 15  전체 46</span>
+                    <span>오늘 15 전체 46</span>
                     <h1>{title}</h1>
                 </LogInfo>
                 <UserInfo>
@@ -43,7 +43,7 @@ const Intro = () => {
     );
 };
 
-export default Intro;
+export default MyKurly;
 
 const Wrapper = styled.div`
     width: 100%;
@@ -55,7 +55,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 40%;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/background.jpg");
+    background: url("/background.jpg");
     background-size: cover;
     color: white;
     display: grid;
