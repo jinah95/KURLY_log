@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
       grade: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM("컬리언서", "샛별"),
         allowNull: false,
       },
       intro: {

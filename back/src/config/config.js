@@ -7,6 +7,5 @@ const postgre = {
   dialect: "postgres",
   logging: false,
 };
-console.log(postgre);
 
 export default postgre;
