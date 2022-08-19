@@ -33,7 +33,7 @@ export default PreviewCard;
 const CardWrapper = styled.div`
     width: 100%;
     height: 100%;
-    margin: 10px 5px;
+    margin: 10px auto;
 `;
 
 const CardDate = styled.div`
