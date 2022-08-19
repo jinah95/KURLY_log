@@ -59,14 +59,14 @@ export default MyKurly;
 
 const Wrapper = styled.div`
     width: 100%;
-    height: 100vh;
+    height: auto;
     position: relative;
     background-color: #f2f2f2;
 `;
 
 const Header = styled.div`
     width: 100%;
-    height: 40%;
+    height: 40vh;
     background: url("/background.jpg");
     background-size: cover;
     color: white;
@@ -106,7 +106,7 @@ const Popular = styled.div`
 `;
 
 const Contents = styled.div`
-    height: 500px;
+    height: auto;
     background: white;
     margin-top: 10px;
     padding: 20px;
@@ -119,7 +119,6 @@ const Title = styled.div`
 
 const CardView = styled.div`
     width: 100%;
-    height: 100%;
     margin-bottom: 1px;
     white-space: nowrap; 
     overflow-x: auto;
