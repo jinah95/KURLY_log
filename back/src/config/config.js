@@ -5,7 +5,8 @@ const postgre = {
   password: config.password,
   database: config.db,
   dialect: "postgres",
+  logging: false,
 };
-console.log("===========================postgre", postgre);
+console.log(postgre);
 
 export default postgre;
