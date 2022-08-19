@@ -28,8 +28,8 @@ const KurlyLogPost = () => {
                         height={40}
                     />
                 </div>
-                <div>{user}</div>
-                <div>푸드 전문가</div>
+                <UserName>{user}</UserName>
+                <UserTitle>푸드 전문가</UserTitle>
                 <Line />
             </UserInfo>
             <Others>
@@ -84,6 +84,15 @@ const UserInfo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const UserName = styled.div`
+    font-weight: bold;
+    color: var(--purple);
+`;
+
+const UserTitle = styled.div`
+    font-size: 0.8rem;
 `;
 
 const Others = styled.div`
