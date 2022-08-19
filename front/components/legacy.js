@@ -55,7 +55,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 40%;
-    background: url("/background.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/background.jpg");
     background-size: cover;
     color: white;
     display: grid;
