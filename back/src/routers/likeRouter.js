@@ -10,7 +10,7 @@ likeRouter.post("/:review_id", loginRequired, async (req, res, next) => {
         const userId = req.currentUserId;
         const reviewId = req.params.review_id;
 
-        const like = "success";
+        const like = await LikeService.likeReview({ userId, reviewId });
 
         res.status(200).json(like);
     } catch (error) {
@@ -23,7 +23,7 @@ likeRouter.delete("/:review_id", loginRequired, async (req, res, next) => {
         const userId = req.currentUserId;
         const reviewId = req.params.review_id;
 
-        const like = "success";
+        const like = await LikeService.unlikeReview({ userId, reviewId });
 
         res.status(200).json(like);
     } catch (error) {
