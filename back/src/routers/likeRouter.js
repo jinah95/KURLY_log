@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { FollowService } from "../services/FollowService";
 import loginRequired from "../middlewares/loginRequired";
+import { LikeService } from "../services/LikeService";
 
 const likeRouter = Router();
 
