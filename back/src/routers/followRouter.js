@@ -9,7 +9,7 @@ followRouter.post("/follow/:user_id", loginRequired, async (req, res, next) => {
         const userId = req.currentUserId;
         const kurlyencerId = req.params.user_id;
 
-        const follow = "success";
+        const follow = await FollowService.followUser({ userId, kurlyencerId });
         res.status(200).json(follow);
     } catch (error) {
         next(error);
