@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Kurlioncer from "./kurlioncer";
 
 const KurlyLog = () => {
     return (
@@ -18,6 +19,7 @@ const KurlyLog = () => {
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <Kurlioncer />
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
