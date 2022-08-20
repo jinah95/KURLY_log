@@ -3,19 +3,19 @@ import { v4 as uuidv4 } from "uuid";
 
 class FollowService {
     static async followUser({ userId, kurlyencerId }) {
-        const newFollow = {
+        const follow = {
             user_id: userId,
             follower_id: kurlyencerId,
         };
 
-        const followOrNot = await Follow.findByFilter(newFollow);
+        const followOrNot = await Follow.findByFilter(follow);
 
         if (followOrNot) {
             throw new Error("이미 팔로우한 유저입니다.");
         }
-        const createdNewFollow = await Follow.create({ newFollow });
+        const newFollow = await Follow.create({ follow });
 
-        return createdNewFollow;
+        return newFollow;
     }
 
     static async unfollowUser({ userId, kurlyencerId }) {

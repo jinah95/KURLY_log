@@ -5,12 +5,12 @@ const sequelize = db.sequelize;
 const Op = db.sequelize.Op;
 
 const Follow = {
-    create: async ({ newFollow }) => {
-        const createdNewFollow = await followModel.create(newFollow, {
+    create: async ({ follow }) => {
+        const newFollow = await followModel.create(follow, {
             field: ["user_id", "follower_id"],
         });
 
-        return createdNewFollow;
+        return newFollow;
     },
 
     findByFilter: async (filter) => {
