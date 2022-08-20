@@ -8,6 +8,14 @@ class LikeService {
 
         return newLike;
     }
+
+    static async unlikeReview({ userId, reviewId }) {
+        const like = { user_id: userId, review_id: reviewId };
+
+        const newUnlike = "unlike";
+
+        return newUnlike;
+    }
 }
 
 export { LikeService };
