@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { ReviewService } from "../services/reviewService";
 import loginRequired from "../middlewares/loginRequired";
+import {
+  reviewValidator,
+  validationErrorCatcher,
+} from "../middlewares/validator";
 
 const reviewRouter = Router();
 
@@ -18,27 +22,44 @@ reviewRouter.get("/:product_id", async (req, res, next) => {
 });
 
 // 컬리로그 작성하기
-reviewRouter.post("/:product_id", loginRequired, async (req, res, next) => {
-  try {
-    const productId = req.params.product_id;
-    const userId = req.currentUserId;
-    const createdAt = new Date();
-    const { score, good, bad, title, image, content } = req.body;
-    const imageArray = [image];
-    const newReview = {
-      product_id: productId,
-      user_id: userId,
-      score,
-      good,
-      bad,
-      title,
-      image: imageArray,
-      content,
-      created_at: createdAt,
-    };
+reviewRouter.post(
+  "/:product_id",
+  loginRequired,
+  reviewValidator.postReviewValidator,
+  validationErrorCatcher,
+  async (req, res, next) => {
+    try {
+      const productId = req.params.product_id;
+      const userId = req.currentUserId;
+      const createdAt = new Date();
+      const { score, good, bad, title, image, content } = req.body;
+      const imageArray = [image];
+      const newReview = {
+        product_id: productId,
+        user_id: userId,
+        score,
+        good,
+        bad,
+        title,
+        image: imageArray,
+        content,
+        created_at: createdAt,
+      };
 
-    const createdReview = await ReviewService.postReviews({ newReview });
-    res.status(201).json(createdReview);
+      const createdReview = await ReviewService.postReviews({ newReview });
+      res.status(201).json(createdReview);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// 컬리로그 수정하기
+reviewRouter.patch("/:review_id", loginRequired, async (req, res, next) => {
+  try {
+    const reviewId = req.params.review_id;
+    const { score, good, bad, title, image, content } = req.body;
+    const updatedReview = await ReviewService.setReview();
   } catch (error) {
     console.log(error);
   }
