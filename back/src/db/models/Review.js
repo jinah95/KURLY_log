@@ -5,13 +5,22 @@ const sequelize = db.sequelize;
 const Op = db.Op;
 
 const Review = {
-  findAll: async (productId) => {
+  findByProduct: async (productId) => {
     const reviews = await reviewModel.findAll({
       where: {
         product_id: productId,
       },
     });
     return reviews;
+  },
+
+  findByUser: async (userId) => {
+    const logs = await reviewModel.findAll({
+      where: {
+        user_id: userId,
+      },
+    });
+    return logs;
   },
 
   create: async ({ newReview }) => {
