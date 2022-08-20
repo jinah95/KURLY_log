@@ -12,9 +12,7 @@ const reviewRouter = Router();
 reviewRouter.get("/:product_id", async (req, res, next) => {
   try {
     const productId = req.params.product_id;
-
     const reviews = await ReviewService.getReviews(productId);
-
     res.status(200).json(reviews);
   } catch (error) {
     console.log(error);
@@ -33,7 +31,6 @@ reviewRouter.post(
       const userId = req.currentUserId;
       const createdAt = new Date();
       const { score, good, bad, title, image, content } = req.body;
-      const imageArray = [image];
       const newReview = {
         product_id: productId,
         user_id: userId,
@@ -41,7 +38,7 @@ reviewRouter.post(
         good,
         bad,
         title,
-        image: imageArray,
+        image,
         content,
         created_at: createdAt,
       };
@@ -55,15 +52,35 @@ reviewRouter.post(
 );
 
 // 컬리로그 수정하기
-reviewRouter.patch("/:review_id", loginRequired, async (req, res, next) => {
-  try {
-    const reviewId = req.params.review_id;
-    const { score, good, bad, title, image, content } = req.body;
-    const updatedReview = await ReviewService.setReview();
-  } catch (error) {
-    console.log(error);
+reviewRouter.patch(
+  "/:review_id",
+  loginRequired,
+  reviewValidator.setReviewValidator,
+  validationErrorCatcher,
+  async (req, res, next) => {
+    try {
+      const reviewId = req.params.review_id;
+      const userId = req.currentUserId;
+      const { score, good, bad, title, image, content } = req.body;
+      const toUpdate = {
+        score,
+        good,
+        bad,
+        title,
+        image,
+        content,
+      };
+      const updatedReview = await ReviewService.setReview({
+        reviewId,
+        userId,
+        toUpdate,
+      });
+      res.status(200).json(updatedReview);
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 // 유저의 컬리로그 조회하기
 reviewRouter.get("/user/:user_id", async (req, res, next) => {

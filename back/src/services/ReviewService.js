@@ -30,6 +30,32 @@ class ReviewService {
     return { message: "success", data: createdReview };
   }
 
+  // 컬리로그 수정하기
+  static async setReview({ reviewId, userId, toUpdate }) {
+    const review = await Review.findById(reviewId);
+
+    if (!review) {
+      const errorMessage = "해당하는 리뷰가 없습니다.";
+      return { errorMessage };
+    }
+
+    if (review.user_id !== userId) {
+      const errorMessage = "권한이 없습니다.";
+      return { errorMessage };
+    }
+
+    const fieldsToUpdate = Object.keys(toUpdate);
+
+    fieldsToUpdate.forEach((key) => {
+      if (JSON.stringify(review[key]) === JSON.stringify(toUpdate[key]))
+        delete toUpdate[key];
+    });
+
+    const updatedCount = await Review.update({ reviewId, toUpdate });
+
+    return { message: "success", data: updatedCount };
+  }
+
   // 유저의 컬리로그 조회하기
   static async getLogs(userId) {
     const user = await User.findById(userId);
