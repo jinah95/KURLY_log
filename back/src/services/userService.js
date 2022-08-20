@@ -79,8 +79,6 @@ class UserService {
                 toUpdate[element[0]] = element[1];
         });
 
-        console.log("toUpdate :", toUpdate);
-
         const updatedUser = await User.update({ user_id: userId, toUpdate });
 
         return updatedUser;
