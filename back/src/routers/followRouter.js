@@ -24,7 +24,10 @@ followRouter.delete(
             const userId = req.currentUserId;
             const kurlyencerId = req.params.user_id;
 
-            const unfollow = "success";
+            const unfollow = await FollowService.unfollowUser({
+                userId,
+                kurlyencerId,
+            });
             res.status(200).json(unfollow);
         } catch (error) {
             next(error);

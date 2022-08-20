@@ -21,9 +21,9 @@ const Follow = {
         return followOrNot;
     },
 
-    delete: async ({ unfollow }) => {
+    delete: async ({ follow }) => {
         const newUnfollow = await followModel.destroy({
-            where: { user_id: unfollow.user_id },
+            where: follow,
         });
 
         return newUnfollow;

@@ -19,8 +19,15 @@ class FollowService {
     }
 
     static async unfollowUser({ userId, kurlyencerId }) {
-        const unfollow = { user_id: userId, follower_id: kurlyencerId };
-        const newUnfollow = unfollow;
+        const follow = { user_id: userId, follower_id: kurlyencerId };
+
+        const followOrNot = await Follow.findByFilter(follow);
+
+        if (!followOrNot) {
+            throw new Error("이미 언팔로우한 유저입니다.");
+        }
+
+        const newUnfollow = await Follow.delete({ follow });
 
         return newUnfollow;
     }
