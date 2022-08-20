@@ -5,7 +5,16 @@ const sequelize = db.sequelize;
 const Op = db.Op;
 
 const Review = {
-  findAll: async (productId) => {
+  findById: async (reviewId) => {
+    const review = await reviewModel.findOne({
+      where: {
+        review_id: reviewId,
+      },
+    });
+    return review;
+  },
+
+  findByProduct: async (productId) => {
     const reviews = await reviewModel.findAll({
       where: {
         product_id: productId,
@@ -13,8 +22,38 @@ const Review = {
     });
     return reviews;
   },
-  create: async () => {
-    const review = await reviewModel.create({});
+
+  findByUser: async (userId) => {
+    const logs = await reviewModel.findAll({
+      where: {
+        user_id: userId,
+      },
+    });
+    return logs;
+  },
+
+  create: async ({ newReview }) => {
+    const createdReview = await reviewModel.create(newReview);
+
+    return createdReview;
+  },
+
+  update: async ({ reviewId, toUpdate }) => {
+    const updatedReview = await reviewModel.update(toUpdate, {
+      where: {
+        review_id: reviewId,
+      },
+    });
+    return updatedReview;
+  },
+
+  delete: async ({ reviewId }) => {
+    const deletedReview = await reviewModel.destroy({
+      where: {
+        review_id: reviewId,
+      },
+    });
+    return deletedReview;
   },
 };
 
