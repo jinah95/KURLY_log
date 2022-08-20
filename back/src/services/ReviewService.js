@@ -51,9 +51,27 @@ class ReviewService {
         delete toUpdate[key];
     });
 
-    const updatedCount = await Review.update({ reviewId, toUpdate });
+    const result = await Review.update({ reviewId, toUpdate });
 
-    return { message: "success", data: updatedCount };
+    return { message: "success", data: result };
+  }
+
+  // 컬리로그 삭제하기
+  static async deleteLog({ reviewId, userId }) {
+    const review = await Review.findById(reviewId);
+
+    if (!review) {
+      const errorMessage = "해당하는 리뷰가 없습니다.";
+      return { errorMessage };
+    }
+
+    if (review.user_id !== userId) {
+      const errorMessage = "권한이 없습니다.";
+      return { errorMessage };
+    }
+
+    const result = await Review.delete({ reviewId });
+    return { message: "success", data: result };
   }
 
   // 유저의 컬리로그 조회하기

@@ -12,7 +12,9 @@ const reviewRouter = Router();
 reviewRouter.get("/:product_id", async (req, res, next) => {
   try {
     const productId = req.params.product_id;
+
     const reviews = await ReviewService.getReviews(productId);
+
     res.status(200).json(reviews);
   } catch (error) {
     console.log(error);
@@ -44,6 +46,7 @@ reviewRouter.post(
       };
 
       const createdReview = await ReviewService.postReviews({ newReview });
+
       res.status(201).json(createdReview);
     } catch (error) {
       console.log(error);
@@ -70,17 +73,33 @@ reviewRouter.patch(
         image,
         content,
       };
+
       const updatedReview = await ReviewService.setReview({
         reviewId,
         userId,
         toUpdate,
       });
+
       res.status(200).json(updatedReview);
     } catch (error) {
       console.log(error);
     }
   }
 );
+
+// 컬리로그 삭제하기
+reviewRouter.delete("/:review_id", loginRequired, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
+    const reviewId = req.params.review_id;
+
+    const result = await ReviewService.deleteLog({ userId, reviewId });
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 // 유저의 컬리로그 조회하기
 reviewRouter.get("/user/:user_id", async (req, res, next) => {

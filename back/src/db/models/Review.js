@@ -46,6 +46,15 @@ const Review = {
     });
     return updatedReview;
   },
+
+  delete: async ({ reviewId }) => {
+    const deletedReview = await reviewModel.destroy({
+      where: {
+        review_id: reviewId,
+      },
+    });
+    return deletedReview;
+  },
 };
 
 export { Review };
