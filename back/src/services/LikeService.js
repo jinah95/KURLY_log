@@ -2,7 +2,7 @@ import { Like } from "../db/models/Like";
 
 class LikeService {
     static async likeReview({ userId, reviewId }) {
-        const like = { user_id: userId, review_id: reviewId };
+        let like = { user_id: userId, review_id: reviewId };
 
         const likeOrNot = await Like.findByFilter(like);
 
@@ -10,7 +10,11 @@ class LikeService {
             throw new Error("이미 좋아요를 누른 게시글입니다.");
         }
 
-        const newLike = "like";
+        const createdAt = new Date();
+
+        like = { ...like, created_at: createdAt };
+
+        const newLike = await Like.create({ like });
 
         return newLike;
     }
@@ -26,7 +30,7 @@ class LikeService {
             );
         }
 
-        const newUnlike = "unlike";
+        const newUnlike = await Like.delete({ like });
 
         return newUnlike;
     }
