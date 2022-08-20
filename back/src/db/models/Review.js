@@ -1,9 +1,10 @@
 import db from "..";
 const reviewModel = db.review;
 const userModel = db.user;
+const likeModel = db.like;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.sequelize.Op;
+const Op = db.Sequelize.Op;
 
 const Review = {
   findById: async (reviewId) => {
@@ -57,15 +58,21 @@ const Review = {
     return deletedReview;
   },
   getBestLogs: async () => {
-    const kurlyencer = await reviewModel.findAll({
-      include: {
-        model: userModel,
-        as: "u",
-        where: {
-          grade: "컬리언서",
-        },
+    const kurlyencer = await userModel.findAll({
+      where: {
+        grade: "컬리언서",
+      },
+      attributes: ["user_id"],
+    });
+
+    const kurlyencerId = kurlyencer.map((data) => data.user_id);
+    const bestLogs = await reviewModel.findAll({
+      where: {
+        user_id: { [Op.in]: kurlyencerId },
       },
     });
+
+    console.log(bestLogs);
   },
 };
 

@@ -36,4 +36,6 @@ db.review.belongsTo(db.user, {
   as: "u",
 });
 
+db.review.hasMany(db.like, { foreignKey: "review_id", as: "l" });
+db.like.belongsTo(db.review, { foreignKey: "review_id", as: "r" });
 export default db;
