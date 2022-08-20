@@ -5,7 +5,7 @@ import { LikeService } from "../services/LikeService";
 
 const likeRouter = Router();
 
-likeRouter.post("/like/:review_id", loginRequired, async (req, res, next) => {
+likeRouter.post("/:review_id", loginRequired, async (req, res, next) => {
     try {
         const userId = req.currentUserId;
         const reviewId = req.params.review_id;
