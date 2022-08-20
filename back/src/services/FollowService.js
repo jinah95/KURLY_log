@@ -1,8 +1,15 @@
 import { Follow } from "../db/models/Follow";
+import { User } from "../db/models/User";
 import { v4 as uuidv4 } from "uuid";
 
 class FollowService {
     static async followUser({ userId, kurlyencerId }) {
+        const user = await User.findById(kurlyencerId);
+
+        if (!user) {
+            throw new Error("존재하지 않는 사용자입니다.");
+        }
+
         const follow = {
             user_id: userId,
             follower_id: kurlyencerId,
@@ -19,6 +26,12 @@ class FollowService {
     }
 
     static async unfollowUser({ userId, kurlyencerId }) {
+        const user = await User.findById(kurlyencerId);
+
+        if (!user) {
+            throw new Error("존재하지 않는 사용자입니다.");
+        }
+
         const follow = { user_id: userId, follower_id: kurlyencerId };
 
         const followOrNot = await Follow.findByFilter(follow);
