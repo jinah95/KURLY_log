@@ -9,7 +9,7 @@ reviewRouter.get("/:product_id", async (req, res, next) => {
   try {
     const productId = req.params.product_id;
     const reviews = await ReviewService.getReviews(productId);
-    res.send(reviews);
+    res.status(200).json(reviews);
   } catch (error) {
     console.log(error);
   }
