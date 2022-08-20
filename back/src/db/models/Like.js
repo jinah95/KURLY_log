@@ -12,6 +12,12 @@ const Like = {
 
         return newLike;
     },
+
+    delete: async ({ like }) => {
+        const newUnlike = await likeModel.destroy(like);
+
+        return newUnlike;
+    },
 };
 
 export { Like };
