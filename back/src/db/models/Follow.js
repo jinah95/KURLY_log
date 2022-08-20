@@ -6,7 +6,6 @@ const Op = db.sequelize.Op;
 
 const Follow = {
     create: async ({ newFollow }) => {
-        console.log("넘어옴", newFollow);
         const createdNewFollow = await followModel.create(newFollow, {
             field: ["user_id", "follower_id"],
         });
@@ -18,7 +17,6 @@ const Follow = {
         const followOrNot = await followModel.findOne({
             where: filter,
         });
-        console.log("follow? :", followOrNot);
 
         return followOrNot;
     },
