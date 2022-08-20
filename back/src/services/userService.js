@@ -62,6 +62,29 @@ class UserService {
         };
         return { message: "success", data: loginUser };
     }
+
+    static async updateProfile({ userId, updateData }) {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            throw new Error(
+                "이미 탈퇴했거나 존재하지 않는 사용자입니다. 다시 한 번 확인해 주세요."
+            );
+        }
+
+        let toUpdate = {};
+
+        Object.entries(updateData).forEach((element) => {
+            if (element[1] !== user[element[0]])
+                toUpdate[element[0]] = element[1];
+        });
+
+        console.log("toUpdate :", toUpdate);
+
+        const updatedUser = await User.update({ user_id: userId, toUpdate });
+
+        return updatedUser;
+    }
 }
 
 export { UserService };
