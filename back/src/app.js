@@ -28,6 +28,6 @@ app.use(userRouter);
 app.use("/logs", reviewRouter);
 app.use(followRouter);
 
-app.user(errorMiddleware);
+app.use(errorMiddleware);
 
 export { app };
