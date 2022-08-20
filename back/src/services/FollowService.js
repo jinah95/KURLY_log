@@ -7,6 +7,13 @@ class FollowService {
 
         return createdNewFollow;
     }
+
+    static async unfollowUser({ userId, kurlyencerId }) {
+        const unfollow = { user_id: userId, follower_id: kurlyencerId };
+        const newUnfollow = unfollow;
+
+        return newUnfollow;
+    }
 }
 
 export { FollowService };
