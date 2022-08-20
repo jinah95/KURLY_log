@@ -22,11 +22,7 @@ const Follow = {
     },
 
     delete: async ({ follow }) => {
-        const newUnfollow = await followModel.destroy({
-            where: follow,
-        });
-
-        return newUnfollow;
+        await followModel.destroy({ where: follow });
     },
 };
 

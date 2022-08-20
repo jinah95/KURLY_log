@@ -27,9 +27,9 @@ class FollowService {
             throw new Error("이미 언팔로우한 유저입니다.");
         }
 
-        const newUnfollow = await Follow.delete({ follow });
+        await Follow.delete({ follow });
 
-        return newUnfollow;
+        return "언팔로우 되었습니다.";
     }
 }
 
