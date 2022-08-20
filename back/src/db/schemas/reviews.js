@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
         primaryKey: true,
       },
       product_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "products",

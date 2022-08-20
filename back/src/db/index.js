@@ -6,13 +6,13 @@ import config from "../config/config.js";
 const db = {};
 
 let sequelize = new Sequelize({
-    username: config.username,
-    password: config.password,
-    database: config.database,
-    host: config.host,
-    port: config.port,
-    dialect: "postgres",
-    logging: false,
+  username: config.username,
+  password: config.password,
+  database: config.database,
+  host: config.host,
+  port: config.port,
+  dialect: "postgres",
+  logging: false,
 });
 
 import User from "./schemas/users";
@@ -29,5 +29,11 @@ db.review = Reveiw(sequelize, Sequelize);
 db.product = Product(sequelize, Sequelize);
 db.like = Like(sequelize, Sequelize);
 db.follow = Follow(sequelize, Sequelize);
+
+db.user.hasMany(db.review, { as: "r" });
+db.review.belongsTo(db.user, {
+  foreignKey: "user_id",
+  as: "u",
+});
 
 export default db;

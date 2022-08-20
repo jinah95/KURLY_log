@@ -90,7 +90,14 @@ class ReviewService {
       return { errorMessage };
     }
 
-    return logs;
+    return { message: "success", data: logs };
+  }
+
+  // best 컬리언서 리뷰 조회하기
+  static async getBestLogs() {
+    const logs = await Review.getBestLogs();
+
+    // return { message: "success", data: logs };
   }
 }
 

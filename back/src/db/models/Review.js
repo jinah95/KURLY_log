@@ -1,8 +1,9 @@
 import db from "..";
 const reviewModel = db.review;
+const userModel = db.user;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.Op;
+const Op = db.sequelize.Op;
 
 const Review = {
   findById: async (reviewId) => {
@@ -54,6 +55,17 @@ const Review = {
       },
     });
     return deletedReview;
+  },
+  getBestLogs: async () => {
+    const kurlyencer = await reviewModel.findAll({
+      include: {
+        model: userModel,
+        as: "u",
+        where: {
+          grade: "컬리언서",
+        },
+      },
+    });
   },
 };
 

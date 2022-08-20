@@ -9,7 +9,7 @@ import {
 const reviewRouter = Router();
 
 // 상품의 리뷰전체 가져오기
-reviewRouter.get("/:product_id", async (req, res, next) => {
+reviewRouter.get("/goods/:product_id", async (req, res, next) => {
   try {
     const productId = req.params.product_id;
 
@@ -107,6 +107,17 @@ reviewRouter.get("/user/:user_id", async (req, res, next) => {
     const userId = req.params.user_id;
 
     const logs = await ReviewService.getLogs(userId);
+
+    res.status(200).json(logs);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// best 컬리언서 리뷰 조회하기
+reviewRouter.get("/best/", async (req, res, next) => {
+  try {
+    const logs = await ReviewService.getBestLogs();
 
     res.status(200).json(logs);
   } catch (error) {
