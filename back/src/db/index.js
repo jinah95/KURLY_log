@@ -30,7 +30,7 @@ db.product = Product(sequelize, Sequelize);
 db.like = Like(sequelize, Sequelize);
 db.follow = Follow(sequelize, Sequelize);
 
-db.user.hasMany(db.review, { as: "r" });
+db.user.hasMany(db.review, { foreignKey: "user_id", as: "r" });
 db.review.belongsTo(db.user, {
   foreignKey: "user_id",
   as: "u",
