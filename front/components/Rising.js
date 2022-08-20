@@ -9,6 +9,7 @@ const Rising = () => {
         moreItemsLoading: false,
         hasNextPage: true,
     });
+
     const loadMore = () => {
         setRisingState({ ...risingState, moreItemsLoading: true });
         const newItems = [
@@ -28,6 +29,7 @@ const Rising = () => {
         });
     };
     const { items, moreItemsLoading, hasNextPage } = risingState;
+
     return (
         <Wrapper>
             <Header></Header>

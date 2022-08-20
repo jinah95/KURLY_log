@@ -4,6 +4,7 @@ import styled from "styled-components";
 const KurlyLog = () => {
     return (
         <Wrapper>
+            <Header></Header>
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
@@ -40,6 +41,17 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+`;
+
+const Header = styled.div`
+    width: 100%;
+    height: 20%;
+    background: url("/Kurlylogbanner.jpg");
+    background-size: cover;
+    color: white;
+    display: grid;
+    grid-template-rows: 8fr 2fr;
+    padding: 0 20px;
 `;
 
 const BestKurlioncer = styled.div`
