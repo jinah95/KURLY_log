@@ -23,6 +23,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(userRouter);
-app.use(reviewRouter);
+app.use("/logs", reviewRouter);
 
 export { app };
