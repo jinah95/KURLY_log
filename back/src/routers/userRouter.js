@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { UserService } from "../services/UserService";
-import { loginRequired } from "../middlewares/loginRequired";
-import { User } from "../db/models/User";
+import loginRequired from "../middlewares/loginRequired";
 const userRouter = Router();
 
 userRouter.post("/login", async (req, res, next) => {
