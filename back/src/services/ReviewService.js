@@ -9,7 +9,7 @@ class ReviewService {
 
     if (!product) {
       const errorMessage = "해당하는 상품이 없습니다.";
-      throw new Error(errorMessage);
+      return { errorMessage };
     }
 
     const reviews = await Review.findByProduct(productId);
@@ -17,7 +17,7 @@ class ReviewService {
     if (!reviews || !reviews.length) {
       const errorMessage = "해당 상품에 리뷰가 없습니다.";
 
-      throw new Error(errorMessage);
+      return { errorMessage };
     }
 
     return reviews;
@@ -36,14 +36,14 @@ class ReviewService {
 
     if (!user) {
       const errorMessage = "해당하는 유저가 없습니다.";
-      throw new Error(errorMessage);
+      return { errorMessage };
     }
 
     const logs = await Review.findByUser(userId);
 
     if (!logs || !logs.length) {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
-      throw new Error(errorMessage);
+      return { errorMessage };
     }
 
     return logs;
