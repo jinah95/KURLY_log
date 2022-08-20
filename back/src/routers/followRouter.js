@@ -1,5 +1,5 @@
 import { Router } from "express";
-// import { FollowService } from "../services/FollowService";
+import { FollowService } from "../services/FollowService";
 const followRouter = Router();
 
 followRouter.post("/follow/:user_id", async (req, res, next) => {

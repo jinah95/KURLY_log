@@ -1,4 +1,4 @@
-// import {Follow} from "../db/models/Follow";
+import { Follow } from "../db/models/Follow";
 
 class FollowService {
     static async followUser({ userId, kurlyencerId }) {
