@@ -1,12 +1,23 @@
 import React from "react";
+import Slider from "react-slick";
 import styled from "styled-components";
 import Image from "next/image";
 import Profile from "../public/profile.png";
 import CarouselCard from "./Cards/CarouselCard";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css"
 
 const KurlyLogPost = () => {
     const home = "SSAP의 컬리log";
     const user = "SSAP";
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
 
     return (
         <Wrapper>
@@ -36,7 +47,11 @@ const KurlyLogPost = () => {
                 또 다른 컬리log
                 <Line />
                 <CarouselView>
-                    <CarouselCard />
+                    <Slider {...settings}>
+                        <CarouselCard />
+                        <CarouselCard />
+                        <CarouselCard />
+                    </Slider>
                 </CarouselView>
             </Others>
         </Wrapper>
@@ -109,6 +124,16 @@ const Line = styled.div`
     margin: 10px auto;
 `;
 
-const CarouselView = styled.div`
+const CarouselView = styled(Slider)`
+    width: 100%;
+    height: 100%;
 
+    .slick-list {
+        margin: 0 auto;
+        overflow-x: hidden;
+    }
+    
+    .slick-dots {  //슬라이드의 위치
+        bottom: -10px;
+    }
 `;
