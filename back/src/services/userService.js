@@ -1,6 +1,8 @@
 import { User } from "../db/models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Follow } from "../db/models/Follow";
+import { Review } from "../db/models/Review";
 
 class UserService {
     static async getUsers() {
@@ -19,7 +21,13 @@ class UserService {
             throw new Error("해당 유저가 없습니다.");
         }
 
-        return user;
+        // const followers = await Follow.countByFilter({ follower_id: userId });
+
+        const reviews = await Review.countByFilter({ user_id: userId });
+
+        const data = { ...user.dataValues, reviews };
+
+        return data;
     }
 
     static async getUser({ nickname, password }) {

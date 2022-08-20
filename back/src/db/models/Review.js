@@ -20,6 +20,12 @@ const Review = {
         });
         return review;
     },
+
+    countByFilter: async (filter) => {
+        const count = await reviewModel.count({ where: filter });
+        return count;
+    },
+
     create: async () => {
         const review = await reviewModel.create({});
     },
