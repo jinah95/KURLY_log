@@ -15,3 +15,5 @@ const loginRequired = (req, res, next) => {
     return;
   }
 };
+
+export default loginRequired;
