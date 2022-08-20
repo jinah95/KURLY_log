@@ -4,7 +4,7 @@ import loginRequired from "../middlewares/loginRequired";
 
 const followRouter = Router();
 
-followRouter.post("/follow/:user_id", loginRequired, async (req, res, next) => {
+followRouter.post("/:user_id", loginRequired, async (req, res, next) => {
     try {
         const userId = req.currentUserId;
         const kurlyencerId = req.params.user_id;
@@ -16,23 +16,19 @@ followRouter.post("/follow/:user_id", loginRequired, async (req, res, next) => {
     }
 });
 
-followRouter.delete(
-    "/unfollow/:user_id",
-    loginRequired,
-    async (req, res, next) => {
-        try {
-            const userId = req.currentUserId;
-            const kurlyencerId = req.params.user_id;
+followRouter.delete("/:user_id", loginRequired, async (req, res, next) => {
+    try {
+        const userId = req.currentUserId;
+        const kurlyencerId = req.params.user_id;
 
-            const unfollow = await FollowService.unfollowUser({
-                userId,
-                kurlyencerId,
-            });
-            res.status(200).json(unfollow);
-        } catch (error) {
-            next(error);
-        }
+        const unfollow = await FollowService.unfollowUser({
+            userId,
+            kurlyencerId,
+        });
+        res.status(200).json(unfollow);
+    } catch (error) {
+        next(error);
     }
-);
+});
 
 export { followRouter };

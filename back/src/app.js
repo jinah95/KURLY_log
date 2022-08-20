@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.use(userRouter);
 app.use("/logs", reviewRouter);
-app.use(followRouter);
+app.use("/follows", followRouter);
 app.use("/likes", likeRouter);
 
 app.use(errorMiddleware);
