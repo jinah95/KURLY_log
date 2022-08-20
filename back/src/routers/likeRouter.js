@@ -1,0 +1,20 @@
+import { Router } from "express";
+import { FollowService } from "../services/FollowService";
+import loginRequired from "../middlewares/loginRequired";
+
+const likeRouter = Router();
+
+likeRouter.post("/like/:review_id", loginRequired, async (req, res, next) => {
+    try {
+        const userId = req.currentUserId;
+        const reviewId = req.params.review_id;
+
+        const like = "success";
+
+        res.status(200).json(like);
+    } catch (error) {
+        next(error);
+    }
+});
+
+export { likeRouter };
