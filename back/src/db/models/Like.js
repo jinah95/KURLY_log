@@ -20,9 +20,7 @@ const Like = {
     },
 
     delete: async ({ like }) => {
-        const newUnlike = await likeModel.destroy(like);
-
-        return newUnlike;
+        await likeModel.destroy({ where: like });
     },
 };
 

@@ -30,9 +30,9 @@ class LikeService {
             );
         }
 
-        const newUnlike = await Like.delete({ like });
+        await Like.delete({ like });
 
-        return newUnlike;
+        return "좋아요가 취소되었습니다.";
     }
 }
 
