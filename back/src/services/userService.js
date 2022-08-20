@@ -21,11 +21,11 @@ class UserService {
             throw new Error("해당 유저가 없습니다.");
         }
 
-        // const followers = await Follow.countByFilter({ follower_id: userId });
+        const followers = await Follow.countByFilter({ follower_id: userId });
 
         const reviews = await Review.countByFilter({ user_id: userId });
 
-        const data = { ...user.dataValues, reviews };
+        const data = { ...user.dataValues, followers, reviews };
 
         return data;
     }

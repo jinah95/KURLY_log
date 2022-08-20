@@ -21,6 +21,12 @@ const Follow = {
         return followOrNot;
     },
 
+    countByFilter: async (filter) => {
+        const count = await followModel.count({ where: filter });
+
+        return count;
+    },
+
     delete: async ({ follow }) => {
         await followModel.destroy({ where: follow });
     },
