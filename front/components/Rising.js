@@ -1,30 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-const KurlyLog = () => {
+const Rising = () => {
     return (
         <Wrapper>
+            <Header></Header>
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
                         <PageMoveFirst>
-                            <PageMoveTitle>주간 BEST 컬리언서</PageMoveTitle>
-                            <MoreButton> + 상위30위 보기</MoreButton>
+                            <PageMoveTitle>떠오르는 샛별 리뷰</PageMoveTitle>
                             <PageMoveSubTitle>
-                                인기있는 컬리언서는 ?
-                            </PageMoveSubTitle>
-                        </PageMoveFirst>
-                    </PageMoveWrapper>
-                </KurlioncerPageMove>
-            </BestKurlioncer>
-            <BestKurlioncer>
-                <KurlioncerPageMove>
-                    <PageMoveWrapper>
-                        <PageMoveFirst>
-                            <PageMoveTitle>주간 BEST 리뷰</PageMoveTitle>
-                            <MoreButton> + 더보기</MoreButton>
-                            <PageMoveSubTitle>
-                                컬리언서가 쓴 재미난 리뷰!
+                                급변하는 리뷰 사회, 나도 컬리언서가 될 수 있다?
                             </PageMoveSubTitle>
                         </PageMoveFirst>
                     </PageMoveWrapper>
@@ -34,12 +21,23 @@ const KurlyLog = () => {
     );
 };
 
-export default KurlyLog;
+export default Rising;
 
 const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+`;
+
+const Header = styled.div`
+    width: 100%;
+    height: 40%;
+    background: url("risingAD.jpg");
+    background-size: cover;
+    color: white;
+    display: grid;
+    grid-template-rows: 8fr 2fr;
+    padding: 0 20px;
 `;
 
 const BestKurlioncer = styled.div`
