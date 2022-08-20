@@ -26,6 +26,7 @@ const KurlyLogWrite = ({ setWrite }) => {
         {
             preview ? (
                 <div>
+                    {/* 제목 이미지 등 보이기 */}
                     <ViewContainer ref={viewContainerRef} />
                     <ButtonWrapper>
                         <ConfirmButton onClick={() => setPreview(false)}>
@@ -65,9 +66,7 @@ const Wrapper = styled.div`
 `;
 
 const ViewContainer = styled.div`
-    width: 100%;
-    height: auto;
-    border: 2px solid #e2e2e2;;
+    border: 1px solid #e2e2e2;;
     margin: 10px;
 
     .ql-align-center {
