@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ReviewService } from "../services/reviewService";
+import loginRequired from "../middlewares/loginRequired";
 
 const reviewRouter = Router();
 
@@ -13,8 +14,12 @@ reviewRouter.get("/goods/:product_id", async (req, res, next) => {
   }
 });
 
-reviewRouter.post("/log", async (req, res, next) => {
+reviewRouter.post("/:product_id", loginRequired, async (req, res, next) => {
   try {
+    const productId = req.params.product_id;
+    const userId = req.currentUserId;
+    console.log(userId);
+    res.send(userId);
   } catch (error) {
     console.log(error);
   }

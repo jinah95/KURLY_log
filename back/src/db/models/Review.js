@@ -13,6 +13,9 @@ const Review = {
     });
     return reviews;
   },
+  create: async () => {
+    const review = await reviewModel.create({});
+  },
 };
 
 export { Review };

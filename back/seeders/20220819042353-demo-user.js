@@ -1,6 +1,5 @@
 "use strict";
 
-// import uuidv4 from "uuidv4";
 const { uuid } = require("uuidv4");
 const bcrypt = require("bcrypt");
 
