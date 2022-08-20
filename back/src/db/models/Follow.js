@@ -12,6 +12,14 @@ const Follow = {
 
         return createdNewFollow;
     },
+
+    delete: async ({ unfollow }) => {
+        const newUnfollow = await followModel.destroy({
+            where: { user_id: unfollow.user_id },
+        });
+
+        return newUnfollow;
+    },
 };
 
 export { Follow };
