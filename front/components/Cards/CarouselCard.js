@@ -7,14 +7,14 @@ const CarouselCard = () => {
 
     return (
         <CardWrapper>
-            <CardActionArea>
+            <div>
                 <CardInfo>
                     <Title>
                         망원동 카페 - 티노마드
                     </Title>
                     <SubTitle>안녕하세요. 오랜만에 카페 업로드 글로 찾아왔습니다. 이번에 가본 카페는 망원동에 있는 티노마드라는 카페인데요.</SubTitle>
                 </CardInfo>
-            </CardActionArea>
+            </div>
             <CardMedia
                 component="img"
                 height="100"
@@ -30,7 +30,8 @@ export default CarouselCard;
 const CardWrapper = styled.div`
     width: 100%;
     height: 100%;
-    margin: 10px auto;
+    margin: 10px 0;
+    padding: 2px;
     display: grid;
     grid-template-columns: 7fr 3fr;
 `;
