@@ -13,8 +13,11 @@ const Review = {
     });
     return reviews;
   },
-  create: async () => {
-    const review = await reviewModel.create({});
+
+  create: async ({ newReview }) => {
+    const createdReview = await reviewModel.create(newReview);
+
+    return createdReview;
   },
 };
 
