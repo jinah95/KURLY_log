@@ -19,6 +19,18 @@ const Like = {
         return likeOrNot;
     },
 
+    countByFilter: async (filter) => {
+        const count = await sequelize.query(
+            `SELECT count(*)
+            FROM likes AS l
+            INNER JOIN reviews AS r
+            ON l.review_id=r.review_id
+            WHERE r.user_id='${filter.user_id}'`
+        );
+
+        return Number(count[0][0].count);
+    },
+
     delete: async ({ like }) => {
         await likeModel.destroy({ where: like });
     },

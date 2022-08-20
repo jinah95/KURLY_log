@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Follow } from "../db/models/Follow";
 import { Review } from "../db/models/Review";
+import { Like } from "../db/models/Like";
 
 class UserService {
     static async getUsers() {
@@ -25,7 +26,9 @@ class UserService {
 
         const reviews = await Review.countByFilter({ user_id: userId });
 
-        const data = { ...user.dataValues, followers, reviews };
+        const likes = await Like.countByFilter({ user_id: userId });
+
+        const data = { ...user.dataValues, followers, reviews, likes };
 
         return data;
     }
