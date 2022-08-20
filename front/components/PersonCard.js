@@ -52,7 +52,7 @@ const PersonContainer = styled.div`
     grid-template-columns: 1.5fr 3fr 1fr;
     padding: 8px;
     margin: 5px 0;
-    background-color: rgb(242, 242, 242);
+    background-color: rgb(244, 244, 244);
 `;
 
 const Profile = styled.div`

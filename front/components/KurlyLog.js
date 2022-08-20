@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Kurlioncer from "./kurlioncer";
+import KurlioncerReviews from "./KurlioncerReviews";
+import Footer from "./Footer";
 
 const KurlyLog = () => {
     return (
@@ -33,6 +35,8 @@ const KurlyLog = () => {
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <KurlioncerReviews />
+            <Footer />
         </Wrapper>
     );
 };

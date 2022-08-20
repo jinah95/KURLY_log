@@ -25,8 +25,6 @@ const Wrapper = styled.div`
 `;
 
 const BorderContainer = styled.div`
-    margin: 0 17px;
-    border: 1px solid #5f0080;
     width: 100%;
     height: auto;
 `;
