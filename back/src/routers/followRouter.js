@@ -14,4 +14,16 @@ followRouter.post("/follow/:user_id", async (req, res, next) => {
     }
 });
 
+followRouter.delete("/unfollow/:user_id", async (req, res, next) => {
+    try {
+        const userId = req.currentUserId;
+        const kurlyencerId = req.params.user_id;
+
+        const unfollow = "success";
+        res.status(200).json(unfollow);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { followRouter };
