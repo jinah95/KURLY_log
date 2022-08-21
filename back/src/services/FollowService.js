@@ -22,7 +22,7 @@ class FollowService {
     }
     const newFollow = await Follow.create({ follow });
 
-    return newFollow;
+    return { message: "success", data: newFollow };
   }
 
   static async unfollowUser({ userId, kurlyencerId }) {
@@ -42,7 +42,7 @@ class FollowService {
 
     await Follow.delete({ follow });
 
-    return "언팔로우 되었습니다.";
+    return { message: "success", data: "언팔로우 되었습니다." };
   }
 }
 

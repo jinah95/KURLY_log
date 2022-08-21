@@ -23,7 +23,7 @@ class LikeService {
 
     const newLike = await Like.create({ like });
 
-    return newLike;
+    return { message: "success", data: newLike };
   }
 
   static async unlikeReview({ userId, reviewId }) {
@@ -45,7 +45,7 @@ class LikeService {
 
     await Like.delete({ like });
 
-    return "좋아요가 취소되었습니다.";
+    return { message: "success", data: "좋아요가 취소되었습니다." };
   }
 }
 

@@ -13,7 +13,7 @@ class UserService {
       const errorMessage = "유저가 없습니다.";
       throw new Error(errorMessage);
     }
-    return users;
+    return { message: "success", data: users };
   }
 
   static async getUserInfo(userId) {
@@ -31,7 +31,7 @@ class UserService {
 
     const data = { ...user.dataValues, followers, reviews, likes };
 
-    return data;
+    return { message: "success", data };
   }
 
   static async getUser({ nickname, password }) {
@@ -94,7 +94,7 @@ class UserService {
 
     const updatedUser = await User.update({ user_id: userId, toUpdate });
 
-    return updatedUser;
+    return { message: "success", data: updatedUser };
   }
 }
 

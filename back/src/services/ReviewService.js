@@ -9,7 +9,7 @@ class ReviewService {
 
     if (!product) {
       const errorMessage = "해당하는 상품이 없습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
     const reviews = await Review.findByProduct(productId);
@@ -17,10 +17,10 @@ class ReviewService {
     if (!reviews || !reviews.length) {
       const errorMessage = "해당 상품에 리뷰가 없습니다.";
 
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
-    return reviews;
+    return { message: "success", data: reviews };
   }
 
   // 컬리로그 작성하기
@@ -36,12 +36,12 @@ class ReviewService {
 
     if (!review) {
       const errorMessage = "해당하는 리뷰가 없습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
     if (review.user_id !== userId) {
       const errorMessage = "권한이 없습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
     const fieldsToUpdate = Object.keys(toUpdate);
@@ -62,12 +62,12 @@ class ReviewService {
 
     if (!review) {
       const errorMessage = "해당하는 리뷰가 없습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
     if (review.user_id !== userId) {
       const errorMessage = "권한이 없습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
     const result = await Review.delete({ reviewId });
@@ -80,17 +80,17 @@ class ReviewService {
 
     if (!user) {
       const errorMessage = "해당하는 유저가 없습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
     const logs = await Review.findByUser(userId);
 
     if (!logs || !logs.length) {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
-      return { errorMessage };
+      return { message: "fail", data: errorMessage };
     }
 
-    return logs;
+    return { message: "success", data: logs };
   }
 }
 
