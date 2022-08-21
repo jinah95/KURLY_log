@@ -73,6 +73,16 @@ const User = {
     return users;
   },
 
+  getBestUsers: async () => {
+    const users = await sequelize.query(`
+      SELECT * 
+      FROM reviews AS r
+      INNER JOIN likes AS l
+      ON r.review_id = l.review_id
+    `);
+    return users;
+  },
+
   update: async ({ user_id, toUpdate }) => {
     const count = await userModel.update(toUpdate, { where: { user_id } });
     return count;
