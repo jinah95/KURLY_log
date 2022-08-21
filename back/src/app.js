@@ -14,9 +14,7 @@ const app = express();
 db.sequelize
   .sync()
   .then(() => logger.info("정상적으로 db에 연결되었습니다."))
-  .catch((err) => {
-    console.log(err);
-  });
+  .catch((err) => logger.error(err));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
