@@ -10,7 +10,7 @@ const reviewRouter = Router();
 
 // 상품의 리뷰전체 가져오기
 
-reviewRouter.get("/goods/:product_id", async (req, res, next) => {
+reviewRouter.get("/goods/:productId", async (req, res, next) => {
   try {
     const productId = req.params.productId;
 

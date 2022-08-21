@@ -7,6 +7,13 @@ const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
 
 const Review = {
+  findById: async (reviewId) => {
+    const review = await reviewModel.findOne({
+      where: { review_id: reviewId },
+    });
+    return review;
+  },
+
   findAll: async (productId) => {
     const reviews = await reviewModel.findAll({
       where: {
