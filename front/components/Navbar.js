@@ -8,11 +8,11 @@ import cart from "../public/images/cart.png";
 import spot from "../public/images/spot.png";
 
 const Navbar = () => {
-    // const router = useRouter();
-    // const pathQuery = router.pathname.slice(1);
-    // console.log(pathQuery); // 페이지 새로고침 시 이미지 변경 부분에 대하여
+    const router = useRouter();
+    const pathQuery = router.pathname.slice(1);
+    console.log(pathQuery); // 페이지 새로고침 시 이미지 변경 부분에 대하여
     const [targetPage, setTargetPage] = useState("market");
-    const [targetTab, setTargetTab] = useState("kurlioncer");
+    const [targetTab, setTargetTab] = useState("best");
 
     return (
         <>
@@ -34,6 +34,8 @@ const Navbar = () => {
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
+                                setTargetTab("best");
+                                router.push("/");
                             }}
                         >
                             <PageTitle
@@ -50,6 +52,7 @@ const Navbar = () => {
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
+                                router.push("/beauty");
                             }}
                         >
                             <PageTitle
@@ -66,6 +69,8 @@ const Navbar = () => {
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
+                                setTargetTab("kurlioncer");
+                                router.push("/kurlylog");
                             }}
                         >
                             <PageTitle
@@ -82,28 +87,61 @@ const Navbar = () => {
                         <Image src={cart} alt="logo" width={25} height={26} />
                     </ButtonWrapper>
                 </TitleDiv>
-                <MenuNav>
-                    <Link href="/kurlylog" passHref>
+                <MenuNav targetPage={targetPage}>
+                    <Link
+                        href={targetPage === "market" ? "/" : "/kurlylog"}
+                        passHref
+                    >
                         <PageATag onClick={(e) => setTargetTab(e.target.id)}>
-                            <PageNameSpan id="kurlioncer" targetTab={targetTab}>
-                                컬리 언서
+                            <PageNameSpan
+                                id={
+                                    targetPage === "market"
+                                        ? "best"
+                                        : "kurlioncer"
+                                }
+                                targetTab={targetTab}
+                            >
+                                {targetPage === "market"
+                                    ? "베스트"
+                                    : "컬리 언서"}
                             </PageNameSpan>
                         </PageATag>
                     </Link>
-                    <Link href="/risingreview" passHref>
+                    <Link
+                        href={
+                            targetPage === "market" ? "/event" : "/risingreview"
+                        }
+                        passHref
+                    >
                         <PageATag onClick={(e) => setTargetTab(e.target.id)}>
-                            <PageNameSpan id="rising" targetTab={targetTab}>
-                                샛별 리뷰
+                            <PageNameSpan
+                                id={
+                                    targetPage === "market" ? "event" : "rising"
+                                }
+                                targetTab={targetTab}
+                            >
+                                {targetPage === "market"
+                                    ? "이벤트"
+                                    : "샛별 리뷰"}
                             </PageNameSpan>
                         </PageATag>
                     </Link>
-                    <Link href="/myKurly/:id" passHref>
-                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
-                            <PageNameSpan id="kurlyLog" targetTab={targetTab}>
-                                내 컬리log
-                            </PageNameSpan>
-                        </PageATag>
-                    </Link>
+                    {targetPage === "market" ? (
+                        <></>
+                    ) : (
+                        <Link href="/myKurly/:id" passHref>
+                            <PageATag
+                                onClick={(e) => setTargetTab(e.target.id)}
+                            >
+                                <PageNameSpan
+                                    id="kurlyLog"
+                                    targetTab={targetTab}
+                                >
+                                    내 컬리log
+                                </PageNameSpan>
+                            </PageATag>
+                        </Link>
+                    )}
                 </MenuNav>
             </NavWrapper>
             <ParDiv></ParDiv>
@@ -149,7 +187,8 @@ const MenuNav = styled.nav`
     height: 44px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: ${(props) =>
+        props.targetPage === "market" ? "space-evenly" : "space-between"};
     align-items: center;
     padding: 0px 1.5rem;
 `;
