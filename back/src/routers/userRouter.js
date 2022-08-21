@@ -15,15 +15,6 @@ userRouter.post("/login", async (req, res, next) => {
   }
 });
 
-userRouter.get("/users", async (req, res, next) => {
-  try {
-    const users = await UserService.getUsers();
-    res.status(200).json(users);
-  } catch (error) {
-    next(error);
-  }
-});
-
 userRouter.get("/users/best", async (req, res, next) => {
   try {
     const bestUsers = await UserService.getBestUsers();
