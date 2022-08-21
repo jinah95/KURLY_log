@@ -51,7 +51,19 @@ class UserService {
 
     // last login update 추가
     const today = new Date();
-    const toUpdate = { last_login: today };
+    let toUpdate = { last_login: today };
+
+    if (user.grade === "샛별") {
+      const [followers, likes] = await Promise.all([
+        Follow.countByFilter({ follower_id: user.user_id }),
+        Like.countByFilter({ user_id: user.user_id }),
+      ]);
+
+      if (followers >= 5 && likes >= 10) {
+        toUpdate = { ...toUpdate, grade: "컬리언서" };
+      }
+    }
+
     await User.update({ user_id: user.user_id, toUpdate });
 
     const secretKey = process.env.JWT_SECRET_KEY;
