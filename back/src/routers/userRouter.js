@@ -34,6 +34,15 @@ userRouter.get("/users/:userId", async (req, res, next) => {
   }
 });
 
+userRouter.get("/users/best", async (req, res, next) => {
+  try {
+    const bestUsers = await UserService.getBestUSers();
+    res.status(200).json(bestUsers);
+  } catch (error) {
+    next(error);
+  }
+});
+
 userRouter.patch("/users/:userId", loginRequired, async (req, res, next) => {
   try {
     const loginId = req.currentUserId;
