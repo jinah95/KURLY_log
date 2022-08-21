@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Profile from "../public/profile.png";
 import styled from "styled-components";
@@ -7,11 +7,27 @@ import Button from '@mui/material/Button';
 import KurlyLogWrite from "./KurlyLogWrite";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import PreviewCard from "./Cards/PreviewCard";
+import { get } from "../api";
 
 const MyKurly = () => {
     const [write, setWrite] = useState(false);
+    const [userInfo, setUserInfo] = useState({})
     const title = "SSAP의 컬리log";
     const user = "SSAP";
+
+    const getUserInfo = async () => {
+        try {
+            const res = await get("users/best");
+            console.log(res.data)
+            // setUserInfo(res.data.data);
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
 
     return (
         <Wrapper>
