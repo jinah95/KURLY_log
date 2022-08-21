@@ -95,14 +95,24 @@ class ReviewService {
 
   // best 컬리언서 리뷰 조회하기
   static async getBestLogs() {
-    const logs = await Review.getBestLogs();
+    const grade = "컬리언서";
+    const logs = await Review.getBestLogs({ grade });
 
     return { message: "success", data: logs.slice(0, 3) };
   }
 
   // best 컬리언서 리뷰 더보기
   static async getMoreLogs() {
-    const logs = await Review.getBestLogs();
+    const grade = "컬리언서";
+    const logs = await Review.getBestLogs({ grade });
+
+    return { message: "success", data: logs };
+  }
+
+  // 샛별 리뷰 목록 조회하기
+  static async getPopularLogs() {
+    const grade = "샛별";
+    const logs = await Review.getBestLogs({ grade });
 
     return { message: "success", data: logs };
   }

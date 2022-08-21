@@ -57,7 +57,8 @@ const Review = {
     });
     return deletedReview;
   },
-  getBestLogs: async () => {
+
+  getBestLogs: async ({ grade }) => {
     const countLikes = await likeModel.count({
       group: ["review_id"],
     });
@@ -68,9 +69,7 @@ const Review = {
           model: userModel,
           as: "user",
           attributes: { exclude: ["password", "register_date", "last_login"] },
-          where: {
-            grade: "컬리언서",
-          },
+          where: { grade },
         },
       ],
     });

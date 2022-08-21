@@ -136,4 +136,15 @@ reviewRouter.get("/more", async (req, res, next) => {
   }
 });
 
+// 샛별 리뷰 목록 조회하기
+reviewRouter.get("/pop", async (req, res, next) => {
+  try {
+    const logs = await ReviewService.getPopularLogs();
+
+    res.status(200).json(logs);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export { reviewRouter };
