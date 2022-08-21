@@ -81,6 +81,11 @@ const UserService = {
     return { message: "success", data: loginUser };
   },
 
+  getBestUsers: async () => {
+    const bestUsers = await User.getBestUsers();
+    return { message: "success", data: bestUsers };
+  },
+
   updateProfile: async ({ userId, updateData }) => {
     const user = await User.findById(userId);
 
