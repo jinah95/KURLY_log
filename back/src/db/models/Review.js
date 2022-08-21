@@ -56,6 +56,13 @@ const Review = {
     });
     return logs;
   },
+
+  findById: async (reviewId) => {
+    const review = await reviewModel.findOne({
+      where: { review_id: reviewId },
+    });
+    return review;
+  },
 };
 
 export { Review };
