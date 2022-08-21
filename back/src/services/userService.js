@@ -86,6 +86,11 @@ const UserService = {
     return { message: "success", data: bestUsers };
   },
 
+  getMoreUsers: async () => {
+    const moreUsers = await User.getMoreUsers();
+    return { message: "success", data: moreUsers };
+  },
+
   updateProfile: async ({ userId, updateData }) => {
     const user = await User.findById(userId);
 
