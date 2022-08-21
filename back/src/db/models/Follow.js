@@ -5,31 +5,31 @@ const sequelize = db.sequelize;
 const Op = db.sequelize.Op;
 
 const Follow = {
-    create: async ({ follow }) => {
-        const newFollow = await followModel.create(follow, {
-            field: ["user_id", "follower_id"],
-        });
+  create: async ({ follow }) => {
+    const newFollow = await followModel.create(follow, {
+      field: ["user_id", "follower_id"],
+    });
 
-        return newFollow;
-    },
+    return newFollow;
+  },
 
-    findByFilter: async (filter) => {
-        const followOrNot = await followModel.findOne({
-            where: filter,
-        });
+  findByFilter: async (filter) => {
+    const followOrNot = await followModel.findOne({
+      where: filter,
+    });
 
-        return followOrNot;
-    },
+    return followOrNot;
+  },
 
-    countByFilter: async (filter) => {
-        const count = await followModel.count({ where: filter });
+  countByFilter: async (filter) => {
+    const count = await followModel.count({ where: filter });
 
-        return count;
-    },
+    return count;
+  },
 
-    delete: async ({ follow }) => {
-        await followModel.destroy({ where: follow });
-    },
+  delete: async ({ follow }) => {
+    await followModel.destroy({ where: follow });
+  },
 };
 
 export { Follow };

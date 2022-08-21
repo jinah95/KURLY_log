@@ -10,19 +10,19 @@ import { likeRouter } from "./routers/likeRouter.js";
 const app = express();
 
 db.sequelize
-    .sync()
-    .then(() => {
-        console.log("정상적으로 db에 연결되었습니다.");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+  .sync()
+  .then(() => {
+    console.log("정상적으로 db에 연결되었습니다.");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-    res.send("안녕하세요, SSAP 입니다.");
+  res.send("안녕하세요, SSAP 입니다.");
 });
 
 app.use(userRouter);
