@@ -7,15 +7,6 @@ import { Like } from "../db/models/Like";
 import setUtil from "../utils/setUtil";
 
 const UserService = {
-  getUsers: async () => {
-    const users = await User.findAll();
-    if (!users) {
-      const errorMessage = "유저가 없습니다.";
-      throw new Error(errorMessage);
-    }
-    return { message: "success", data: users };
-  },
-
   getUserInfo: async (userId) => {
     const user = await User.findById(userId);
 
