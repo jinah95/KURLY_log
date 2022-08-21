@@ -106,9 +106,11 @@ const Navbar = () => {
                         <Link
                             href={
                                 targetPage === "market" &&
-                                pathQuery !== "product/[item]"
+                                pathQuery !== "product/[item]" &&
+                                pathQuery !== "review/[item]"
                                     ? "/"
-                                    : pathQuery === "product/[item]"
+                                    : pathQuery === "product/[item]" ||
+                                      pathQuery === "review/[item]"
                                     ? `/product/${productId}`
                                     : "/kurlylog"
                             }
