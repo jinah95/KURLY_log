@@ -1,8 +1,10 @@
 import db from "..";
 const reviewModel = db.review;
+const userModel = db.user;
+const likeModel = db.like;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.Op;
+const Op = db.Sequelize.Op;
 
 const Review = {
   findAll: async (productId) => {
@@ -13,6 +15,7 @@ const Review = {
     });
     return reviews;
   },
+
   create: async () => {
     const review = await reviewModel.create({});
   },
@@ -39,6 +42,7 @@ const Review = {
     const count = await reviewModel.count({ where: filter });
     return count;
   },
+
   findByProduct: async (productId) => {
     const reviews = await reviewModel.findAll({
       where: {
@@ -62,6 +66,41 @@ const Review = {
       where: { review_id: reviewId },
     });
     return review;
+  },
+
+  getBestLogs: async ({ grade }) => {
+    const countLikes = await likeModel.count({
+      group: ["review_id"],
+    });
+
+    let bestLogs = await reviewModel.findAll({
+      include: [
+        {
+          model: userModel,
+          as: "user",
+          attributes: { exclude: ["password", "register_date", "last_login"] },
+          where: { grade },
+        },
+      ],
+    });
+
+    let result = bestLogs.map((review) => {
+      const count = countLikes.filter(
+        (obj) => review.review_id === obj.review_id
+      );
+
+      try {
+        review.dataValues.countLikes = count[0].count;
+      } catch {
+        review.dataValues.countLikes = 0;
+      }
+      return review;
+    });
+
+    result = result.sort((a, b) => {
+      return b.dataValues.countLikes - a.dataValues.countLikes;
+    });
+    return result;
   },
 };
 
