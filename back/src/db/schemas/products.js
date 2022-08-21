@@ -5,7 +5,7 @@ export default (sequelize, DataTypes) => {
     {
       product_id: {
         fields: "product_id",
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         unique: true,
         allowNull: false,
         primaryKey: true,
