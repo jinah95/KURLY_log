@@ -9,9 +9,9 @@ import {
 const reviewRouter = Router();
 
 // 상품의 리뷰전체 가져오기
-reviewRouter.get("/:product_id", async (req, res, next) => {
+reviewRouter.get("/:productId", async (req, res, next) => {
   try {
-    const productId = req.params.product_id;
+    const productId = req.params.productId;
 
     const reviews = await ReviewService.getReviews(productId);
 
@@ -23,13 +23,13 @@ reviewRouter.get("/:product_id", async (req, res, next) => {
 
 // 컬리로그 작성하기
 reviewRouter.post(
-  "/:product_id",
+  "/:productId",
   loginRequired,
   reviewValidator.postReviewValidator,
   validationErrorCatcher,
   async (req, res, next) => {
     try {
-      const productId = req.params.product_id;
+      const productId = req.params.productId;
       const userId = req.currentUserId;
       const createdAt = new Date();
       const { score, good, bad, title, image, content } = req.body;
@@ -56,13 +56,13 @@ reviewRouter.post(
 
 // 컬리로그 수정하기
 reviewRouter.patch(
-  "/:review_id",
+  "/:reviewId",
   loginRequired,
   reviewValidator.setReviewValidator,
   validationErrorCatcher,
   async (req, res, next) => {
     try {
-      const reviewId = req.params.review_id;
+      const reviewId = req.params.reviewId;
       const userId = req.currentUserId;
       const { score, good, bad, title, image, content } = req.body;
       const updateData = {
@@ -88,10 +88,10 @@ reviewRouter.patch(
 );
 
 // 컬리로그 삭제하기
-reviewRouter.delete("/:review_id", loginRequired, async (req, res, next) => {
+reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
-    const reviewId = req.params.review_id;
+    const reviewId = req.params.reviewId;
 
     const result = await ReviewService.deleteLog({ userId, reviewId });
 
@@ -102,9 +102,9 @@ reviewRouter.delete("/:review_id", loginRequired, async (req, res, next) => {
 });
 
 // 유저의 컬리로그 조회하기
-reviewRouter.get("/user/:user_id", async (req, res, next) => {
+reviewRouter.get("/user/:userId", async (req, res, next) => {
   try {
-    const userId = req.params.user_id;
+    const userId = req.params.userId;
 
     const logs = await ReviewService.getLogs(userId);
 

@@ -5,10 +5,10 @@ import { LikeService } from "../services/LikeService";
 
 const likeRouter = Router();
 
-likeRouter.post("/:review_id", loginRequired, async (req, res, next) => {
+likeRouter.post("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
-    const reviewId = req.params.review_id;
+    const reviewId = req.params.reviewId;
 
     const like = await LikeService.likeReview({ userId, reviewId });
 
@@ -18,10 +18,10 @@ likeRouter.post("/:review_id", loginRequired, async (req, res, next) => {
   }
 });
 
-likeRouter.delete("/:review_id", loginRequired, async (req, res, next) => {
+likeRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
-    const reviewId = req.params.review_id;
+    const reviewId = req.params.reviewId;
 
     const like = await LikeService.unlikeReview({ userId, reviewId });
 

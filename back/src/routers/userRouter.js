@@ -24,9 +24,9 @@ userRouter.get("/users", async (req, res, next) => {
   }
 });
 
-userRouter.get("/user/:user_id", async (req, res, next) => {
+userRouter.get("/users/:userId", async (req, res, next) => {
   try {
-    const userId = req.params.user_id;
+    const userId = req.params.userId;
     const user = await UserService.getUserInfo(userId);
     res.status(200).json(user);
   } catch (error) {
@@ -34,10 +34,10 @@ userRouter.get("/user/:user_id", async (req, res, next) => {
   }
 });
 
-userRouter.patch("/user/:user_id", loginRequired, async (req, res, next) => {
+userRouter.patch("/users/:userId", loginRequired, async (req, res, next) => {
   try {
     const loginId = req.currentUserId;
-    const userId = req.params.user_id;
+    const userId = req.params.userId;
 
     if (loginId !== userId) {
       throw new Error("수정 권한이 없는 사용자입니다.");
