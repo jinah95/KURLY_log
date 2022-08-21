@@ -6,6 +6,7 @@ import { styled as materialStyled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import KurlyLogWrite from "./KurlyLogWrite";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
+import Content from "./Content";
 import PreviewCard from "./Cards/PreviewCard";
 import { get } from "../api";
 
@@ -22,7 +23,17 @@ const MyKurly = () => {
         try {
             const res = await get("/users/", id);
             setUser(res.data.data);
-            console.log(res.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    const getBestPost = async () => {
+        try {
+            // endPoint 수정하기
+            const res = await get("/logs/user/", id);
+            setBestPosts(res.data.data);
+            // console.log(res.data)
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -30,29 +41,19 @@ const MyKurly = () => {
 
     const getPosts = async () => {
         try {
+            // 범위 정해서 받아오기
             const res = await get("/logs/user/", id);
             setPosts(res.data.data);
-            console.log(res.data)
+            // console.log(res.data.data)
         } catch (err) {
             console.error("error message: ", err);
         }
     };
     
-    const getBestPost = async () => {
-        try {
-            // endPoint 수정하기
-            const res = await get("/logs/user/", id);
-            setBestPosts(res.data.data);
-            console.log(res.data)
-        } catch (err) {
-            console.error("error message: ", err);
-        }
-    };
-
     useEffect(() => {
         getUserInfo();
-        getPosts();
         getBestPost();
+        getPosts();
     }, []);
 
     return (
@@ -95,21 +96,18 @@ const MyKurly = () => {
                         <Title>인기글</Title>
                         <CardView>
                         {
-                            bestPosts.map((post) => (
-                                <PreviewMiniCard post={post} />
+                            bestPosts.map((post, index) => (
+                                <PreviewMiniCard 
+                                    key={index}
+                                    post={post} 
+                                />
                             ))
                         }
                         </CardView>
                     </Popular>
                     <Contents>
                         <Title>전체글</Title>
-                        <div>
-                        {
-                            posts.map((post) => (
-                                <PreviewCard post={post} />
-                            ))
-                        }
-                        </div>
+                        <Content data={posts}/>
                     </Contents>
                 </div>
             )
