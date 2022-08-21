@@ -9,15 +9,15 @@ const Footer = () => {
     return (
         <Wrapper>
             <Switcher>
-                <p>
-                    <a>마켓컬리</a>
-                </p>
-                <p>
-                    <a>뷰티컬리</a>
-                </p>
-                <p>
-                    <a>컬리로그</a>
-                </p>
+                <Link href="/">
+                    <a>컬리로그소개</a>
+                </Link>
+                <Link href="/">
+                    <a>컬리언서소개</a>
+                </Link>
+                <Link href="/">
+                    <a>SSAP 소개</a>
+                </Link>
             </Switcher>
             <KurlyLogoWrapper>
                 <Image
