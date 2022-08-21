@@ -24,6 +24,24 @@ userRouter.get("/users", async (req, res, next) => {
   }
 });
 
+userRouter.get("/users/best", async (req, res, next) => {
+  try {
+    const bestUsers = await UserService.getBestUsers();
+    res.status(200).json(bestUsers);
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get("/users/more", async (req, res, next) => {
+  try {
+    const moreUsers = await UserService.getMoreUsers();
+    res.status(200).json(moreUsers);
+  } catch (error) {
+    next(error);
+  }
+});
+
 userRouter.get("/users/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;

@@ -61,6 +61,13 @@ const Review = {
     return logs;
   },
 
+  findById: async (reviewId) => {
+    const review = await reviewModel.findOne({
+      where: { review_id: reviewId },
+    });
+    return review;
+  },
+
   getBestLogs: async ({ grade }) => {
     let now = new Date();
     const day = now.getDate();

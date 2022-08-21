@@ -3,7 +3,7 @@ import { Review } from "../db/models/Review";
 
 const LikeService = {
   likeReview: async ({ userId, reviewId }) => {
-    const review = await Review.findById({ reviewId });
+    const review = await Review.findById(reviewId);
 
     if (!review || userId === review.user_id) {
       throw new Error("유효하지 않은 게시글입니다.");
@@ -27,7 +27,7 @@ const LikeService = {
   },
 
   unlikeReview: async ({ userId, reviewId }) => {
-    const review = await Review.findById({ reviewId });
+    const review = await Review.findById(reviewId);
 
     if (!review || userId === review.user_id) {
       throw new Error("유효하지 않은 게시글입니다.");
