@@ -17,7 +17,6 @@ const Navbar = () => {
         pathQuery !== "login" ? "market" : "login"
     );
     const [targetTab, setTargetTab] = useState("best");
-    const [loginOpen, setLoginOpen] = useState("");
 
     return (
         <>

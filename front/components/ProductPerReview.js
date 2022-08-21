@@ -1,17 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import BuyingFooter from "./BuyingFooter";
 import Reviews from "./Reviews";
 import plusStar from "../public/plusStar.png";
 import minusStar from "../public/minusStar.png";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 const ProductPerReview = () => {
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <Wrapper>
             <ButtonWrapper>
                 {" "}
-                <ReviewWriter>후기 작성</ReviewWriter>
+                <ReviewWriter onClick={handleOpen}>후기 작성</ReviewWriter>
+                <Modal hideBackdrop open={open} onClose={handleClose}>
+                    <div
+                        style={{
+                            top: "50%",
+                            left: "50%",
+                            width: "80%",
+                            height: "50px",
+                            zIndex: "10000",
+                            backgroundColor: "white",
+                        }}
+                    >
+                        어떤 후기를 작성하시겠습니까?
+                    </div>
+                </Modal>
                 <ReviewWrapper>
                     <StarWrapper>
                         <Image
