@@ -98,6 +98,31 @@ const User = {
     return users[0];
   },
 
+  getMoreUsers: async () => {
+    const users = await sequelize.query(`
+      SELECT url.nickname, url.intro, reviews, likes, count(follow_id) AS FOLLOWERS
+        FROM (
+          SELECT u.user_id, u.nickname, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
+            FROM users AS u
+              LEFT JOIN (
+                SELECT r.review_id, r.user_id, count(l.like_id) AS COUNTL
+                  FROM reviews AS r
+                    LEFT JOIN likes AS l
+                    ON r.review_id = l.review_id
+                  GROUP BY l.review_id, r.review_id
+              ) AS RL
+              ON u.user_id = RL.user_id
+            GROUP BY u.user_id
+        ) AS URL
+        LEFT JOIN follow AS f
+        ON url.user_id = f.follower_id
+        GROUP BY url.nickname, url.intro, reviews, likes
+        ORDER BY likes DESC
+        LIMIT 15
+    `);
+    return users[0];
+  },
+
   update: async ({ user_id, toUpdate }) => {
     const count = await userModel.update(toUpdate, { where: { user_id } });
     return count;
