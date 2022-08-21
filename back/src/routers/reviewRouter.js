@@ -65,7 +65,7 @@ reviewRouter.patch(
       const reviewId = req.params.review_id;
       const userId = req.currentUserId;
       const { score, good, bad, title, image, content } = req.body;
-      const toUpdate = {
+      const updateData = {
         score,
         good,
         bad,
@@ -77,7 +77,7 @@ reviewRouter.patch(
       const updatedReview = await ReviewService.setReview({
         reviewId,
         userId,
-        toUpdate,
+        updateData,
       });
 
       res.status(200).json(updatedReview);

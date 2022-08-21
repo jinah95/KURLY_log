@@ -1,6 +1,7 @@
 import { Review } from "../db/models/Review";
 import { Product } from "../db/models/Product";
 import { User } from "../db/models/User";
+import setUtil from "../utils/setUtil";
 
 class ReviewService {
   // 상품의 리뷰전체 가져오기
@@ -31,7 +32,7 @@ class ReviewService {
   }
 
   // 컬리로그 수정하기
-  static async setReview({ reviewId, userId, toUpdate }) {
+  static async setReview({ reviewId, userId, updateData }) {
     const review = await Review.findById(reviewId);
 
     if (!review) {
@@ -44,12 +45,7 @@ class ReviewService {
       return { message: "fail", data: errorMessage };
     }
 
-    const fieldsToUpdate = Object.keys(toUpdate);
-
-    fieldsToUpdate.forEach((key) => {
-      if (JSON.stringify(review[key]) === JSON.stringify(toUpdate[key]))
-        delete toUpdate[key];
-    });
+    const toUpdate = setUtil.compareValues(updateData, review);
 
     const result = await Review.update({ reviewId, toUpdate });
 
