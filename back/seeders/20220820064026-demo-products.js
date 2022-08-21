@@ -19,11 +19,11 @@ module.exports = {
         },
         {
           product_id: "1003",
-          detail: "삼양라면",
+          detail: "양파",
         },
         {
           product_id: "1004",
-          detail: "신라면",
+          detail: "마늘",
         },
         {
           product_id: "1005",
@@ -31,7 +31,7 @@ module.exports = {
         },
         {
           product_id: "1006",
-          detail: "진라면",
+          detail: "생크림빵",
         },
         {
           product_id: "1007",
@@ -43,7 +43,7 @@ module.exports = {
         },
         {
           product_id: "1009",
-          detail: "왕뚜껑",
+          detail: "우유",
         },
       ],
       {}
