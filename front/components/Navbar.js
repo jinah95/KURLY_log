@@ -9,8 +9,10 @@ import login from "../public/images/login.png";
 
 const Navbar = () => {
     const router = useRouter();
+    const productId = router.query?.item;
+    console.log(productId);
     const pathQuery = router.pathname.slice(1);
-    // console.log(pathQuery); // 페이지 새로고침 시 이미지 변경 부분에 대하여
+    // 페이지 새로고침 시 이미지 변경 부분에 대하여
     const [targetPage, setTargetPage] = useState(
         pathQuery !== "login" ? "market" : "login"
     );
@@ -102,7 +104,14 @@ const Navbar = () => {
                 {targetPage !== "login" ? (
                     <MenuNav targetPage={targetPage}>
                         <Link
-                            href={targetPage === "market" ? "/" : "/kurlylog"}
+                            href={
+                                targetPage === "market" &&
+                                pathQuery !== "product/[item]"
+                                    ? "/"
+                                    : pathQuery === "product/[item]"
+                                    ? `/product/${productId}`
+                                    : "/kurlylog"
+                            }
                             passHref
                         >
                             <PageATag
@@ -116,16 +125,26 @@ const Navbar = () => {
                                     }
                                     targetTab={targetTab}
                                 >
-                                    {targetPage === "market"
+                                    {targetPage === "market" &&
+                                    pathQuery !== "product/[item]" &&
+                                    pathQuery !== "review/[item]"
                                         ? "베스트"
+                                        : pathQuery === "product/[item]" ||
+                                          pathQuery === "review/[item]"
+                                        ? "상품정보"
                                         : "컬리 언서"}
                                 </PageNameSpan>
                             </PageATag>
                         </Link>
                         <Link
                             href={
-                                targetPage === "market"
+                                targetPage === "market" &&
+                                pathQuery !== "product/[item]" &&
+                                pathQuery !== "review/[item]"
                                     ? "/event"
+                                    : pathQuery === "product/[item]" ||
+                                      pathQuery === "review/[item]"
+                                    ? `/review/${productId}`
                                     : "/risingreview"
                             }
                             passHref
@@ -141,8 +160,13 @@ const Navbar = () => {
                                     }
                                     targetTab={targetTab}
                                 >
-                                    {targetPage === "market"
+                                    {targetPage === "market" &&
+                                    pathQuery !== "product/[item]" &&
+                                    pathQuery !== "review/[item]"
                                         ? "이벤트"
+                                        : pathQuery === "product/[item]" ||
+                                          pathQuery === "review/[item]"
+                                        ? "후기"
                                         : "샛별 리뷰"}
                                 </PageNameSpan>
                             </PageATag>

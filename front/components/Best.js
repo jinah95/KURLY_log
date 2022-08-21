@@ -21,10 +21,10 @@ const Best = () => {
                 </KurlioncerPageMove>
             </BestKurlioncer>
             <CardView>
-                <BestProduct />
-                <BestProduct />
-                <BestProduct />
-                <BestProduct />
+                <BestProduct productNum="1" />
+                <BestProduct productNum="2" />
+                <BestProduct productNum="3" />
+                <BestProduct productNum="4" />
             </CardView>
             <BestKurlioncer>
                 <KurlioncerPageMove>

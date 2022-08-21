@@ -1,13 +1,20 @@
 import React from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 
-const BestProduct = () => {
+const BestProduct = ({ productNum }) => {
+    const router = useRouter();
     return (
-        <CardWrapper>
+        <CardWrapper
+            onClick={() => {
+                console.log(productNum);
+                router.push(`/product/${productNum}`);
+            }}
+        >
             <CardActionArea>
                 <ImgWrapper>
                     <CardMedia
