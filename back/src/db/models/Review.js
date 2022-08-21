@@ -58,43 +58,40 @@ const Review = {
     return deletedReview;
   },
   getBestLogs: async () => {
-    const kurlyencer = await userModel.findAll({
-      where: {
-        grade: "컬리언서",
-      },
-      attributes: ["user_id"],
+    const countLikes = await likeModel.count({
+      group: ["review_id"],
     });
+    console.log(countLikes);
 
-    const kurlyencerId = kurlyencer.map((data) => data.user_id);
-
-    const bestLogs = await reviewModel.findAll({
+    let bestLogs = await reviewModel.findAll({
       include: [
         {
-          model: likeModel,
-          as: "l",
-          group: "review_id",
+          model: userModel,
+          as: "user",
+          attributes: { exclude: ["password", "register_date", "last_login"] },
+          where: {
+            grade: "컬리언서",
+          },
         },
       ],
-      attributes: [
-        "review_id",
-        "product_id",
-        "user_id",
-        "score",
-        "good",
-        "bad",
-        "title",
-        "image",
-        "content",
-        [sequelize.fn("count", sequelize.col("*")), "countLikes"],
-      ],
-      where: {
-        user_id: { [Op.in]: kurlyencerId },
-      },
-      group: ["l.review_id", "l.like_id", "reviews.review_id"],
-      order: ["countLikes"],
     });
 
-    return bestLogs;
+    // const result = bestLogs.filter((review) => {
+    //   const count = countLikes.filter(
+    //     (obj) => review.review_id === obj.review_id
+    //   );
+    //   if(!count || count.length === 0)
+    //   review.dataValues.conutLikes = count[0].count;
+    //   console.log(count[0]);
+    //   console.log(review.dataValues);
+
+    //   // return Object.assign(review.dataValues, { countLike: count.count });
+    //   // return { ...review.dataValues, countLike: count.count };
+    //   // return {};
+    //   return review;
+    // });
+
+    return result;
   },
 };
 
