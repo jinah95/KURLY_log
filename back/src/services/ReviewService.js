@@ -102,7 +102,7 @@ const ReviewService = {
     const grade = "컬리언서";
     const logs = await Review.getBestLogs({ grade });
 
-    return { message: "success", data: logs };
+    return { message: "success", data: logs.slice(0, 15) };
   },
 
   // 샛별 리뷰 목록 조회하기

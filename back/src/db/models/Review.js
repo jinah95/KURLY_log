@@ -7,6 +7,13 @@ const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
 
 const Review = {
+  findById: async (reviewId) => {
+    const review = await reviewModel.findOne({
+      where: { review_id: reviewId },
+    });
+    return review;
+  },
+
   findAll: async (productId) => {
     const reviews = await reviewModel.findAll({
       where: {
@@ -16,8 +23,9 @@ const Review = {
     return reviews;
   },
 
-  create: async () => {
-    const review = await reviewModel.create({});
+  create: async ({ newReview }) => {
+    const review = await reviewModel.create(newReview);
+    return review;
   },
 
   update: async ({ reviewId, toUpdate }) => {

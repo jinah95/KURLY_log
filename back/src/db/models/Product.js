@@ -13,6 +13,11 @@ const Product = {
     });
     return product;
   },
+
+  findAll: async () => {
+    const products = await productModel.findAll({});
+    return products;
+  },
 };
 
 export { Product };
