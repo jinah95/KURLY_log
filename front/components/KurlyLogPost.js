@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import { get } from "../api";
 
+// user+productId에 대한 컬리log(게시글) 불러오기
 const KurlyLogPost = ({ user, prouctId }) => {
     const [userInfo, setUserInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])

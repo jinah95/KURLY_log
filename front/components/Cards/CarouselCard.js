@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
+import { styled as materialStyled } from "@mui/material/styles";
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import { get } from "../../api";
@@ -32,6 +34,7 @@ const CarouselCard = ({ post }) => {
     }, [])
 
     return (
+        <Link href={`/kurlyLog/${post.product_id}`} passHref>
         <CardWrapper>
             <div>
                 <CardInfo>
@@ -47,19 +50,22 @@ const CarouselCard = ({ post }) => {
                 alt="green iguana"
             />
         </CardWrapper>
+        </Link>
     )
 }
 
 export default CarouselCard;
 
-const CardWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    margin: 10px 0;
-    padding: 2px;
-    display: grid;
-    grid-template-columns: 7fr 3fr;
-`;
+const CardWrapper = materialStyled(CardActionArea)(
+    () => ({
+        width: "100%",
+        height: "100%",
+        margin: "10px 0",
+        padding: "2px",
+        display: "grid",
+        gridTemplateColumns: "7fr 3fr",
+    })
+);
 
 const CardInfo = styled.div`
     width: 100%;
