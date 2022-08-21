@@ -88,6 +88,30 @@ const ReviewService = {
 
     return { message: "success", data: logs };
   },
+
+  // best 컬리언서 리뷰 조회하기
+  getBestLogs: async () => {
+    const grade = "컬리언서";
+    const logs = await Review.getBestLogs({ grade });
+
+    return { message: "success", data: logs.slice(0, 3) };
+  },
+
+  // best 컬리언서 리뷰 더보기
+  getMoreLogs: async () => {
+    const grade = "컬리언서";
+    const logs = await Review.getBestLogs({ grade });
+
+    return { message: "success", data: logs };
+  },
+
+  // 샛별 리뷰 목록 조회하기
+  getPopularLogs: async () => {
+    const grade = "샛별";
+    const logs = await Review.getBestLogs({ grade });
+
+    return { message: "success", data: logs };
+  },
 };
 
 export { ReviewService };

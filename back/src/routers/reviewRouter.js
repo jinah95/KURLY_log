@@ -9,7 +9,8 @@ import {
 const reviewRouter = Router();
 
 // 상품의 리뷰전체 가져오기
-reviewRouter.get("/:productId", async (req, res, next) => {
+
+reviewRouter.get("/goods/:product_id", async (req, res, next) => {
   try {
     const productId = req.params.productId;
 
@@ -107,6 +108,39 @@ reviewRouter.get("/user/:userId", async (req, res, next) => {
     const userId = req.params.userId;
 
     const logs = await ReviewService.getLogs(userId);
+
+    res.status(200).json(logs);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// best 컬리언서 리뷰 조회하기
+reviewRouter.get("/", async (req, res, next) => {
+  try {
+    const logs = await ReviewService.getBestLogs();
+
+    res.status(200).json(logs);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// best 컬리언서 리뷰 더보기
+reviewRouter.get("/more", async (req, res, next) => {
+  try {
+    const logs = await ReviewService.getMoreLogs();
+
+    res.status(200).json(logs);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 샛별 리뷰 목록 조회하기
+reviewRouter.get("/pop", async (req, res, next) => {
+  try {
+    const logs = await ReviewService.getPopularLogs();
 
     res.status(200).json(logs);
   } catch (error) {
