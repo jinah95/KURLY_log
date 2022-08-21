@@ -2,6 +2,11 @@ import cors from "cors";
 import express from "express";
 import db from "./db/index.js";
 import { userRouter } from "./routers/userRouter.js";
+import { reviewRouter } from "./routers/reviewRouter.js";
+import { followRouter } from "./routers/followRouter.js";
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
+import { likeRouter } from "./routers/likeRouter.js";
+import { productRouter } from "./routers/productsRouter.js";
 
 const app = express();
 
@@ -22,5 +27,11 @@ app.get("/", (req, res) => {
 });
 
 app.use(userRouter);
+app.use("/logs", reviewRouter);
+app.use("/follows", followRouter);
+app.use("/likes", likeRouter);
+app.use("/goods", productRouter);
+
+app.use(errorMiddleware);
 
 export { app };

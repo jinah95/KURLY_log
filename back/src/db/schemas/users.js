@@ -26,6 +26,28 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.ENUM("컬리언서", "샛별"),
         allowNull: false,
       },
+      age: {
+        type: DataTypes.ENUM(
+          "10세 미만",
+          "10대",
+          "20대",
+          "30대",
+          "40대",
+          "50대",
+          "60세 이상"
+        ),
+        allowNull: false,
+      },
+      family: {
+        type: DataTypes.ENUM(
+          "1인 가구",
+          "2인 가구",
+          "3인 가구",
+          "4인 가구",
+          "5인 가구 이상"
+        ),
+        allowNull: false,
+      },
       intro: {
         type: DataTypes.STRING,
         allowNull: true,
