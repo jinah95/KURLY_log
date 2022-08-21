@@ -97,7 +97,7 @@ class ReviewService {
   static async getBestLogs() {
     const logs = await Review.getBestLogs();
 
-    // return { message: "success", data: logs };
+    return { message: "success", data: logs.slice(0, 3) };
   }
 }
 

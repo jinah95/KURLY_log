@@ -66,13 +66,35 @@ const Review = {
     });
 
     const kurlyencerId = kurlyencer.map((data) => data.user_id);
+
     const bestLogs = await reviewModel.findAll({
+      include: [
+        {
+          model: likeModel,
+          as: "l",
+          group: "review_id",
+        },
+      ],
+      attributes: [
+        "review_id",
+        "product_id",
+        "user_id",
+        "score",
+        "good",
+        "bad",
+        "title",
+        "image",
+        "content",
+        [sequelize.fn("count", sequelize.col("*")), "countLikes"],
+      ],
       where: {
         user_id: { [Op.in]: kurlyencerId },
       },
+      group: ["l.review_id", "l.like_id", "reviews.review_id"],
+      order: ["countLikes"],
     });
 
-    console.log(bestLogs);
+    return bestLogs;
   },
 };
 
