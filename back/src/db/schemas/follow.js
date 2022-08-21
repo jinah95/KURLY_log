@@ -9,6 +9,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         unique: true,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
       },
       user_id: {

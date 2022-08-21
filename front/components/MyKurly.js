@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Profile from "../public/profile.png";
 import styled from "styled-components";
@@ -7,11 +7,28 @@ import Button from '@mui/material/Button';
 import KurlyLogWrite from "./KurlyLogWrite";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import PreviewCard from "./Cards/PreviewCard";
+import { get } from "../api";
 
 const MyKurly = () => {
     const [write, setWrite] = useState(false);
-    const title = "SSAP의 컬리log";
-    const user = "SSAP";
+    const [userInfo, setUserInfo] = useState({})
+
+    // 유저 받아오기
+    const id = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
+
+    const getUserInfo = async () => {
+        try {
+            const res = await get("/users/", id);
+            setUserInfo(res.data.data);
+            console.log(res.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
 
     return (
         <Wrapper>
@@ -23,7 +40,7 @@ const MyKurly = () => {
                     <Header>
                         <LogInfo>
                             <span>오늘 15 전체 46</span>
-                            <h1>{title}</h1>
+                            <h1>{userInfo.nickname}'s 컬리log</h1>
                         </LogInfo>
                         <UserInfo>
                             <div>
@@ -35,8 +52,8 @@ const MyKurly = () => {
                                 />
                             </div>
                             <UserProfile>
-                                <div>{user}</div>
-                                <div>20대 1인가구 바쁘다바빠, 팔로워 150명</div>
+                                <div>{userInfo.nickname}</div>
+                                <div>{userInfo.age}·{userInfo.family}  팔로워 {userInfo.followers}명</div>
                             </UserProfile>
                         </UserInfo>
                         <PostButton 
@@ -47,7 +64,7 @@ const MyKurly = () => {
                     </Header>
                     <Introduce>
                         <Title>소개</Title>
-                        <div>맛집 여행을 해요.</div>
+                        <div>{userInfo.intro}</div>
                     </Introduce>
                     <Popular>
                         <Title>인기글</Title>
