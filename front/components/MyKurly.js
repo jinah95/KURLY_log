@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import KurlyLogWrite from "./KurlyLogWrite";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import Content from "./Content";
-import PreviewCard from "./Cards/PreviewCard";
 import { get } from "../api";
 
 const MyKurly = () => {
@@ -128,7 +127,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 50vh;
-    background: url("/background.jpg");
+    background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url("/background.jpg");
     background-size: cover;
     color: white;
     display: grid;
