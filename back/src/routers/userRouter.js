@@ -9,18 +9,18 @@ userRouter.post("/login", async (req, res, next) => {
 
     const user = await UserService.getUser({ nickname, password });
 
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
 userRouter.get("/users", async (req, res, next) => {
   try {
     const users = await UserService.getUsers();
-    res.send(users);
+    res.status(200).json(users);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 

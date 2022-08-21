@@ -17,7 +17,7 @@ reviewRouter.get("/:productId", async (req, res, next) => {
 
     res.status(200).json(reviews);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -49,7 +49,7 @@ reviewRouter.post(
 
       res.status(201).json(createdReview);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 );
@@ -82,7 +82,7 @@ reviewRouter.patch(
 
       res.status(200).json(updatedReview);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 );
@@ -97,7 +97,7 @@ reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -110,7 +110,7 @@ reviewRouter.get("/user/:userId", async (req, res, next) => {
 
     res.status(200).json(logs);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
