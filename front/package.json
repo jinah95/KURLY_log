@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.10.0",
     "@mui/material": "^5.10.1",
     "@mui/styled-engine-sc": "^5.10.1",
+    "axios": "^0.27.2",
     "babel-plugin-styled-components": "^2.0.7",
     "next": "12.2.5",
     "react": "18.2.0",

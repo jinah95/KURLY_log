@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import Image from "next/image";
@@ -6,10 +6,27 @@ import Profile from "../public/profile.png";
 import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
+import { get } from "../api";
 
-const KurlyLogPost = () => {
-    const home = "SSAP의 컬리log";
-    const user = "SSAP";
+const KurlyLogPost = ({ user, prouct }) => {
+    const [userInfo, setUserInfo] = useState({})
+
+    // 테스트용
+    const id = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
+
+    const getUserInfo = async () => {
+        try {
+            const res = await get("/users/", id);
+            setUserInfo(res.data.data);
+            console.log(res.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
 
     const settings = {
         dots: true,
@@ -23,7 +40,7 @@ const KurlyLogPost = () => {
     return (
         <Wrapper>
             <Home>
-                {home}
+                {userInfo.nickname}'s 컬리log
             </Home>
             <Contents>
                 <Title></Title>
@@ -40,8 +57,8 @@ const KurlyLogPost = () => {
                         height={40}
                     />
                 </div>
-                <UserName>{user}</UserName>
-                <UserTitle>푸드 전문가</UserTitle>
+                <UserName>{userInfo.nickname}</UserName>
+                <UserTitle>{userInfo.intro}</UserTitle>
                 <Line />
             </UserInfo>
             <Others>
