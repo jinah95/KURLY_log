@@ -7,14 +7,13 @@ import { followRouter } from "./routers/followRouter.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { likeRouter } from "./routers/likeRouter.js";
 import { productRouter } from "./routers/productsRouter.js";
+import { logger } from "./config/winston";
 
 const app = express();
 
 db.sequelize
   .sync()
-  .then(() => {
-    console.log("정상적으로 db에 연결되었습니다.");
-  })
+  .then(() => logger.info("정상적으로 db에 연결되었습니다."))
   .catch((err) => {
     console.log(err);
   });
