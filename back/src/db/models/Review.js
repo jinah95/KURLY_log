@@ -16,8 +16,9 @@ const Review = {
     return reviews;
   },
 
-  create: async () => {
-    const review = await reviewModel.create({});
+  create: async ({ newReview }) => {
+    const review = await reviewModel.create(newReview);
+    return review;
   },
 
   update: async ({ reviewId, toUpdate }) => {
