@@ -36,10 +36,12 @@ class UserService {
 
   static async getUser({ nickname, password }) {
     const user = await User.findByNickname(nickname);
+
     if (!user) {
       const errorMessage = "해당 유저가 없습니다.";
       throw new Error(errorMessage);
     }
+
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
@@ -48,6 +50,9 @@ class UserService {
     }
 
     // last login update 추가
+    const today = new Date();
+    const toUpdate = { last_login: today };
+    await User.update({ user_id: user.user_id, toUpdate });
 
     const secretKey = process.env.JWT_SECRET_KEY;
     const token = jwt.sign({ userId: user.user_id }, secretKey);
@@ -73,7 +78,7 @@ class UserService {
       );
     }
 
-    const toUpdate = await setUtil.compareValues(updateData, user);
+    const toUpdate = setUtil.compareValues(updateData, user);
 
     const updatedUser = await User.update({ user_id: userId, toUpdate });
 
