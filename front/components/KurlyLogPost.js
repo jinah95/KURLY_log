@@ -11,6 +11,15 @@ import { get } from "../api";
 const KurlyLogPost = ({ user, prouct }) => {
     const [userInfo, setUserInfo] = useState({})
 
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true
+    };
+
     // 테스트용
     const id = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
 
@@ -23,19 +32,10 @@ const KurlyLogPost = ({ user, prouct }) => {
             console.error("error message: ", err);
         }
     };
-
+    
     useEffect(() => {
         getUserInfo();
     }, []);
-
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true // 알아보기
-    };
 
     return (
         <Wrapper>
@@ -49,14 +49,14 @@ const KurlyLogPost = ({ user, prouct }) => {
 
             </ProductInfo>
             <UserInfo>
-                <div>
+                <UserImage>
                     <Image
                         src={Profile}
                         alt="profile"
                         width={40}
                         height={40}
                     />
-                </div>
+                </UserImage>
                 <UserName>{userInfo.nickname}</UserName>
                 <UserTitle>{userInfo.intro}</UserTitle>
                 <Line />
@@ -117,6 +117,13 @@ const UserInfo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const UserImage = styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+    overflow: hidden;
 `;
 
 const UserName = styled.div`
