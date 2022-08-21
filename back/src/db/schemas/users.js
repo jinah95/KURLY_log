@@ -26,6 +26,14 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.ENUM("컬리언서", "샛별"),
         allowNull: false,
       },
+      age: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      family: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       intro: {
         type: DataTypes.STRING,
         allowNull: true,
