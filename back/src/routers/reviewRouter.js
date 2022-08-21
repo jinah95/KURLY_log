@@ -115,9 +115,20 @@ reviewRouter.get("/user/:user_id", async (req, res, next) => {
 });
 
 // best 컬리언서 리뷰 조회하기
-reviewRouter.get("/best/", async (req, res, next) => {
+reviewRouter.get("/", async (req, res, next) => {
   try {
     const logs = await ReviewService.getBestLogs();
+
+    res.status(200).json(logs);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// best 컬리언서 리뷰 더보기
+reviewRouter.get("/more", async (req, res, next) => {
+  try {
+    const logs = await ReviewService.getMoreLogs();
 
     res.status(200).json(logs);
   } catch (error) {

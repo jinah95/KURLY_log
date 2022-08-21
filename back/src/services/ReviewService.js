@@ -99,6 +99,13 @@ class ReviewService {
 
     return { message: "success", data: logs.slice(0, 3) };
   }
+
+  // best 컬리언서 리뷰 더보기
+  static async getMoreLogs() {
+    const logs = await Review.getBestLogs();
+
+    return { message: "success", data: logs };
+  }
 }
 
 export { ReviewService };

@@ -61,7 +61,6 @@ const Review = {
     const countLikes = await likeModel.count({
       group: ["review_id"],
     });
-    console.log(countLikes);
 
     let bestLogs = await reviewModel.findAll({
       include: [
@@ -83,12 +82,14 @@ const Review = {
 
       try {
         review.dataValues.countLikes = count[0].count;
-        return review;
-      } catch {}
+      } catch {
+        review.dataValues.countLikes = 0;
+      }
+      return review;
     });
 
-    result.sort((obj, obj1) => {
-      return obj.countLikes - obj1.countLikes;
+    result = result.sort((a, b) => {
+      return b.dataValues.countLikes - a.dataValues.countLikes;
     });
     return result;
   },
