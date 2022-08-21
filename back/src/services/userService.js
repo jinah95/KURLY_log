@@ -6,17 +6,17 @@ import { Review } from "../db/models/Review";
 import { Like } from "../db/models/Like";
 import setUtil from "../utils/setUtil";
 
-class UserService {
-  static async getUsers() {
+const UserService = {
+  getUsers: async () => {
     const users = await User.findAll();
     if (!users) {
       const errorMessage = "유저가 없습니다.";
       throw new Error(errorMessage);
     }
     return { message: "success", data: users };
-  }
+  },
 
-  static async getUserInfo(userId) {
+  getUserInfo: async (userId) => {
     const user = await User.findById(userId);
 
     if (!user) {
@@ -32,9 +32,9 @@ class UserService {
     const data = { ...user.dataValues, followers, reviews, likes };
 
     return { message: "success", data };
-  }
+  },
 
-  static async getUser({ nickname, password }) {
+  getUser: async ({ nickname, password }) => {
     const user = await User.findByNickname(nickname);
 
     if (!user) {
@@ -79,9 +79,9 @@ class UserService {
       intro,
     };
     return { message: "success", data: loginUser };
-  }
+  },
 
-  static async updateProfile({ userId, updateData }) {
+  updateProfile: async ({ userId, updateData }) => {
     const user = await User.findById(userId);
 
     if (!user) {
@@ -95,7 +95,7 @@ class UserService {
     const updatedUser = await User.update({ user_id: userId, toUpdate });
 
     return { message: "success", data: updatedUser };
-  }
-}
+  },
+};
 
 export { UserService };

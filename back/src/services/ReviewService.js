@@ -3,9 +3,9 @@ import { Product } from "../db/models/Product";
 import { User } from "../db/models/User";
 import setUtil from "../utils/setUtil";
 
-class ReviewService {
+const ReviewService = {
   // 상품의 리뷰전체 가져오기
-  static async getReviews(productId) {
+  getReviews: async (productId) => {
     const product = await Product.findById(productId);
 
     if (!product) {
@@ -22,17 +22,17 @@ class ReviewService {
     }
 
     return { message: "success", data: reviews };
-  }
+  },
 
   // 컬리로그 작성하기
-  static async postReviews({ newReview }) {
+  postReviews: async ({ newReview }) => {
     const createdReview = await Review.create({ newReview });
 
     return { message: "success", data: createdReview };
-  }
+  },
 
   // 컬리로그 수정하기
-  static async setReview({ reviewId, userId, updateData }) {
+  setReview: async ({ reviewId, userId, updateData }) => {
     const review = await Review.findById(reviewId);
 
     if (!review) {
@@ -50,10 +50,10 @@ class ReviewService {
     const result = await Review.update({ reviewId, toUpdate });
 
     return { message: "success", data: result };
-  }
+  },
 
   // 컬리로그 삭제하기
-  static async deleteLog({ reviewId, userId }) {
+  deleteLog: async ({ reviewId, userId }) => {
     const review = await Review.findById(reviewId);
 
     if (!review) {
@@ -68,10 +68,10 @@ class ReviewService {
 
     const result = await Review.delete({ reviewId });
     return { message: "success", data: result };
-  }
+  },
 
   // 유저의 컬리로그 조회하기
-  static async getLogs(userId) {
+  getLogs: async (userId) => {
     const user = await User.findById(userId);
 
     if (!user) {
@@ -87,7 +87,7 @@ class ReviewService {
     }
 
     return { message: "success", data: logs };
-  }
-}
+  },
+};
 
 export { ReviewService };

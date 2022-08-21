@@ -2,8 +2,8 @@ import { Follow } from "../db/models/Follow";
 import { User } from "../db/models/User";
 import { v4 as uuidv4 } from "uuid";
 
-class FollowService {
-  static async followUser({ userId, kurlyencerId }) {
+const FollowService = {
+  followUser: async ({ userId, kurlyencerId }) => {
     const user = await User.findById(kurlyencerId);
 
     if (!user) {
@@ -23,9 +23,9 @@ class FollowService {
     const newFollow = await Follow.create({ follow });
 
     return { message: "success", data: newFollow };
-  }
+  },
 
-  static async unfollowUser({ userId, kurlyencerId }) {
+  unfollowUser: async ({ userId, kurlyencerId }) => {
     const user = await User.findById(kurlyencerId);
 
     if (!user) {
@@ -43,7 +43,7 @@ class FollowService {
     await Follow.delete({ follow });
 
     return { message: "success", data: "언팔로우 되었습니다." };
-  }
-}
+  },
+};
 
 export { FollowService };

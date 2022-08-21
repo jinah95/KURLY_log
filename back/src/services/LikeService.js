@@ -1,8 +1,8 @@
 import { Like } from "../db/models/Like";
 import { Review } from "../db/models/Review";
 
-class LikeService {
-  static async likeReview({ userId, reviewId }) {
+const LikeService = {
+  likeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById({ reviewId });
 
     if (!review || userId === review.user_id) {
@@ -24,9 +24,9 @@ class LikeService {
     const newLike = await Like.create({ like });
 
     return { message: "success", data: newLike };
-  }
+  },
 
-  static async unlikeReview({ userId, reviewId }) {
+  unlikeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById({ reviewId });
 
     if (!review || userId === review.user_id) {
@@ -46,7 +46,7 @@ class LikeService {
     await Like.delete({ like });
 
     return { message: "success", data: "좋아요가 취소되었습니다." };
-  }
-}
+  },
+};
 
 export { LikeService };
