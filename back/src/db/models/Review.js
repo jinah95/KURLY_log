@@ -76,21 +76,20 @@ const Review = {
       ],
     });
 
-    // const result = bestLogs.filter((review) => {
-    //   const count = countLikes.filter(
-    //     (obj) => review.review_id === obj.review_id
-    //   );
-    //   if(!count || count.length === 0)
-    //   review.dataValues.conutLikes = count[0].count;
-    //   console.log(count[0]);
-    //   console.log(review.dataValues);
+    let result = bestLogs.map((review) => {
+      const count = countLikes.filter(
+        (obj) => review.review_id === obj.review_id
+      );
 
-    //   // return Object.assign(review.dataValues, { countLike: count.count });
-    //   // return { ...review.dataValues, countLike: count.count };
-    //   // return {};
-    //   return review;
-    // });
+      try {
+        review.dataValues.countLikes = count[0].count;
+        return review;
+      } catch {}
+    });
 
+    result.sort((obj, obj1) => {
+      return obj.countLikes - obj1.countLikes;
+    });
     return result;
   },
 };
