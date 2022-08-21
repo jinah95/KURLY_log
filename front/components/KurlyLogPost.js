@@ -8,8 +8,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import { get } from "../api";
 
-const KurlyLogPost = ({ user, prouct }) => {
+const KurlyLogPost = ({ user, prouctId }) => {
     const [userInfo, setUserInfo] = useState({})
+    const [otherPosts, setOtherPosts] = useState([])
 
     const settings = {
         dots: true,
@@ -21,20 +22,31 @@ const KurlyLogPost = ({ user, prouct }) => {
     };
 
     // 테스트용
-    const id = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
+    const userId = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
 
     const getUserInfo = async () => {
         try {
-            const res = await get("/users/", id);
+            const res = await get("/users/", userId);
             setUserInfo(res.data.data);
-            console.log(res.data)
+            // console.log(res.data)
         } catch (err) {
             console.error("error message: ", err);
         }
     };
-    
+
+    const getOtherPosts = async () => {
+        try {
+            const res = await get("/logs/goods/", prouctId);
+            setOtherPosts(res.data.data);
+            // console.log(res.data.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
     useEffect(() => {
         getUserInfo();
+        getOtherPosts();
     }, []);
 
     return (
@@ -66,9 +78,16 @@ const KurlyLogPost = ({ user, prouct }) => {
                 <Line />
                 <CarouselView>
                     <Slider {...settings}>
-                        <CarouselCard />
-                        <CarouselCard />
-                        <CarouselCard />
+                    {
+                        otherPosts
+                            .filter((post) => userId !== post.user_id)
+                            .map((post, index) => (
+                                <CarouselCard 
+                                    key={index}
+                                    post={post}
+                                />
+                            ))
+                    }
                     </Slider>
                 </CarouselView>
             </Others>
@@ -151,7 +170,7 @@ const Line = styled.div`
 
 const CarouselView = styled(Slider)`
     width: 100%;
-    height: 100%;
+    height: 100%
 
     .slick-list {
         margin: 0 auto;
