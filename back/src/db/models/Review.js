@@ -62,8 +62,19 @@ const Review = {
   },
 
   getBestLogs: async ({ grade }) => {
+    let now = new Date();
+    const day = now.getDate();
+    // const hour = now.getHours();
+    // const oneHourAgo = new Date(new Date().setHours(hour - 1));
+
+    const sevenDaysAgo = new Date(new Date().setDate(day - 7));
     const countLikes = await likeModel.count({
-      group: ["review_id"],
+      where: {
+        created_at: {
+          [Op.gte]: sevenDaysAgo,
+        },
+      },
+      group: ["review_id", "created_at"],
     });
 
     let bestLogs = await reviewModel.findAll({
