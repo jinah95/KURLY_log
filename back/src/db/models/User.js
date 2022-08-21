@@ -30,49 +30,6 @@ const User = {
     return user;
   },
 
-  findAll: async () => {
-    const follow_satisfied_users = await followModel.findAll({
-      attributes: [
-        "user_id",
-        [sequelize.fn("COUNT", sequelize.col("follow_id")), "cnt_follow"],
-      ],
-      group: "user_id",
-      where: {
-        cnt_follow: {
-          [Op.gte]: 200,
-        },
-      },
-      order: ["cnt_follow", "DESC"],
-    });
-    const like_satisfied_users = await reviewModel.findAll({
-      attributes: [
-        "user_id",
-        [sequelize.fn("sum", sequelize.col("cnt_like")), "sum_like"],
-      ],
-      include: [
-        [
-          sequelize.literal(`(
-            SELECT review_id, COUNT(like_id) as cnt_like
-            FROM like
-            GROUPBY review_id
-          )`),
-          "review_like",
-        ],
-      ],
-      group: "user_id",
-      where: {
-        sum_like: {
-          [Op.gte]: 200,
-        },
-      },
-    });
-
-    const users = follow_satisfied_users;
-    console.log(follow_satisfied_users);
-    console.log(like_satisfied_users);
-    return users;
-  },
-
   getBestUsers: async () => {
     const users = await sequelize.query(`
       SELECT url.user_id, url.nickname, url.intro, url.picture, url.grade, reviews, likes, count(follow_id) AS FOLLOWERS
