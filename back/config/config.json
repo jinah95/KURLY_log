@@ -8,14 +8,14 @@
   },
   "test": {
     "username": "postgres",
-    "password": null,
+    "password": "ssapkurly",
     "database": "",
     "host": "kurly.cyuyus9rbtt3.ap-northeast-2.rds.amazonaws.com",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": null,
+    "password": "ssapkurly",
     "database": "",
     "host": "kurly.cyuyus9rbtt3.ap-northeast-2.rds.amazonaws.com",
     "dialect": "postgres"
