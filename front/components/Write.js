@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from "react";
 import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { post, sendPostImageFile } from "../api";
 
 const Write = ({ htmlStr, setHtmlStr }) => {
     const quillRef = useRef(null);
@@ -17,14 +18,20 @@ const Write = ({ htmlStr, setHtmlStr }) => {
             const file = input.files;
             const formData = new FormData();
 
-            if(file) {
+            if (file) {
                 formData.append("multipartFiles", file[0]);
             }
 
             // file 데이터 담아서 서버에 전달하여 이미지 업로드
-            const res = await axios.post('http://localhost:8080/uploadImage', formData);
+            const res = await sendPostImageFile("upload/post-img", formData);
+            const postS3Image = await res.data?.data; // s3 주소 받음
+            const newUpload = await post("post", {
+                title,
+                post_img: postS3Image,
+                content: htmlStr,
+            });
 
-            if(quillRef.current) {
+            if (quillRef.current) {
                 // 현재 Editor 커서 위치에 서버로부터 전달받은 이미지 불러오는 url을 이용하여 이미지 태그 추가
                 const index = (quillRef.current.getEditor().getSelection()).index;
 
@@ -78,7 +85,7 @@ const Write = ({ htmlStr, setHtmlStr }) => {
             modules={modules} 
             formats={formats} 
             value={htmlStr} 
-            placeholder='내용을 입력하세요.'
+            placeholder='내용을 입력해주세요.'
             onChange={(content, delta, source, editor) => setHtmlStr(editor.getHTML())} 
         />
     )
