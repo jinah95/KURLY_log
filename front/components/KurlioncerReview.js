@@ -1,18 +1,25 @@
 import React from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
-const KurlioncerReview = () => {
+const KurlioncerReview = ({ item }) => {
+    const router = useRouter();
+
     return (
-        <ReviewContainer>
+        <ReviewContainer
+            onClick={() =>
+                router.push(`/kurlylog/${item.user_id}/${item.product_id}`)
+            }
+        >
             <ReviewTitle>
-                <MyKurlyName>빵떡's 컬리log</MyKurlyName>
+                <MyKurlyName>{item.user.nickname}'s 컬리log</MyKurlyName>
                 <ProductName>
                     [크래프트하인즈] 슈레드 파마산치즈 리뷰
                 </ProductName>
             </ReviewTitle>
             <ReviewInfo>
-                <KurlyRanking>컬리언서 13위</KurlyRanking>
-                <LikeCount>89 💜</LikeCount>
+                <KurlyRanking> 컬리언서 🌟</KurlyRanking>
+                <LikeCount>{item.countLikes} 💜</LikeCount>
             </ReviewInfo>
         </ReviewContainer>
     );
