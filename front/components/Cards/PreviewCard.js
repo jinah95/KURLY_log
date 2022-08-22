@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import moment from "moment";
 
-const PreviewCard = () => {
+// bad: "만두가 이렇게 커도 되나요"
+// content: "만두는 역시 김치만두! 김치만두가 안느끼하고 맛있죠"
+// created_at: "2022-08-21T08:15:48.165Z"
+// good: "비비고 김치만두~"
+// image: []
+// product_id: 1001
+// review_id: 2
+// score: 5
+// title: "만두에서 김치맛이.."
+// user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
+
+
+const PreviewCard = ({ post }) => {
+    const created_at = moment((post.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD")
 
     return (
+        <Link href={`/kurlyLog/${post.product_id}`} passHref>
         <CardWrapper>
-            <CardDate>2022. 8. 17.</CardDate>
+            <CardDate>{created_at}</CardDate>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -16,14 +32,13 @@ const PreviewCard = () => {
                     alt="green iguana"
                 />
                 <CardInfo>
-                    <Title>
-                        망원동 카페 - 티노마드
-                    </Title>
-                    <SubTitle>안녕하세요. 오랜만에 카페 업로드 글로 찾아왔습니다. 이번에 가본 카페는 망원동에 있는 티노마드라는 카페인데요.</SubTitle>
+                    <Title>{post.title}</Title>
+                    <SubTitle>{post.content}</SubTitle> {/* 게시물 내용 가져오기 */}
                 </CardInfo>
             </CardActionArea>
             <Line />
         </CardWrapper>
+        </Link>
     )
 
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import Image from "next/image";
@@ -6,10 +6,13 @@ import Profile from "../public/profile.png";
 import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
+import { get } from "../api";
 
-const KurlyLogPost = () => {
-    const home = "SSAP의 컬리log";
-    const user = "SSAP";
+// user+productId에 대한 컬리log(게시글) 불러오기
+const KurlyLogPost = ({ userId, prouctId }) => {
+    const [userInfo, setUserInfo] = useState({})
+    const [postInfo, setPostInfo] = useState({})
+    const [otherPosts, setOtherPosts] = useState([])
 
     const settings = {
         dots: true,
@@ -17,13 +20,49 @@ const KurlyLogPost = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        autoplay: true // 알아보기
+        autoplay: true
     };
+
+    const getUserInfo = async () => {
+        try {
+            const res = await get("/users/", userId);
+            setUserInfo(res.data.data);
+            // console.log(res.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    // const getPostInfo = async () => {
+    //     try {
+    //         const res = await get("/logs/", userId);
+    //         // getPost(`post/list?page=${page + 1}&perPage=${per}`);
+    //         setUserInfo(res.data.data);
+    //         // console.log(res.data)
+    //     } catch (err) {
+    //         console.error("error message: ", err);
+    //     }
+    // };
+
+    const getOtherPosts = async () => {
+        try {
+            const res = await get("/logs/goods/", prouctId);
+            setOtherPosts(res.data.data);
+            // console.log(res.data.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+        getOtherPosts();
+    }, []);
 
     return (
         <Wrapper>
             <Home>
-                {home}
+                {userInfo.nickname}'s 컬리log
             </Home>
             <Contents>
                 <Title></Title>
@@ -32,16 +71,16 @@ const KurlyLogPost = () => {
 
             </ProductInfo>
             <UserInfo>
-                <div>
+                <UserImage>
                     <Image
                         src={Profile}
                         alt="profile"
                         width={40}
                         height={40}
                     />
-                </div>
-                <UserName>{user}</UserName>
-                <UserTitle>푸드 전문가</UserTitle>
+                </UserImage>
+                <UserName>{userInfo.nickname}</UserName>
+                <UserTitle>{userInfo.intro}</UserTitle>
                 <Line />
             </UserInfo>
             <Others>
@@ -49,9 +88,16 @@ const KurlyLogPost = () => {
                 <Line />
                 <CarouselView>
                     <Slider {...settings}>
-                        <CarouselCard />
-                        <CarouselCard />
-                        <CarouselCard />
+                    {
+                        otherPosts
+                            .filter((post) => userId !== post.user_id)
+                            .map((post, index) => (
+                                <CarouselCard 
+                                    key={index}
+                                    post={post}
+                                />
+                            ))
+                    }
                     </Slider>
                 </CarouselView>
             </Others>
@@ -102,6 +148,13 @@ const UserInfo = styled.div`
     align-items: center;
 `;
 
+const UserImage = styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+    overflow: hidden;
+`;
+
 const UserName = styled.div`
     font-weight: bold;
     color: var(--purple);
@@ -127,7 +180,7 @@ const Line = styled.div`
 
 const CarouselView = styled(Slider)`
     width: 100%;
-    height: 100%;
+    height: 100%
 
     .slick-list {
         margin: 0 auto;

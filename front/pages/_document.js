@@ -3,28 +3,28 @@ import { ServerStyleSheet } from "styled-components";
 
 class MyDocument extends Document {
     static async getInitialProps(ctx) {
-        const sheet = new ServerStyleSheet()
-        const originalRenderPage = ctx.renderPage
+        const sheet = new ServerStyleSheet();
+        const originalRenderPage = ctx.renderPage;
 
         try {
             ctx.renderPage = () =>
                 originalRenderPage({
-                enhanceApp: (App) => (props) =>
-                    sheet.collectStyles(<App {...props} />),
-                })
+                    enhanceApp: (App) => (props) =>
+                        sheet.collectStyles(<App {...props} />),
+                });
 
-            const initialProps = await Document.getInitialProps(ctx)
+            const initialProps = await Document.getInitialProps(ctx);
             return {
                 ...initialProps,
                 styles: (
-                <>
-                    {initialProps.styles}
-                    {sheet.getStyleElement()}
-                </>
+                    <>
+                        {initialProps.styles}
+                        {sheet.getStyleElement()}
+                    </>
                 ),
-            }
+            };
         } finally {
-            sheet.seal()
+            sheet.seal();
         }
     }
 
@@ -32,7 +32,11 @@ class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
+                    <meta name="Kurly Log"></meta>
+                    <meta content="Market Kurly Review Community, KurlyLog"></meta>
+                    <meta charSet="utf-8" />
                 </Head>
+                <title>KurlyLog : 컬리로그</title>
                 <body>
                     <Main />
                     <NextScript />
@@ -42,4 +46,4 @@ class MyDocument extends Document {
     }
 }
 
-export default MyDocument
+export default MyDocument;

@@ -1,5 +1,5 @@
-import Index from "../components/Index";
+import Best from "../components/Best";
 
 export default function Home() {
-    return <Index />;
+    return <Best />;
 }
