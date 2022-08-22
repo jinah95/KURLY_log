@@ -8,29 +8,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import { get } from "../api";
 
-
-// data:
-//     bad: "단점 없음"
-//     content: "있을때 쟁여놨어요"
-//     created_at: "2022-08-21T10:41:57.251Z"
-//     good: "컬리 생크림빵~"
-//     image: []
-//     likesCount: "0"
-//     product_id: 1006
-//     review_id: 16
-//     score: 5
-//     title: "이거 사려고 대기탔어요"
-//     user:
-//         age: "40대"
-//         family: "4인 가구"
-//         grade: "컬리언서"
-//         intro: "요리천재"
-//         nickname: "컬리"
-//         picture: "https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80"
-//         user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
-//     user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
-
-// user+productId에 대한 컬리log(게시글) 불러오기
 const KurlyLogPost = ({ reviewId }) => {
     const [postInfo, setPostInfo] = useState({})
     const [userInfo, setUserInfo] = useState({})
@@ -51,7 +28,6 @@ const KurlyLogPost = ({ reviewId }) => {
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
-            // console.log(res.data)
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -61,7 +37,6 @@ const KurlyLogPost = ({ reviewId }) => {
         try {
             const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
             setOtherPosts(res.data.data);
-            console.log("OtherPosts: ", res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }
