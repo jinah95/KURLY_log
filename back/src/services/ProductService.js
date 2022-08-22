@@ -7,7 +7,7 @@ const ProductService = {
   },
 
   getProduct: async ({ productId }) => {
-    const product = await Product.findInfo(productId);
+    const product = await Product.findById(productId);
     return { message: "success", data: product };
   },
 };
