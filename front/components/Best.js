@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import BestProduct from "./BestProduct";
 import Footer from "./Footer";
+import { getPost } from "../api";
 
 const Best = () => {
+    const [productList, setProductList] = useState([]);
+
+    const getProduct = async () => {
+        try {
+            const res = await getPost("/goods");
+            const newArr = res.data.data;
+            setProductList([...newArr]);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        getProduct();
+    }, []);
+
     return (
         <Wrapper>
             {" "}
@@ -21,10 +38,9 @@ const Best = () => {
                 </KurlioncerPageMove>
             </BestKurlioncer>
             <CardView>
-                <BestProduct productNum="1" />
-                <BestProduct productNum="2" />
-                <BestProduct productNum="3" />
-                <BestProduct productNum="4" />
+                {productList.map((item, idx) => {
+                    return <BestProduct key={`product-${idx}`} item={item} />;
+                })}
             </CardView>
             <BestKurlioncer>
                 <KurlioncerPageMove>
@@ -39,10 +55,9 @@ const Best = () => {
                 </KurlioncerPageMove>
             </BestKurlioncer>
             <CardView>
-                <BestProduct />
-                <BestProduct />
-                <BestProduct />
-                <BestProduct />
+                {productList.map((item, idx) => {
+                    return <BestProduct key={`product-${idx}`} item={item} />;
+                })}
             </CardView>
             <CreateSpacer />
             <Footer />
