@@ -26,6 +26,14 @@ reviewRouter.get("/goods/:productId", async (req, res, next) => {
   }
 });
 
+// 컬리로그 1개 조회하기
+reviewRouter.get("/:reviewId", async (req, res, next) => {
+  const reviewId = req.params.reviewId;
+  const review = await ReviewService.getReview({ reviewId });
+
+  res.status(200).json(review);
+});
+
 // 컬리로그 작성하기
 reviewRouter.post(
   "/:productId",

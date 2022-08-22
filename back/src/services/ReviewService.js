@@ -24,6 +24,18 @@ const ReviewService = {
     return { message: "success", data: reviews };
   },
 
+  // 컬리로그 1개 조회하기
+  getReview: async ({ reviewId }) => {
+    const review = await Review.findById(reviewId);
+
+    if (!review) {
+      const errorMessage = "해당하는 리뷰가 없습니다.";
+      return { message: "fail", data: errorMessage };
+    }
+
+    return { message: "success", data: review };
+  },
+
   // 컬리로그 작성하기
   postReviews: async ({ newReview }) => {
     const createdReview = await Review.create({ newReview });
