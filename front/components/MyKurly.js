@@ -38,10 +38,10 @@ const MyKurly = ({ userId }) => {
         }
     };
 
-    // 유저의 컬리로그 전체글 (무한스크롤 구현하기)
+    // 유저의 컬리로그 전체글
     const getPosts = async () => {
         try {
-            const res = await get("/logs/my-log");
+            const res = await get("/logs/my-log?page=1&perPage=3");
             setPosts(res.data.data.logs);
             // console.log(res.data.data);
         } catch (err) {

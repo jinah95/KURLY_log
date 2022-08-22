@@ -12,6 +12,7 @@ const KurlyLogPost = ({ reviewId }) => {
     const [postInfo, setPostInfo] = useState({})
     const [userInfo, setUserInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])
+    // 현재 로그인한 유저 알아와서 otherPosts에 들어가지 않게 해야함
 
     const settings = {
         dots: true,
@@ -44,7 +45,7 @@ const KurlyLogPost = ({ reviewId }) => {
 
     useEffect(() => {
         getPostInfo();
-    }, []);
+    }, [reviewId]);
 
     return (
         <Wrapper>
@@ -78,7 +79,7 @@ const KurlyLogPost = ({ reviewId }) => {
                     <Slider {...settings}>
                     {
                         otherPosts
-                            .filter((post) => userInfo.user_id !== post.user_id)
+                            .filter((post) => userInfo.user_id != post.user_id && reviewId != post.review_id)
                             .map((post, index) => (
                                 <CarouselCard 
                                     key={index}

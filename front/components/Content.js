@@ -7,14 +7,12 @@ const Content = ({ data }) => {
     const [posts, setPosts] = useState(data);
     const [hasMore, setHasMore] = useState(true);
     
-    const id = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
-
     const getMorePost = async () => {
         try {
-            const res = await get("/logs/my-log");
-            // const res = await fetch(
-            //     `https://jsonplaceholder.typicode.com/todos?_start=${posts.length}&_limit=10`
-            // );
+            const res = await get(`/logs/my-log?page=${posts.length}&perPage=2`);
+            
+            // 계속 똑같은 거 받아옴.. 수정하기
+            console.log(res.data.data.logs);
             const newPosts = res.data.data.logs;
             setPosts((post) => [...post, ...newPosts]);
         } catch (err) {
