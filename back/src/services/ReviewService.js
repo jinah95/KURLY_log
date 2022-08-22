@@ -1,6 +1,7 @@
 import { Review } from "../db/models/Review";
 import { Product } from "../db/models/Product";
 import { User } from "../db/models/User";
+import { Like } from "../db/models/Like";
 import setUtil from "../utils/setUtil";
 
 const ReviewService = {
@@ -67,6 +68,7 @@ const ReviewService = {
     }
 
     const result = await Review.delete({ reviewId });
+    await Like.deleteByReview({ reviewId });
     return { message: "success", data: result };
   },
 
@@ -92,15 +94,17 @@ const ReviewService = {
   // best 컬리언서 리뷰 조회하기
   getBestLogs: async () => {
     const grade = "컬리언서";
-    const logs = await Review.getBestLogs({ grade });
+    const countLikes = await Like.countByReview();
+    const logs = await Review.getBestLogs({ grade, countLikes });
 
-    return { message: "success", data: logs.slice(0, 3) };
+    return { message: "success", data: logs.slice(0, 5) };
   },
 
   // best 컬리언서 리뷰 더보기
   getMoreLogs: async () => {
     const grade = "컬리언서";
-    const logs = await Review.getBestLogs({ grade });
+    const countLikes = await Like.countByReview();
+    const logs = await Review.getBestLogs({ grade, countLikes });
 
     return { message: "success", data: logs.slice(0, 15) };
   },
@@ -108,7 +112,8 @@ const ReviewService = {
   // 샛별 리뷰 목록 조회하기
   getPopularLogs: async () => {
     const grade = "샛별";
-    const logs = await Review.getBestLogs({ grade });
+    const countLikes = await Like.countByReview();
+    const logs = await Review.getBestLogs({ grade, countLikes });
 
     return { message: "success", data: logs };
   },

@@ -2,7 +2,7 @@ import db from "..";
 const likeModel = db.like;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.sequelize.Op;
+const Op = db.Sequelize.Op;
 
 const Like = {
   create: async ({ like }) => {
@@ -31,8 +31,31 @@ const Like = {
     return Number(count[0][0].count);
   },
 
+  countByReview: async () => {
+    let now = new Date();
+    const day = now.getDate();
+    const sevenDaysAgo = new Date(new Date().setDate(day - 7));
+    const count = await likeModel.findAll({
+      group: ["review_id"],
+      attributes: [
+        "review_id",
+        [sequelize.fn("COUNT", sequelize.col("*")), "count"],
+      ],
+      where: {
+        created_at: {
+          [Op.gte]: sevenDaysAgo,
+        },
+      },
+    });
+    return count;
+  },
+
   delete: async ({ like }) => {
     await likeModel.destroy({ where: like });
+  },
+
+  deleteByReview: async ({ reviewId }) => {
+    await likeModel.destroy({ where: { review_id: reviewId } });
   },
 };
 

@@ -1,7 +1,6 @@
 import db from "..";
 const reviewModel = db.review;
 const userModel = db.user;
-const likeModel = db.like;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
@@ -43,11 +42,6 @@ const Review = {
         review_id: reviewId,
       },
     });
-    await likeModel.destroy({
-      where: {
-        review_id: reviewId,
-      },
-    });
 
     return deletedReview;
   },
@@ -82,26 +76,7 @@ const Review = {
     return review;
   },
 
-  getBestLogs: async ({ grade }) => {
-    let now = new Date();
-    const day = now.getDate();
-    // const hour = now.getHours();
-    // const oneHourAgo = new Date(new Date().setHours(hour - 1));
-
-    const sevenDaysAgo = new Date(new Date().setDate(day - 7));
-    const countLikes = await likeModel.findAll({
-      group: ["review_id"],
-      attributes: [
-        "review_id",
-        [sequelize.fn("COUNT", sequelize.col("*")), "count"],
-      ],
-      where: {
-        created_at: {
-          [Op.gte]: sevenDaysAgo,
-        },
-      },
-    });
-
+  getBestLogs: async ({ grade, countLikes }) => {
     let bestLogs = await reviewModel.findAll({
       include: [
         {
@@ -115,7 +90,7 @@ const Review = {
 
     let result = bestLogs.map((review) => {
       const count = countLikes.filter(
-        (obj) => review.review_id === obj.dataValues.review_id
+        (obj) => review.review_id === obj.review_id
       );
 
       try {
