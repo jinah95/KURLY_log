@@ -6,6 +6,7 @@ import Profile from "../public/profile.png";
 import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
+import moment from "moment";
 import { get } from "../api";
 
 const KurlyLogPost = ({ reviewId }) => {
@@ -13,6 +14,7 @@ const KurlyLogPost = ({ reviewId }) => {
     const [userInfo, setUserInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])
     // 현재 로그인한 유저 알아와서 otherPosts에 들어가지 않게 해야함
+    const [createdAt, setCreatedAt] = useState("");
 
     const settings = {
         dots: true,
@@ -29,6 +31,7 @@ const KurlyLogPost = ({ reviewId }) => {
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
+            setCreatedAt(moment((res.data.data.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD"));
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -53,8 +56,12 @@ const KurlyLogPost = ({ reviewId }) => {
                 {userInfo.nickname}'s 컬리log
             </Home>
             <Contents>
-                <Title>{postInfo.title}</Title>
-                {postInfo.content}
+                <h3>{postInfo.title}</h3>
+                <div>{createdAt}</div>
+                <Line />
+                <Content>{postInfo.content}</Content>
+                <Line />
+                <LikeCount>{postInfo.likesCount} 💜</LikeCount>
             </Contents>
             <ProductInfo>
 
@@ -112,13 +119,20 @@ const Home = styled.div`
 `;
 
 const Contents = styled.div`
-    height: 500px;  // 수정
+    min-height: auto;
     background: white;
     margin-top: 10px;
     padding: 20px;
 `;
 
-const Title = styled.div`
+const Content = styled.div`
+    min-height: 300px;
+    margin: 20px auto;
+`;
+
+const LikeCount = styled.div`
+    color: gray;
+    font-weight: bold;
 `;
 
 const ProductInfo = styled.div`
