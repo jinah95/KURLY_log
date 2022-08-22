@@ -27,7 +27,7 @@ reviewRouter.get("/goods/:productId", async (req, res, next) => {
 });
 
 // 컬리로그 1개 조회하기
-reviewRouter.get("/:reviewId", async (req, res, next) => {
+reviewRouter.get("/log/:reviewId", async (req, res, next) => {
   const reviewId = req.params.reviewId;
   const review = await ReviewService.getReview({ reviewId });
 
@@ -166,6 +166,7 @@ reviewRouter.get("/pop", async (req, res, next) => {
   try {
     const page = req.query.page;
     const perPage = req.query.perPage;
+    console.log(page, perPage);
     const logs = await ReviewService.getPopularLogs({ page, perPage });
 
     res.status(200).json(logs);
