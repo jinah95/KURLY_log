@@ -117,7 +117,9 @@ reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
 reviewRouter.get("/user/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const logs = await ReviewService.getLogs(userId);
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const logs = await ReviewService.getLogs({ userId, page, perPage });
 
     res.status(200).json(logs);
   } catch (error) {
