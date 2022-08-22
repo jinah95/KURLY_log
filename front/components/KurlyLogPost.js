@@ -9,9 +9,9 @@ import "slick-carousel/slick/slick-theme.css"
 import { get } from "../api";
 
 // user+productId에 대한 컬리log(게시글) 불러오기
-const KurlyLogPost = ({ userId, prouctId }) => {
-    const [userInfo, setUserInfo] = useState({})
+const KurlyLogPost = ({ reviewId }) => {
     const [postInfo, setPostInfo] = useState({})
+    const [userInfo, setUserInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])
 
     const settings = {
@@ -23,26 +23,16 @@ const KurlyLogPost = ({ userId, prouctId }) => {
         autoplay: true
     };
 
-    const getUserInfo = async () => {
+    const getPostInfo = async () => {
         try {
-            const res = await get("/users/", userId);
-            setUserInfo(res.data.data);
-            // console.log(res.data)
+            const res = await get("/logs/log/", reviewId);
+            setPostInfo(res.data.data);
+            setUserInfo(res.data.data.user);
+            console.log(res.data)
         } catch (err) {
             console.error("error message: ", err);
         }
     };
-
-    // const getPostInfo = async () => {
-    //     try {
-    //         const res = await get("/logs/", userId);
-    //         // getPost(`post/list?page=${page + 1}&perPage=${per}`);
-    //         setUserInfo(res.data.data);
-    //         // console.log(res.data)
-    //     } catch (err) {
-    //         console.error("error message: ", err);
-    //     }
-    // };
 
     const getOtherPosts = async () => {
         try {
@@ -55,8 +45,8 @@ const KurlyLogPost = ({ userId, prouctId }) => {
     };
 
     useEffect(() => {
-        getUserInfo();
-        getOtherPosts();
+        getPostInfo();
+        // getOtherPosts();
     }, []);
 
     return (
@@ -86,7 +76,7 @@ const KurlyLogPost = ({ userId, prouctId }) => {
             <Others>
                 또 다른 컬리log
                 <Line />
-                <CarouselView>
+                {/* <CarouselView>
                     <Slider {...settings}>
                     {
                         otherPosts
@@ -99,7 +89,7 @@ const KurlyLogPost = ({ userId, prouctId }) => {
                             ))
                     }
                     </Slider>
-                </CarouselView>
+                </CarouselView> */}
             </Others>
         </Wrapper>
     );
