@@ -27,7 +27,7 @@ const MyKurly = () => {
         }
     };
 
-    const getBestPost = async () => {
+    const getBestPosts = async () => {
         try {
             // endPoint 수정하기
             const res = await get("/logs/user/", id);
@@ -51,7 +51,7 @@ const MyKurly = () => {
     
     useEffect(() => {
         getUserInfo();
-        getBestPost();
+        getBestPosts();
         getPosts();
     }, []);
 

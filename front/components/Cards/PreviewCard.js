@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
@@ -20,6 +21,7 @@ const PreviewCard = ({ post }) => {
     const created_at = moment((post.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD")
 
     return (
+        <Link href={`/kurlyLog/${post.product_id}`} passHref>
         <CardWrapper>
             <CardDate>{created_at}</CardDate>
             <CardActionArea>
@@ -36,6 +38,7 @@ const PreviewCard = ({ post }) => {
             </CardActionArea>
             <Line />
         </CardWrapper>
+        </Link>
     )
 
 }
