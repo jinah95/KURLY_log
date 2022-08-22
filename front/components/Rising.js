@@ -32,7 +32,7 @@ const Rising = ({ firstBoards }) => {
             });
         }
     };
-
+    console.log(risingState.items);
     useEffect(() => {
         setPage(1);
     }, []);

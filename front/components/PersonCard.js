@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import styled from "styled-components";
 import gold from "../public/GoldMedal.png";
@@ -8,8 +9,11 @@ import bronze from "../public/BronzeMedal.png";
 const medalList = [gold, silver, bronze];
 
 const PersonCard = ({ item, index }) => {
+    const router = useRouter();
     return (
-        <PersonContainer>
+        <PersonContainer
+            onClick={() => router.push(`/kurlylog/${item.user_id}`)}
+        >
             <Profile>
                 <MedalWrapper>
                     <Image
@@ -23,7 +27,9 @@ const PersonCard = ({ item, index }) => {
             </Profile>
             <PersonContent>
                 <PersonName>{item.nickname}</PersonName>
-                <Introduce>50대 / 4인가구 / {item.intro}</Introduce>
+                <Introduce>
+                    {item.age} / {item.family} / {item.intro}
+                </Introduce>
                 <HashTagWrapper>
                     <HashTag># 요리레시피</HashTag>
                     <HashTag># 후기요정</HashTag>
@@ -53,6 +59,12 @@ const PersonContainer = styled.div`
     padding: 8px;
     margin: 5px 0;
     background-color: rgb(244, 244, 244);
+    &:hover {
+        border: 1.5px solid #5f0080;
+    }
+    &:click {
+        border: 1.5px solid #5f0080;
+    }
 `;
 
 const Profile = styled.div`

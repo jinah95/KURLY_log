@@ -14,12 +14,13 @@ const KurlioncerReview = ({ item }) => {
             <ReviewTitle>
                 <MyKurlyName>{item.user.nickname}'s 컬리log</MyKurlyName>
                 <ProductName>
-                    [크래프트하인즈] 슈레드 파마산치즈 리뷰
+                    {item.product.detail} 👉{" "}
+                    <BestTitle>" {item.title} "</BestTitle>
                 </ProductName>
             </ReviewTitle>
             <ReviewInfo>
                 <KurlyRanking> 컬리언서 🌟</KurlyRanking>
-                <LikeCount>{item.countLikes} 💜</LikeCount>
+                <LikeCount>{item.likesCount} 💜</LikeCount>
             </ReviewInfo>
         </ReviewContainer>
     );
@@ -34,6 +35,12 @@ const ReviewContainer = styled.div`
     padding: 15px;
     margin: 5px 0;
     background-color: rgb(244, 244, 244);
+    &:hover {
+        border: 1.5px solid #5f0080;
+    }
+    &:click {
+        border: 1.5px solid #5f0080;
+    }
 `;
 
 const ReviewTitle = styled.div`
@@ -54,6 +61,7 @@ const ProductName = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
 `;
 
 const ReviewInfo = styled.div`
@@ -73,4 +81,9 @@ const LikeCount = styled.div`
     font-size: 13px;
     color: gray;
     font-weight: 600;
+`;
+
+const BestTitle = styled.div`
+    font-size: 13px;
+    color: gray;
 `;
