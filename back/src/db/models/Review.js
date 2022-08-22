@@ -193,16 +193,31 @@ const Review = {
   getLog: async ({ reviewId }) => {
     console.log(reviewId);
     const log = await reviewModel.findOne({
+      attributes: {
+        include: [
+          [
+            sequelize.fn("COUNT", sequelize.col("like.review_id")),
+            "likesCount",
+          ],
+        ],
+      },
       include: [
         {
           model: userModel,
           as: "user",
           attributes: { exclude: ["password", "register_date", "last_login"] },
         },
+        {
+          model: likeModel,
+          as: "like",
+          attributes: [],
+          required: false,
+        },
       ],
       where: {
         review_id: reviewId,
       },
+      group: ["reviews.review_id", "user.user_id"],
     });
     return log;
   },
