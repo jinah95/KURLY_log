@@ -34,7 +34,7 @@ const Navbar = () => {
     const userState = useContext(UserStateContext);
 
     const isLogin = !!userState.user;
-    const userId = !!userState.user?.userId;
+    const userId = userState.user?.userId;
 
     const logout = () => {
         // sessionStorage에 저장했던 JWT 토큰 삭제
