@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { uploadMiddleware } from "../middlewares/uploadMiddleware";
-import { loginRequired } from "../middlewares/loginRequired";
+import loginRequired from "../middlewares/loginRequired";
 import dotenv from "dotenv";
 dotenv.config();
 
 const imgUploadRouter = Router();
+
+imgUploadRouter.use(loginRequired);
 
 imgUploadRouter.post(
   "/single",
