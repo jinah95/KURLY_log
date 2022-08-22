@@ -190,20 +190,21 @@ const Review = {
     return bestLogs;
   },
 
-  getLogs: async ({ grade, perPage }) => {
-    const logs = await reviewModel.findAll({
+  getLog: async ({ reviewId }) => {
+    console.log(reviewId);
+    const log = await reviewModel.findOne({
       include: [
         {
           model: userModel,
           as: "user",
           attributes: { exclude: ["password", "register_date", "last_login"] },
-          where: { grade },
         },
       ],
-      order: [["created_at", "DESC"]],
-      limit: perPage,
+      where: {
+        review_id: reviewId,
+      },
     });
-    return logs;
+    return log;
   },
 };
 

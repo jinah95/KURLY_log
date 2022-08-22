@@ -26,7 +26,7 @@ const ReviewService = {
 
   // 컬리로그 1개 조회하기
   getReview: async ({ reviewId }) => {
-    const review = await Review.findById(reviewId);
+    const review = await Review.getLog({ reviewId });
 
     if (!review) {
       const errorMessage = "해당하는 리뷰가 없습니다.";
