@@ -23,7 +23,9 @@ const PersonCard = ({ item, index }) => {
             </Profile>
             <PersonContent>
                 <PersonName>{item.nickname}</PersonName>
-                <Introduce>50대 / 4인가구 / {item.intro}</Introduce>
+                <Introduce>
+                    {item.age} / {item.family} / {item.intro}
+                </Introduce>
                 <HashTagWrapper>
                     <HashTag># 요리레시피</HashTag>
                     <HashTag># 후기요정</HashTag>
