@@ -191,7 +191,6 @@ const Review = {
   },
 
   getLog: async ({ reviewId }) => {
-    console.log(reviewId);
     const log = await reviewModel.findOne({
       attributes: {
         include: [
