@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import moment from "moment";
 
-const PreviewCard = () => {
+const PreviewCard = ({ post }) => {
+    const created_at = moment((post.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD")
 
     return (
+        <Link href={`/kurlylog/post/${post.review_id}`} passHref>
         <CardWrapper>
-            <CardDate>2022. 8. 17.</CardDate>
+            <CardDate>{created_at}</CardDate>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -16,14 +20,13 @@ const PreviewCard = () => {
                     alt="green iguana"
                 />
                 <CardInfo>
-                    <Title>
-                        망원동 카페 - 티노마드
-                    </Title>
-                    <SubTitle>안녕하세요. 오랜만에 카페 업로드 글로 찾아왔습니다. 이번에 가본 카페는 망원동에 있는 티노마드라는 카페인데요.</SubTitle>
+                    <Title>{post.title}</Title>
+                    <SubTitle>{post.content}</SubTitle> {/* 게시물 내용 가져오기 */}
                 </CardInfo>
             </CardActionArea>
             <Line />
         </CardWrapper>
+        </Link>
     )
 
 }

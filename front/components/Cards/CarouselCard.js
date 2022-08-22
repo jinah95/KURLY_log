@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
+import { styled as materialStyled } from "@mui/material/styles";
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import { get } from "../../api";
 
-const CarouselCard = () => {
+const CarouselCard = ({ post }) => {
+    const [userInfo, setUserInfo] = useState({})
+
+    const getUserInfo = async () => {
+        try {
+            const res = await get("/users/", post.user_id);
+            setUserInfo(res.data.data);
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, [])
 
     return (
+        <Link href={`/kurlylog/post/${post.review_id}`} passHref>
         <CardWrapper>
             <div>
                 <CardInfo>
-                    <Title>
-                        망원동 카페 - 티노마드
-                    </Title>
-                    <SubTitle>안녕하세요. 오랜만에 카페 업로드 글로 찾아왔습니다. 이번에 가본 카페는 망원동에 있는 티노마드라는 카페인데요.</SubTitle>
+                    <UserName>{userInfo.nickname}'s 컬리log</UserName>
+                    <Title>{post.title}</Title>
+                    <SubTitle>{post.content}</SubTitle>
                 </CardInfo>
             </div>
             <CardMedia
@@ -22,19 +39,22 @@ const CarouselCard = () => {
                 alt="green iguana"
             />
         </CardWrapper>
+        </Link>
     )
 }
 
 export default CarouselCard;
 
-const CardWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    margin: 10px 0;
-    padding: 2px;
-    display: grid;
-    grid-template-columns: 7fr 3fr;
-`;
+const CardWrapper = materialStyled(CardActionArea)(
+    () => ({
+        width: "100%",
+        height: "100%",
+        margin: "10px 0",
+        padding: "2px",
+        display: "grid",
+        gridTemplateColumns: "7fr 3fr",
+    })
+);
 
 const CardInfo = styled.div`
     width: 100%;
@@ -44,14 +64,22 @@ const CardInfo = styled.div`
     flex-direction: column;
 `;
 
-const Title = styled.div`
-    margin-bottom: 5px;
+const UserName = styled.div`
+    margin-bottom: 15px;
     font-weight: bold;
     color: var(--purple);
 `;
 
+const Title = styled.div`
+    margin-bottom: 5px;
+    color: #aaaaaa;
+    font-weight: bold;
+    font-size: 0.8rem;
+`;
+
 const SubTitle = styled.div`
-    max-height: 35px;
+    max-width: 60vw;
+    max-height: 40px;
     color: #aaaaaa;
     font-size: 0.8rem;
     overflow: hidden;

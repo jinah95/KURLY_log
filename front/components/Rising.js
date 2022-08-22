@@ -1,7 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import RisingReviews from "./RisingReviews";
+import { getPost } from "../api";
+import initialItems from "./mock.json";
 
-const Rising = () => {
+const Rising = ({ firstBoards }) => {
+    const [page, setPage] = useState(1);
+    const [risingState, setRisingState] = useState({
+        items: firstBoards,
+        moreItemsLoading: false,
+        hasNextPage: true,
+    });
+
+    const loadMore = async () => {
+        const per = 2;
+        const res = await getPost(`/logs/pop?page=${page + 1}&perPage=${per}`);
+
+        const newLists = res.data.data;
+
+        if (newLists.length === 0) {
+            return;
+        } else {
+            console.log("여기 온거다");
+            setPage((cur) => cur + 1);
+            setRisingState({ ...risingState, moreItemsLoading: true });
+            const newItems = [...newLists];
+            setRisingState({
+                ...risingState,
+                moreItemsLoading: false,
+                items: [...risingState.items, ...newItems],
+            });
+        }
+    };
+    console.log(risingState.items);
+    useEffect(() => {
+        setPage(1);
+    }, []);
+
+    const { items, moreItemsLoading, hasNextPage } = risingState;
+
     return (
         <Wrapper>
             <Header></Header>
@@ -17,6 +54,14 @@ const Rising = () => {
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <>
+                <RisingReviews
+                    items={items}
+                    moreItemsLoading={moreItemsLoading}
+                    loadMore={loadMore}
+                    hasNextPage={hasNextPage}
+                />
+            </>
         </Wrapper>
     );
 };
@@ -32,7 +77,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 40%;
-    background: url("risingAD.jpg");
+    background: url("/risingAD.jpg");
     background-size: cover;
     color: white;
     display: grid;
@@ -41,7 +86,7 @@ const Header = styled.div`
 `;
 
 const BestKurlioncer = styled.div`
-    margin: 16px 0px;
+    margin: 16px 0;
 `;
 
 const KurlioncerPageMove = styled.a`
@@ -87,3 +132,10 @@ const PageMoveSubTitle = styled.span`
     line-height: 1.29;
     margin-top: 4px;
 `;
+
+// const InfiniteWrapper = styled.div`
+//     ::-webkit-scrollbar {
+//         width: 0;
+//         background: transparent;
+//     }
+// `;

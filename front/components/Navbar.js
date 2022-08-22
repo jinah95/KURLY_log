@@ -1,19 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 import KurlyLogo from "../public/images/KurlyLogo.png";
 import cart from "../public/images/cart.png";
-import spot from "../public/images/spot.png";
+import loginIcon from "../public/images/login.png";
+import logoutIcon from "../public/images/logout.png";
+
+import { UserStateContext, DispatchContext } from "../pages/_app";
 
 const Navbar = () => {
-    const [targetPage, setTargetPage] = useState("market");
-    const [targetTab, setTargetTab] = useState("kurlioncer");
+    const router = useRouter();
+    const productId = router.query?.item;
+    // console.log(productId);
+    const pathQuery = router.pathname.slice(1);
+    // 페이지 새로고침 시 이미지 변경 부분에 대하여
+    const [targetPage, setTargetPage] = useState(
+        pathQuery === "login"
+            ? "login"
+            : !pathQuery
+            ? "market"
+            : pathQuery === "kurlioncer"
+            ? "kurlioncer"
+            : "market"
+    );
+    const [targetTab, setTargetTab] = useState(
+        pathQuery === "kurlioncer" ? "kurlioncer" : "best"
+    );
+    const [login, setLogin] = useState(false);
+
+    const dispatch = useContext(DispatchContext);
+    const userState = useContext(UserStateContext);
+
+    const isLogin = !!userState.user;
+    const userId = userState.user?.userId;
+
+    const logout = () => {
+        // sessionStorage에 저장했던 JWT 토큰 삭제
+        sessionStorage.removeItem("userToken");
+        // dispatch 함수를 이용해 로그아웃함.
+        dispatch({ type: "LOGOUT" });
+        setTargetPage("market");
+    };
 
     return (
         <>
             {" "}
-            <NavWrapper>
+            <NavWrapper targetPage={targetPage}>
                 <TitleDiv>
                     <LogoWrapper>
                         <Image
@@ -30,6 +64,8 @@ const Navbar = () => {
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
+                                setTargetTab("best");
+                                router.push("/");
                             }}
                         >
                             <PageTitle
@@ -46,6 +82,7 @@ const Navbar = () => {
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
+                                router.push("/beauty");
                             }}
                         >
                             <PageTitle
@@ -58,51 +95,144 @@ const Navbar = () => {
                         <WrapLabel
                             color="#fff"
                             htmlFor="review"
-                            id="review"
+                            id="kurlioncer"
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
+                                setTargetTab("kurlioncer");
+                                router.push("/kurlioncer");
                             }}
                         >
                             <PageTitle
                                 type="radio"
                                 value="REVIEW"
-                                id="review"
+                                id="kurlioncer"
                             />
                             컬리로그
                         </WrapLabel>
                         <TapSpan targetPage={targetPage} />
                     </PageTab>
                     <ButtonWrapper>
-                        <Image src={spot} alt="logo" width={25} height={26} />
+                        {!isLogin ? (
+                            <Image
+                                src={loginIcon}
+                                alt="login"
+                                width={25}
+                                height={25}
+                                onClick={() => {
+                                    router.push("/login");
+                                    setTargetPage("login");
+                                }}
+                            />
+                        ) : (
+                            <Image
+                                src={logoutIcon}
+                                alt="logout"
+                                width={25}
+                                height={25}
+                                onClick={() => {
+                                    logout();
+                                    router.push("/");
+                                }}
+                            />
+                        )}
                         <Image src={cart} alt="logo" width={25} height={26} />
                     </ButtonWrapper>
                 </TitleDiv>
-                <MenuNav>
-                    <Link href="/kurlylog" passHref>
-                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
-                            <PageNameSpan id="kurlioncer" targetTab={targetTab}>
-                                컬리 언서
-                            </PageNameSpan>
-                        </PageATag>
-                    </Link>
-                    <Link href="/risingreview" passHref>
-                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
-                            <PageNameSpan id="rising" targetTab={targetTab}>
-                                샛별 리뷰
-                            </PageNameSpan>
-                        </PageATag>
-                    </Link>
-                    <Link href="/myKurly/:id" passHref>
-                        <PageATag onClick={(e) => setTargetTab(e.target.id)}>
-                            <PageNameSpan id="kurlyLog" targetTab={targetTab}>
-                                내 컬리log
-                            </PageNameSpan>
-                        </PageATag>
-                    </Link>
-                </MenuNav>
+                {targetPage !== "login" ? (
+                    <MenuNav targetPage={targetPage}>
+                        <Link
+                            href={
+                                targetPage === "market" &&
+                                pathQuery !== "product/[item]" &&
+                                pathQuery !== "review/[item]"
+                                    ? "/"
+                                    : pathQuery === "product/[item]" ||
+                                      pathQuery === "review/[item]"
+                                    ? `/product/${productId}`
+                                    : "/kurlioncer"
+                            }
+                            passHref
+                        >
+                            <PageATag
+                                onClick={(e) => setTargetTab(e.target.id)}
+                            >
+                                <PageNameSpan
+                                    id={
+                                        targetPage === "market"
+                                            ? "best"
+                                            : "kurlioncer"
+                                    }
+                                    targetTab={targetTab}
+                                >
+                                    {targetPage === "market" &&
+                                    pathQuery !== "product/[item]" &&
+                                    pathQuery !== "review/[item]"
+                                        ? "베스트"
+                                        : pathQuery === "product/[item]" ||
+                                          pathQuery === "review/[item]"
+                                        ? "상품정보"
+                                        : "컬리 언서"}
+                                </PageNameSpan>
+                            </PageATag>
+                        </Link>
+                        <Link
+                            href={
+                                targetPage === "market" &&
+                                pathQuery !== "product/[item]" &&
+                                pathQuery !== "review/[item]"
+                                    ? "/event"
+                                    : pathQuery === "product/[item]" ||
+                                      pathQuery === "review/[item]"
+                                    ? `/review/${productId}`
+                                    : "/risingreview"
+                            }
+                            passHref
+                        >
+                            <PageATag
+                                onClick={(e) => setTargetTab(e.target.id)}
+                            >
+                                <PageNameSpan
+                                    id={
+                                        targetPage === "market"
+                                            ? "event"
+                                            : "rising"
+                                    }
+                                    targetTab={targetTab}
+                                >
+                                    {targetPage === "market" &&
+                                    pathQuery !== "product/[item]" &&
+                                    pathQuery !== "review/[item]"
+                                        ? "이벤트"
+                                        : pathQuery === "product/[item]" ||
+                                          pathQuery === "review/[item]"
+                                        ? "후기"
+                                        : "샛별 리뷰"}
+                                </PageNameSpan>
+                            </PageATag>
+                        </Link>
+                        {targetPage === "market" ? (
+                            <></>
+                        ) : (
+                            <Link href={`/kurlylog/${userId}`} passHref>
+                                <PageATag
+                                    onClick={(e) => setTargetTab(e.target.id)}
+                                >
+                                    <PageNameSpan
+                                        id="kurlyLog"
+                                        targetTab={targetTab}
+                                    >
+                                        내 컬리log
+                                    </PageNameSpan>
+                                </PageATag>
+                            </Link>
+                        )}
+                    </MenuNav>
+                ) : (
+                    <></>
+                )}
             </NavWrapper>
-            <ParDiv></ParDiv>
+            <ParDiv targetPage={targetPage}></ParDiv>
         </>
     );
 };
@@ -111,7 +241,7 @@ export default Navbar;
 
 const NavWrapper = styled.div`
     width: 100%;
-    height: 88px;
+    height: ${(props) => (props.targetPage !== "login" ? "88px" : "44px")};
     position: fixed;
     z-index: 1000;
     box-shadow: rgb(221 221 221) 0px -0.5px 0px 0px inset;
@@ -123,7 +253,7 @@ const NavWrapper = styled.div`
 `;
 const ParDiv = styled.div`
     width: 100%;
-    height: 88px;
+    height: ${(props) => (props.targetPage !== "login" ? "88px" : "44px")};
 `;
 
 const TitleDiv = styled.div`
@@ -145,7 +275,8 @@ const MenuNav = styled.nav`
     height: 44px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: ${(props) =>
+        props.targetPage === "market" ? "space-evenly" : "space-between"};
     align-items: center;
     padding: 0px 1.5rem;
 `;
@@ -168,7 +299,8 @@ const PageTitle = styled.input`
 `;
 
 const TapSpan = styled.span`
-    background-color: rgb(95, 0, 128);
+    background-color: ${(props) =>
+        props.targetPage !== "login" ? "rgb(95, 0, 128)" : ""};
     position: absolute;
     width: 80px;
     height: 28px;

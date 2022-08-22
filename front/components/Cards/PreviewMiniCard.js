@@ -1,13 +1,15 @@
 import React from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 
-const PreviewMiniCard = () => {
+const PreviewMiniCard = ({ post }) => {
 
     return (
+        <Link href={`/kurlylog/post/${post.review_id}`} passHref>
         <CardWrapper>
             <CardActionArea>
                 <CardMedia
@@ -17,25 +19,26 @@ const PreviewMiniCard = () => {
                     alt="green iguana"
                 />
                 <CardInfo>
-                    <Title>
-                        망원동 카페 - 티노마드티노티노
-                    </Title>
+                    <Title>{post.title}</Title>
                     <SubTitle>기타</SubTitle>
                 </CardInfo>
             </CardActionArea>
         </CardWrapper>
+        </Link>
     )
-
 }
 
 export default PreviewMiniCard;
 
-const CardWrapper = materialStyled(Card)(() => ({
-    width: "150px",
-    height: "200px",
-    marginRight: "10px", 
-    display: "inline-block",
-}));
+const CardWrapper = materialStyled(Card)(
+    () => ({
+        width: "150px",
+        height: "200px",
+        marginRight: "10px", 
+        display: "inline-block",
+    })
+);
+
 
 const CardInfo = styled.div`
     width: 100%;

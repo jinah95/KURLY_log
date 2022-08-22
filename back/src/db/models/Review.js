@@ -56,7 +56,7 @@ const Review = {
     return reviews;
   },
 
-  findByUser: async (userId) => {
+  findByUser: async ({ userId, page, perPage }) => {
     const logs = await reviewModel.findAll({
       attributes: {
         include: [
@@ -83,82 +83,61 @@ const Review = {
         ["created_at", "DESC"],
       ],
       group: ["reviews.review_id"],
-    });
-    return logs;
-  },
-
-  findByGradeNoPage: async ({ grade, sevenDaysAgo }) => {
-    let bestLogs = await reviewModel.findAll({
-      attributes: [
-        "like.like_id",
-        [sequelize.fn("count", sequelize.col("like")), "likesCount"],
-      ],
-      include: [
-        {
-          model: likeModel,
-          as: "like",
-          attributes: ["like_id", [sequelize.fn("count", "like_id"), "test"]],
-          group: ["like"],
-          raw: true,
-        },
-      ],
-      group: ["reviews.review_id", "like"],
-    });
-
-    return bestLogs;
-  },
-
-  findByGrade: async ({ grade, sevenDaysAgo, page, perPage }) => {
-    let bestLogs = await reviewModel.findAll({
-      attributes: {
-        include: [
-          [
-            sequelize.fn("COUNT", sequelize.col("like.review_id")),
-            "likesCount",
-          ],
-        ],
-      },
-      include: [
-        {
-          model: userModel,
-          as: "user",
-          attributes: { exclude: ["password", "register_date", "last_login"] },
-          where: { grade },
-        },
-        {
-          model: productModel,
-          as: "product",
-          attributes: ["detail"],
-        },
-        {
-          model: likeModel,
-          as: "like",
-          attributes: [],
-          where: {
-            created_at: {
-              [Op.gte]: sevenDaysAgo,
-            },
-          },
-          group: ["review_id"],
-          required: false,
-        },
-      ],
-      order: [
-        ["likesCount", "DESC"],
-        ["created_at", "DESC"],
-      ],
-      group: [
-        "reviews.review_id",
-        "user.user_id",
-        "like.like_id",
-        "product.product_id",
-      ],
       limit: perPage,
       offset: perPage * (page - 1),
       subQuery: false,
     });
+    return logs;
+  },
 
-    return bestLogs;
+  getBestLogs: async ({ grade, sevenDaysAgo }) => {
+    let bestLogs = await sequelize.query(`
+      select r.review_id , r.product_id , r.user_id , r.score, 
+      r.good, r.bad, r.title, r.image, r."content" , r.created_at,
+      coalesce(countLikes,0) as countLikes, u.nickname, u.picture, u.grade, u.age, u.family, 
+      u.intro, p.detail 
+      from reviews r 
+      left join (select review_id, count(like_id) as countLikes
+      from likes
+      where created_at > now() - interval '7 day'
+      group by review_id) l
+      on r.review_id = l.review_id
+      join (select *
+      from users u 
+      where grade='컬리언서') u
+      on r.user_id = u.user_id
+      left join (select product_id, detail from products p) p
+      on r.product_id = p.product_id
+      order by countLikes desc, r.created_at desc
+      limit 5;
+    `);
+
+    return bestLogs[0];
+  },
+
+  getMoreLogs: async ({ grade, sevenDaysAgo, page, perPage }) => {
+    let bestLogs = await sequelize.query(`
+      select r.review_id , r.product_id , r.user_id , r.score, 
+      r.good, r.bad, r.title, r.image, r."content" , r.created_at,
+      coalesce(countLikes,0) as countLikes, u.nickname, u.picture, u.grade, u.age, u.family, 
+      u.intro, p.detail 
+      from reviews r 
+      left join (select review_id, count(like_id) as countLikes
+      from likes
+      where created_at > now() - interval '7 day'
+      group by review_id) l
+      on r.review_id = l.review_id
+      join (select *
+      from users u 
+      where grade='${grade}') u
+      on r.user_id = u.user_id
+      left join (select product_id, detail from products p) p
+      on r.product_id = p.product_id
+      order by countLikes desc, r.created_at desc
+      limit ${perPage} offset ${perPage * (page - 1)};
+    `);
+
+    return bestLogs[0];
   },
 
   getLog: async ({ reviewId }) => {

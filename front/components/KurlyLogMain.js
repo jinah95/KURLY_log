@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import Kurlioncer from "./kurlioncer";
+import KurlioncerReviews from "./KurlioncerReviews";
+import Footer from "./Footer";
 
-const KurlyLog = () => {
+const KurlyLogMain = () => {
     return (
         <Wrapper>
+            <Header></Header>
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
@@ -17,6 +21,7 @@ const KurlyLog = () => {
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <Kurlioncer />
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
@@ -30,16 +35,29 @@ const KurlyLog = () => {
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <KurlioncerReviews />
+            <Footer />
         </Wrapper>
     );
 };
 
-export default KurlyLog;
+export default KurlyLogMain;
 
 const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+`;
+
+const Header = styled.div`
+    width: 100%;
+    height: 20%;
+    background: url("/Kurlylogbanner.jpg");
+    background-size: cover;
+    color: white;
+    display: grid;
+    grid-template-rows: 8fr 2fr;
+    padding: 0 20px;
 `;
 
 const BestKurlioncer = styled.div`

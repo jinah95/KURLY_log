@@ -1,21 +1,82 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
+import { TextField, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
+import { post } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
-const KurlyLogWrite = ({ setWrite }) => {
+const KurlyLogWrite = ({ setWrite, userId, productId }) => {
+    const viewContainerRef = useRef(null);
+    const router = useRouter();
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState('');
-    const viewContainerRef = useRef(null);
+    const [productInfo, setProductInfo] = useState({});
+    const [kurlyLog, setKurlyLog] = useState({
+        score: 0,
+        good : "",
+        bad : "",
+        title : "",
+        image : "",
+        content : "",
+    });
+
+    const changeKurlyLog = (key, value) => {
+        setKurlyLog((current) => {
+            let newKurlyLog = { ...current };
+            newKurlyLog[key] = value;
+            return newKurlyLog;
+        });
+    };
+
+    const getProductInfo = async () => {
+        try {
+            const res = await get("/goods/", productId);
+            setProductInfo(res.data.data);
+            // console.log(res.data)
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
 
     const uploadPost = () => {
         // 게시물 작성 한 것 업로드 구현
+        changeKurlyLog("content", htmlStr);
+        const postkurlyLog = async () => {
+            try {
+                // 입력한 내용이 없을 경우
+                if (kurlyLog.title === "" || kurlyLog.content === "") {
+                    return;
+                } else {
+                    const res = await post(`/logs/${productId}`, kurlyLog);
+                    console.log(res.data)
+                }
+            } catch (err) {
+                console.error("error message: ", err);
+            }
+        };
+
+        // 글쓰기 완료
+        // setWrite(false);
+
+        // 포스트 보기 
+        router.push(
+            {
+                pathname: `/kurlyLog/${productId}`,
+                query: {
+                    productId,
+                },
+            },
+        );
     }
 
     useEffect(() => {
+        getProductInfo();
         if (viewContainerRef.current) {
             viewContainerRef.current.innerHTML += htmlStr;
         }
@@ -36,7 +97,50 @@ const KurlyLogWrite = ({ setWrite }) => {
                 </div>
             ) : (
                 <div>
-                    <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                    <WriteWrapper>
+                        <Product>상품이름/사진 {productId}에 대해서..</Product>
+                        <Line />
+                        <ReviewWrapper>
+                            <h3>상품은 만족하셨나요?</h3>
+                            <div>
+                                <Image
+                                    src={plusStar}
+                                    alt="plusStar"
+                                    width={30}
+                                    height={30}
+                                />
+                            </div>
+                            <ReviewSummary>
+                                <div>
+                                    <Badge reviewType="good">👍</Badge>
+                                    좋았어요
+                                </div>
+                                <Review
+                                    placeholder="좋았던 점을 적어주세요!"
+                                    value={kurlyLog.good}
+                                    onChange={(e) => changeKurlyLog("good", e.target.value)}
+                                />
+                            </ReviewSummary>
+                            <ReviewSummary>
+                                <div>
+                                    <Badge reviewType="bad">👎</Badge>
+                                    별로에요
+                                </div>
+                                <Review
+                                    placeholder="개선하면 좋을 점을 적어주세요!"
+                                    value={kurlyLog.bad}
+                                    onChange={(e) => changeKurlyLog("bad", e.target.value)}
+                                />
+                            </ReviewSummary>
+                        </ReviewWrapper>
+                        <Line />
+                        <Title
+                            placeholder="제목을 입력해주세요."
+                            value={kurlyLog.title}
+                            onChange={(e) => changeKurlyLog("title", e.target.value)}
+                        />
+                        <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                    </WriteWrapper>
                     <ButtonWrapper>
                         <PreviewButton onClick={() => setPreview(true)}>
                             미리보기
@@ -81,6 +185,67 @@ const ViewContainer = styled.div`
         margin: 0 10px;
     }
 `;
+
+const WriteWrapper = styled.div`
+    width: 100%;
+    height: auto;
+`;
+
+const Product = styled.div`
+    width: 100%;
+    height: 70px;
+`;
+
+const ReviewWrapper = styled.div`
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+`;
+
+const ReviewSummary = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weigth: bold;
+    color: #525252;
+    text-align: center;
+    margin: 5px auto;
+`;
+
+const Badge = styled.div`
+    width: 45px;
+    height: 40px;
+    text-align: center;
+    line-height: 38px;
+    background-color: ${(props) =>
+        props.reviewType === "good" ? "#5f0080" : "#fff"};
+    border: ${(props) =>
+        props.reviewType === "good" ? "" : "1.5px solid black"};
+    border-radius: 50px;
+    margin: 0 10px 0 15px;
+`;
+
+const Review = materialStyled(TextField)(
+    () => ({
+        width: "70vw",
+        '.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: "none",
+        }
+    })
+);
+
+const Title = materialStyled(TextField)(
+    () => ({
+        width: "100%",
+        '.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: "none",
+        }
+    })
+);
 
 const ButtonWrapper = styled.div`
     width: 100%;
@@ -127,3 +292,10 @@ const ConfirmButton = materialStyled(Button)(
         }
     })
 );
+
+const Line = styled.div`
+    width: 100%;
+    background-color: #e2e2e2;
+    height: 1px;
+    margin: 10px auto;
+`;
