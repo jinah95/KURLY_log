@@ -12,16 +12,18 @@ import { UserStateContext, DispatchContext } from "../pages/_app";
 
 const Navbar = () => {
     const router = useRouter();
-    const dispatch = useContext(DispatchContext);
+    const productId = router.query?.item;
+    // console.log(productId);
+    const pathQuery = router.pathname.slice(1);
+    // 페이지 새로고침 시 이미지 변경 부분에 대하여
     const [targetPage, setTargetPage] = useState(
         pathQuery !== "login" ? "market" : "login"
     );
     const [targetTab, setTargetTab] = useState("best");
     const [login, setLogin] = useState(false);
-    const productId = router.query?.item;
-    // console.log(productId);
-    const pathQuery = router.pathname.slice(1);
-    // 페이지 새로고침 시 이미지 변경 부분에 대하여
+    console.log(targetPage);
+
+    const dispatch = useContext(DispatchContext);
     const userState = useContext(UserStateContext);
 
     const isLogin = !!userState.user;
@@ -31,6 +33,7 @@ const Navbar = () => {
         sessionStorage.removeItem("userToken");
         // dispatch 함수를 이용해 로그아웃함.
         dispatch({ type: "LOGOUT" });
+        setTargetPage("market");
     };
 
     return (
@@ -119,7 +122,10 @@ const Navbar = () => {
                                 alt="logout"
                                 width={25}
                                 height={25}
-                                onClick={logout}
+                                onClick={() => {
+                                    logout();
+                                    router.push("/");
+                                }}
                             />
                         )}
                         <Image src={cart} alt="logo" width={25} height={26} />
