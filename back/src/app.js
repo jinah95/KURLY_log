@@ -6,6 +6,7 @@ import { reviewRouter } from "./routers/reviewRouter.js";
 import { followRouter } from "./routers/followRouter.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { likeRouter } from "./routers/likeRouter.js";
+import { imgUploadRouter } from "./routers/imgUploadRouter.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(userRouter);
 app.use("/logs", reviewRouter);
 app.use("/follows", followRouter);
 app.use("/likes", likeRouter);
+app.use("/upload", imgUploadRouter);
 
 app.use(errorMiddleware);
 
