@@ -9,12 +9,16 @@ import {
 const reviewRouter = Router();
 
 // 상품의 리뷰전체 가져오기
-
 reviewRouter.get("/goods/:productId", async (req, res, next) => {
   try {
     const productId = req.params.productId;
-
-    const reviews = await ReviewService.getReviews(productId);
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const reviews = await ReviewService.getReviews({
+      productId,
+      page,
+      perPage,
+    });
 
     res.status(200).json(reviews);
   } catch (error) {

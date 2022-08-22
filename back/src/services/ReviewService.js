@@ -6,7 +6,7 @@ import setUtil from "../utils/setUtil";
 
 const ReviewService = {
   // 상품의 리뷰전체 가져오기
-  getReviews: async (productId) => {
+  getReviews: async ({ productId, page, perPage }) => {
     const product = await Product.findById(productId);
 
     if (!product) {
@@ -14,11 +14,10 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    const reviews = await Review.findByProduct(productId);
+    const reviews = await Review.findByProduct({ productId, page, perPage });
 
     if (!reviews || !reviews.length) {
       const errorMessage = "해당 상품에 리뷰가 없습니다.";
-
       return { message: "fail", data: errorMessage };
     }
 
@@ -47,7 +46,6 @@ const ReviewService = {
     }
 
     const toUpdate = setUtil.compareValues(updateData, review);
-
     const result = await Review.update({ reviewId, toUpdate });
 
     return { message: "success", data: result };
@@ -118,10 +116,11 @@ const ReviewService = {
     const grade = "컬리언서";
     const page = 1;
     const perPage = 5;
+
     const countLikes = await Like.countByReview();
     const logs = await Review.getBestLogs({ grade, countLikes, page, perPage });
-
     const result = await ReviewService.addLikeCounts({ logs, countLikes });
+
     return { message: "success", data: result };
   },
 
@@ -130,9 +129,11 @@ const ReviewService = {
     const grade = "컬리언서";
     const page = 1;
     const perPage = 15;
+
     const countLikes = await Like.countByReview();
     const logs = await Review.getBestLogs({ grade, countLikes, page, perPage });
     const result = await ReviewService.addLikeCounts({ logs, countLikes });
+
     return { message: "success", data: result };
   },
 
@@ -140,6 +141,7 @@ const ReviewService = {
   getPopularLogs: async ({ page, perPage }) => {
     const grade = "샛별";
     const countLikes = await Like.countByReview();
+
     const logs = await Review.getBestLogs({ grade, countLikes, page, perPage });
 
     return { message: "success", data: logs };

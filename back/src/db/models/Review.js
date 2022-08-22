@@ -51,11 +51,13 @@ const Review = {
     return count;
   },
 
-  findByProduct: async (productId) => {
+  findByProduct: async ({ productId, page, perPage }) => {
     const reviews = await reviewModel.findAll({
       where: {
         product_id: productId,
       },
+      limit: perPage,
+      offset: perPage * (page - 1),
     });
     return reviews;
   },
