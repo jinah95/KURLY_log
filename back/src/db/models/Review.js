@@ -155,6 +155,11 @@ const Review = {
           where: { grade },
         },
         {
+          model: productModel,
+          as: "product",
+          attributes: ["detail"],
+        },
+        {
           model: likeModel,
           as: "like",
           attributes: [],
@@ -171,7 +176,12 @@ const Review = {
         ["likesCount", "DESC"],
         ["created_at", "DESC"],
       ],
-      group: ["reviews.review_id", "user.user_id", "like.like_id"],
+      group: [
+        "reviews.review_id",
+        "user.user_id",
+        "like.like_id",
+        "product.product_id",
+      ],
       limit: perPage,
       offset: perPage * (page - 1),
       subQuery: false,
