@@ -2,6 +2,7 @@ import db from "..";
 const reviewModel = db.review;
 const userModel = db.user;
 const likeModel = db.like;
+const productModel = db.product;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
@@ -12,15 +13,6 @@ const Review = {
       where: { review_id: reviewId },
     });
     return review;
-  },
-
-  findAll: async (productId) => {
-    const reviews = await reviewModel.findAll({
-      where: {
-        product_id: productId,
-      },
-    });
-    return reviews;
   },
 
   create: async ({ newReview }) => {
@@ -43,11 +35,6 @@ const Review = {
         review_id: reviewId,
       },
     });
-    await likeModel.destroy({
-      where: {
-        review_id: reviewId,
-      },
-    });
 
     return deletedReview;
   },
@@ -57,52 +44,154 @@ const Review = {
     return count;
   },
 
-  findByProduct: async (productId) => {
+  findByProduct: async ({ productId, page, perPage }) => {
     const reviews = await reviewModel.findAll({
       where: {
         product_id: productId,
       },
+      order: [["created_at", "DESC"]],
+      limit: perPage,
+      offset: perPage * (page - 1),
     });
     return reviews;
   },
 
   findByUser: async (userId) => {
     const logs = await reviewModel.findAll({
+      attributes: {
+        include: [
+          [
+            sequelize.fn("COUNT", sequelize.col("like.review_id")),
+            "likesCount",
+          ],
+        ],
+      },
+      include: [
+        {
+          model: likeModel,
+          as: "like",
+          attributes: [],
+          group: ["review_id"],
+          required: false,
+        },
+      ],
       where: {
         user_id: userId,
       },
+      order: [
+        ["likesCount", "DESC"],
+        ["created_at", "DESC"],
+      ],
+      group: ["reviews.review_id"],
     });
     return logs;
   },
 
-  findById: async (reviewId) => {
-    const review = await reviewModel.findOne({
-      where: { review_id: reviewId },
+  findByGradeNoPage: async ({ grade, sevenDaysAgo }) => {
+    let bestLogs = await reviewModel.findAll({
+      attributes: {
+        include: [
+          [
+            sequelize.fn("COUNT", sequelize.col("like.review_id")),
+            "likesCount",
+          ],
+        ],
+      },
+      include: [
+        {
+          model: userModel,
+          as: "user",
+          attributes: { exclude: ["password", "register_date", "last_login"] },
+          where: { grade },
+        },
+        {
+          model: productModel,
+          as: "product",
+          attributes: ["detail"],
+        },
+        {
+          model: likeModel,
+          as: "like",
+          attributes: [],
+          where: {
+            created_at: {
+              [Op.gte]: sevenDaysAgo,
+            },
+          },
+          group: ["review_id"],
+          required: false,
+        },
+      ],
+      order: [
+        ["likesCount", "DESC"],
+        ["created_at", "DESC"],
+      ],
+      group: [
+        "reviews.review_id",
+        "user.user_id",
+        "like.like_id",
+        "product.product_id",
+      ],
     });
-    return review;
+
+    return bestLogs;
   },
 
-  getBestLogs: async ({ grade }) => {
-    let now = new Date();
-    const day = now.getDate();
-    // const hour = now.getHours();
-    // const oneHourAgo = new Date(new Date().setHours(hour - 1));
-
-    const sevenDaysAgo = new Date(new Date().setDate(day - 7));
-    const countLikes = await likeModel.findAll({
-      group: ["review_id"],
-      attributes: [
-        "review_id",
-        [sequelize.fn("COUNT", sequelize.col("*")), "count"],
-      ],
-      where: {
-        created_at: {
-          [Op.gte]: sevenDaysAgo,
-        },
+  findByGrade: async ({ grade, sevenDaysAgo, page, perPage }) => {
+    let bestLogs = await reviewModel.findAll({
+      attributes: {
+        include: [
+          [
+            sequelize.fn("COUNT", sequelize.col("like.review_id")),
+            "likesCount",
+          ],
+        ],
       },
+      include: [
+        {
+          model: userModel,
+          as: "user",
+          attributes: { exclude: ["password", "register_date", "last_login"] },
+          where: { grade },
+        },
+        {
+          model: productModel,
+          as: "product",
+          attributes: ["detail"],
+        },
+        {
+          model: likeModel,
+          as: "like",
+          attributes: [],
+          where: {
+            created_at: {
+              [Op.gte]: sevenDaysAgo,
+            },
+          },
+          group: ["review_id"],
+          required: false,
+        },
+      ],
+      order: [
+        ["likesCount", "DESC"],
+        ["created_at", "DESC"],
+      ],
+      group: [
+        "reviews.review_id",
+        "user.user_id",
+        "like.like_id",
+        "product.product_id",
+      ],
+      limit: perPage,
+      offset: perPage * (page - 1),
+      subQuery: false,
     });
 
-    let bestLogs = await reviewModel.findAll({
+    return bestLogs;
+  },
+
+  getLogs: async ({ grade, perPage }) => {
+    const logs = await reviewModel.findAll({
       include: [
         {
           model: userModel,
@@ -111,25 +200,10 @@ const Review = {
           where: { grade },
         },
       ],
+      order: [["created_at", "DESC"]],
+      limit: perPage,
     });
-
-    let result = bestLogs.map((review) => {
-      const count = countLikes.filter(
-        (obj) => review.review_id === obj.dataValues.review_id
-      );
-
-      try {
-        review.dataValues.countLikes = count[0].dataValues.count;
-      } catch {
-        review.dataValues.countLikes = 0;
-      }
-      return review;
-    });
-
-    result = result.sort((a, b) => {
-      return b.dataValues.countLikes - a.dataValues.countLikes;
-    });
-    return result;
+    return logs;
   },
 };
 

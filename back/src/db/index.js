@@ -38,4 +38,14 @@ db.review.belongsTo(db.user, {
 
 db.review.hasMany(db.like, { foreignKey: "review_id", as: "like" });
 db.like.belongsTo(db.review, { foreignKey: "review_id", as: "review" });
+
+db.product.hasMany(db.review, {
+  foreignKey: "product_id",
+  as: "review",
+});
+db.review.belongsTo(db.product, {
+  foreignKey: "product_id",
+  as: "product",
+});
+
 export default db;
