@@ -11,11 +11,11 @@ const Content = ({ data }) => {
 
     const getMorePost = async () => {
         try {
-            const res = await get("/logs/user/", id);
+            const res = await get("/logs/my-log");
             // const res = await fetch(
             //     `https://jsonplaceholder.typicode.com/todos?_start=${posts.length}&_limit=10`
             // );
-            const newPosts = res.data.data
+            const newPosts = res.data.data.logs;
             setPosts((post) => [...post, ...newPosts]);
         } catch (err) {
             console.error("error message: ", err);
