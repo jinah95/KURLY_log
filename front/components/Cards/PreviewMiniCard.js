@@ -9,7 +9,7 @@ import { CardActionArea } from '@mui/material';
 const PreviewMiniCard = ({ post }) => {
 
     return (
-        <Link href={`/kurlylog/${post.review_id}`} passHref>
+        <Link href={`/kurlylog/post/${post.review_id}`} passHref>
         <CardWrapper>
             <CardActionArea>
                 <CardMedia
