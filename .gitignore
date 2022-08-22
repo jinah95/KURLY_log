@@ -4,4 +4,5 @@ logs/
 *.log
 migrations/
 seeders/
+models/
 back/config/
