@@ -9,8 +9,9 @@ import "slick-carousel/slick/slick-theme.css"
 import { get } from "../api";
 
 // user+productId에 대한 컬리log(게시글) 불러오기
-const KurlyLogPost = ({ user, prouctId }) => {
+const KurlyLogPost = ({ userId, prouctId }) => {
     const [userInfo, setUserInfo] = useState({})
+    const [postInfo, setPostInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])
 
     const settings = {
@@ -22,9 +23,6 @@ const KurlyLogPost = ({ user, prouctId }) => {
         autoplay: true
     };
 
-    // 테스트용
-    const userId = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
-
     const getUserInfo = async () => {
         try {
             const res = await get("/users/", userId);
@@ -34,6 +32,17 @@ const KurlyLogPost = ({ user, prouctId }) => {
             console.error("error message: ", err);
         }
     };
+
+    // const getPostInfo = async () => {
+    //     try {
+    //         const res = await get("/logs/", userId);
+    //         // getPost(`post/list?page=${page + 1}&perPage=${per}`);
+    //         setUserInfo(res.data.data);
+    //         // console.log(res.data)
+    //     } catch (err) {
+    //         console.error("error message: ", err);
+    //     }
+    // };
 
     const getOtherPosts = async () => {
         try {
