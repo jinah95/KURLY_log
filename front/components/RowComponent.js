@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import styled from "styled-components";
+import plusStar from "../public/plusStar.png";
 
 const Loader = ({ style }) => (
     <div style={style} className="list-group-loader">
-        <div className="loader"></div>
+        <div className="loader">컨텐츠가 더이상 없습니다.</div>
     </div>
 );
 
@@ -17,12 +18,7 @@ const Item = ({ image, num, style, loading }) => (
         <ProductTitle>{`[비비고] 교자 왕만두 500g`}</ProductTitle>
         <ContentsWrapper>
             <div className="avatar">
-                <Image
-                    src={image ? image : "#"}
-                    alt="product"
-                    width={80}
-                    height={90}
-                />
+                <Image src={plusStar} alt="product" width={80} height={90} />
             </div>
             <ReviewsContents>
                 안녕하세요 행복한미어캣 입니다. 비비고 왕교자를 활용한 다양한
