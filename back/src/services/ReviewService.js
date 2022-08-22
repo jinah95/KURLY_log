@@ -1,11 +1,12 @@
 import { Review } from "../db/models/Review";
 import { Product } from "../db/models/Product";
 import { User } from "../db/models/User";
+import { Like } from "../db/models/Like";
 import setUtil from "../utils/setUtil";
 
 const ReviewService = {
   // 상품의 리뷰전체 가져오기
-  getReviews: async (productId) => {
+  getReviews: async ({ productId, page, perPage }) => {
     const product = await Product.findById(productId);
 
     if (!product) {
@@ -13,11 +14,10 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    const reviews = await Review.findByProduct(productId);
+    const reviews = await Review.findByProduct({ productId, page, perPage });
 
     if (!reviews || !reviews.length) {
       const errorMessage = "해당 상품에 리뷰가 없습니다.";
-
       return { message: "fail", data: errorMessage };
     }
 
@@ -46,7 +46,6 @@ const ReviewService = {
     }
 
     const toUpdate = setUtil.compareValues(updateData, review);
-
     const result = await Review.update({ reviewId, toUpdate });
 
     return { message: "success", data: result };
@@ -67,6 +66,7 @@ const ReviewService = {
     }
 
     const result = await Review.delete({ reviewId });
+    await Like.deleteByReview({ reviewId });
     return { message: "success", data: result };
   },
 
@@ -79,36 +79,86 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    const logs = await Review.findByUser(userId);
+    let logs = await Review.findByUser(userId);
 
     if (!logs || !logs.length) {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
       return { message: "fail", data: errorMessage };
     }
 
-    return { message: "success", data: logs };
+    const result = {
+      logs,
+      bestLogs: logs.slice(0, 3),
+    };
+    return { message: "success", data: result };
+  },
+
+  // 리뷰데이터에 좋아요수 추가하기
+  addLikeCounts: async ({ logs, countLikes }) => {
+    let result = logs.map((review) => {
+      const count = countLikes.filter(
+        (obj) => review.review_id === obj.review_id
+      );
+
+      try {
+        review.dataValues.countLikes = count[0].dataValues.count;
+      } catch {
+        review.dataValues.countLikes = 0;
+      }
+      return review;
+    });
+
+    result = result.sort(
+      (a, b) =>
+        b.dataValues.countLikes - a.dataValues.countLikes ||
+        b.dataValues.created_at - a.dataValues.created_at
+    );
+    return result;
+  },
+
+  getDate: () => {
+    let now = new Date();
+    const day = now.getDate();
+    const sevenDaysAgo = new Date(new Date().setDate(day - 7));
+    return sevenDaysAgo;
   },
 
   // best 컬리언서 리뷰 조회하기
   getBestLogs: async () => {
     const grade = "컬리언서";
-    const logs = await Review.getBestLogs({ grade });
+    const sevenDaysAgo = ReviewService.getDate();
 
-    return { message: "success", data: logs.slice(0, 3) };
+    const bestLogs = await Review.findByGradeNoPage({ grade, sevenDaysAgo });
+
+    return { message: "success", data: bestLogs.slice(0, 5) };
   },
 
   // best 컬리언서 리뷰 더보기
-  getMoreLogs: async () => {
+  getMoreLogs: async ({ page, perPage }) => {
     const grade = "컬리언서";
-    const logs = await Review.getBestLogs({ grade });
+    const sevenDaysAgo = ReviewService.getDate();
 
-    return { message: "success", data: logs.slice(0, 15) };
+    const logs = await Review.findByGrade({
+      grade,
+      sevenDaysAgo,
+      page,
+      perPage,
+    });
+
+    return { message: "success", data: logs };
   },
 
   // 샛별 리뷰 목록 조회하기
-  getPopularLogs: async () => {
+  getPopularLogs: async ({ page, perPage }) => {
     const grade = "샛별";
-    const logs = await Review.getBestLogs({ grade });
+    const sevenDaysAgo = ReviewService.getDate();
+
+    const logs = await Review.findByGrade({
+      grade,
+      sevenDaysAgo,
+      page,
+      perPage,
+    });
 
     return { message: "success", data: logs };
   },

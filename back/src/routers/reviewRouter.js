@@ -9,12 +9,16 @@ import {
 const reviewRouter = Router();
 
 // 상품의 리뷰전체 가져오기
-
 reviewRouter.get("/goods/:productId", async (req, res, next) => {
   try {
     const productId = req.params.productId;
-
-    const reviews = await ReviewService.getReviews(productId);
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const reviews = await ReviewService.getReviews({
+      productId,
+      page,
+      perPage,
+    });
 
     res.status(200).json(reviews);
   } catch (error) {
@@ -93,7 +97,6 @@ reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const reviewId = req.params.reviewId;
-
     const result = await ReviewService.deleteLog({ userId, reviewId });
 
     res.status(200).json(result);
@@ -106,7 +109,18 @@ reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
 reviewRouter.get("/user/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
+    const logs = await ReviewService.getLogs(userId);
 
+    res.status(200).json(logs);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 내 컬리로그 조회하기
+reviewRouter.get("/my-log", loginRequired, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
     const logs = await ReviewService.getLogs(userId);
 
     res.status(200).json(logs);
@@ -129,7 +143,9 @@ reviewRouter.get("/", async (req, res, next) => {
 // best 컬리언서 리뷰 더보기
 reviewRouter.get("/more", async (req, res, next) => {
   try {
-    const logs = await ReviewService.getMoreLogs();
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const logs = await ReviewService.getMoreLogs({ page, perPage });
 
     res.status(200).json(logs);
   } catch (error) {
@@ -140,7 +156,9 @@ reviewRouter.get("/more", async (req, res, next) => {
 // 샛별 리뷰 목록 조회하기
 reviewRouter.get("/pop", async (req, res, next) => {
   try {
-    const logs = await ReviewService.getPopularLogs();
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const logs = await ReviewService.getPopularLogs({ page, perPage });
 
     res.status(200).json(logs);
   } catch (error) {
