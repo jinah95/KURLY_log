@@ -2,6 +2,7 @@ import db from "..";
 const reviewModel = db.review;
 const userModel = db.user;
 const likeModel = db.like;
+const productModel = db.product;
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
@@ -104,6 +105,11 @@ const Review = {
           where: { grade },
         },
         {
+          model: productModel,
+          as: "product",
+          attributes: ["detail"],
+        },
+        {
           model: likeModel,
           as: "like",
           attributes: [],
@@ -120,7 +126,12 @@ const Review = {
         ["likesCount", "DESC"],
         ["created_at", "DESC"],
       ],
-      group: ["reviews.review_id", "user.user_id", "like.like_id"],
+      group: [
+        "reviews.review_id",
+        "user.user_id",
+        "like.like_id",
+        "product.product_id",
+      ],
     });
 
     return bestLogs;
