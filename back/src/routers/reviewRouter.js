@@ -166,7 +166,6 @@ reviewRouter.get("/pop", async (req, res, next) => {
   try {
     const page = req.query.page;
     const perPage = req.query.perPage;
-    console.log(page, perPage);
     const logs = await ReviewService.getPopularLogs({ page, perPage });
 
     res.status(200).json(logs);
