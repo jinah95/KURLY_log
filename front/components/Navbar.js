@@ -34,6 +34,7 @@ const Navbar = () => {
     const userState = useContext(UserStateContext);
 
     const isLogin = !!userState.user;
+    const userId = userState.user?.userId;
 
     const logout = () => {
         // sessionStorage에 저장했던 JWT 토큰 삭제
@@ -213,7 +214,7 @@ const Navbar = () => {
                         {targetPage === "market" ? (
                             <></>
                         ) : (
-                            <Link href="/myKurly/:id" passHref>
+                            <Link href={`/kurlylog/${userId}`} passHref>
                                 <PageATag
                                     onClick={(e) => setTargetTab(e.target.id)}
                                 >

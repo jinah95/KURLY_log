@@ -9,41 +9,42 @@ import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import Content from "./Content";
 import { get } from "../api";
 
-const MyKurly = () => {
+const MyKurly = ({ userId }) => {
     const [write, setWrite] = useState(false);
     const [user, setUser] = useState({})
     const [posts, setPosts] = useState([])
     const [bestPosts, setBestPosts] = useState([])
 
-    // 유저 받아오기 테스트용
-    const id = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
+    // 글씌기 테스트용
+    // const userId = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
+    const productId = "1006";
 
+    // 유저 조회
     const getUserInfo = async () => {
         try {
-            const res = await get("/users/", id);
+            const res = await get("/users/", userId);
             setUser(res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }
     };
 
+    // 유저의 컬리로그 인기글
     const getBestPosts = async () => {
         try {
-            // endPoint 수정하기
-            const res = await get("/logs/user/", id);
-            setBestPosts(res.data.data);
-            // console.log(res.data)
+            const res = await get("/logs/my-log");
+            setBestPosts(res.data.data.bestLogs);
         } catch (err) {
             console.error("error message: ", err);
         }
     };
 
+    // 유저의 컬리로그 전체글 (무한스크롤 구현하기)
     const getPosts = async () => {
         try {
-            // 범위 정해서 받아오기
-            const res = await get("/logs/user/", id);
-            setPosts(res.data.data);
-            // console.log(res.data.data)
+            const res = await get("/logs/my-log");
+            setPosts(res.data.data.logs);
+            // console.log(res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -59,7 +60,7 @@ const MyKurly = () => {
         <Wrapper>
         {
             write ? (
-                <KurlyLogWrite setWrite={setWrite} />
+                <KurlyLogWrite setWrite={setWrite} userId={userId} productId={productId} />
             ) : (
                 <div>
                     <Header>
@@ -95,7 +96,7 @@ const MyKurly = () => {
                         <Title>인기글</Title>
                         <CardView>
                         {
-                            bestPosts.map((post, index) => (
+                            bestPosts?.map((post, index) => (
                                 <PreviewMiniCard 
                                     key={index}
                                     post={post} 

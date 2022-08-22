@@ -5,41 +5,58 @@ import plusStar from "../public/plusStar.png";
 
 const Loader = ({ style }) => (
     <div style={style} className="list-group-loader">
-        <div className="loader">컨텐츠가 더이상 없습니다.</div>
+        <FinalWrapper className="loader">
+            컨텐츠가 더이상 없습니다.
+            <div onClick={() => window.scrollTo(0, 0)}>👆click!👆</div>
+        </FinalWrapper>
     </div>
 );
 
-const Item = ({ image, num, style, loading }) => (
-    <CardWrapper style={{ ...style, width: "99.89%" }}>
-        <TitleWrapper>
-            <KurlyLogTitle>행복한미어캣's 컬리log</KurlyLogTitle>
-            <KurlyClass>샛별</KurlyClass>
-        </TitleWrapper>
-        <ProductTitle>{`[비비고] 교자 왕만두 500g`}</ProductTitle>
-        <ContentsWrapper>
-            <div className="avatar">
-                <Image src={plusStar} alt="product" width={80} height={90} />
-            </div>
-            <ReviewsContents>
-                안녕하세요 행복한미어캣 입니다. 비비고 왕교자를 활용한 다양한
-                레시피 공유드립니다. 먼저 첫번째......
-            </ReviewsContents>
-        </ContentsWrapper>
+const Item = ({ items, image, num, style, loading }) => (
+    console.log(items),
+    (
+        <CardWrapper style={{ ...style, width: "99.89%" }}>
+            <TitleWrapper>
+                <KurlyLogTitle>{items.user.nickname}'s 컬리log</KurlyLogTitle>
+                <KurlyClass>샛별</KurlyClass>
+            </TitleWrapper>
+            <ProductTitle>{items.product.detail}</ProductTitle>
+            <ContentsWrapper>
+                <div className="avatar">
+                    <Image
+                        src={plusStar}
+                        alt="product"
+                        width={80}
+                        height={90}
+                    />
+                </div>
+                <ReviewContainer>
+                    <ReviewTitleP>{items.title}</ReviewTitleP>
+                    <ReviewsContents>" {items.content} "</ReviewsContents>
+                </ReviewContainer>
+            </ContentsWrapper>
 
-        <EtcWrapper>
-            <ArrowWrapper>
-                <span>{`> 더보기`}</span>
-            </ArrowWrapper>
-            <LikesWrapper>💜</LikesWrapper>
-        </EtcWrapper>
-    </CardWrapper>
+            <EtcWrapper>
+                <ArrowWrapper>
+                    <span>{`> 더보기`}</span>
+                </ArrowWrapper>
+                <LikesWrapper>{items.likesCount}💜</LikesWrapper>
+            </EtcWrapper>
+        </CardWrapper>
+    )
 );
 
-const RowComponent = ({ image, num, style, loading }) => {
+const RowComponent = ({ image, num, style, loading, items }) => {
     return loading ? (
         <Loader style={style} />
     ) : (
-        <Item image={image} num={num} style={style} loading={loading} />
+        <Item
+            items={items}
+            image={image}
+            num={num}
+            style={style}
+            loading={loading}
+        />
     );
 };
 
@@ -124,4 +141,29 @@ const LikesWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+
+const ReviewContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`;
+
+const ReviewTitleP = styled.div`
+    padding: 5px 15px;
+    font-weight: bold;
+    letter-spacing: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: keep-all;
+`;
+
+const FinalWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #5f0080;
+    margin-top: 50px;
 `;
