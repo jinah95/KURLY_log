@@ -86,6 +86,46 @@ const Review = {
     return logs;
   },
 
+  findByGradeNoPage: async ({ grade, sevenDaysAgo }) => {
+    let bestLogs = await reviewModel.findAll({
+      attributes: {
+        include: [
+          [
+            sequelize.fn("COUNT", sequelize.col("like.review_id")),
+            "likesCount",
+          ],
+        ],
+      },
+      include: [
+        {
+          model: userModel,
+          as: "user",
+          attributes: { exclude: ["password", "register_date", "last_login"] },
+          where: { grade },
+        },
+        {
+          model: likeModel,
+          as: "like",
+          attributes: [],
+          where: {
+            created_at: {
+              [Op.gte]: sevenDaysAgo,
+            },
+          },
+          group: ["review_id"],
+          required: false,
+        },
+      ],
+      order: [
+        ["likesCount", "DESC"],
+        ["created_at", "DESC"],
+      ],
+      group: ["reviews.review_id", "user.user_id", "like.like_id"],
+    });
+
+    return bestLogs;
+  },
+
   findByGrade: async ({ grade, sevenDaysAgo, page, perPage }) => {
     let bestLogs = await reviewModel.findAll({
       attributes: {

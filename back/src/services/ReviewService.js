@@ -128,7 +128,7 @@ const ReviewService = {
     const grade = "컬리언서";
     const sevenDaysAgo = ReviewService.getDate();
 
-    const bestLogs = await Review.findByGrade({ grade, sevenDaysAgo });
+    const bestLogs = await Review.findByGradeNoPage({ grade, sevenDaysAgo });
 
     return { message: "success", data: bestLogs.slice(0, 5) };
   },
