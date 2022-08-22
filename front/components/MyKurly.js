@@ -31,8 +31,8 @@ const MyKurly = ({ userId }) => {
     // 유저의 컬리로그 인기글
     const getBestPosts = async () => {
         try {
-            const res = await get("/logs/my-log");
-            setBestPosts(res.data.data.bestLogs);
+            const res = await get("/logs/my-log?page=1&perPage=3");
+            setBestPosts(res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -42,8 +42,7 @@ const MyKurly = ({ userId }) => {
     const getPosts = async () => {
         try {
             const res = await get("/logs/my-log?page=1&perPage=3");
-            setPosts(res.data.data.logs);
-            // console.log(res.data.data);
+            setPosts(res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }

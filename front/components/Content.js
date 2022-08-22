@@ -12,8 +12,8 @@ const Content = ({ data }) => {
             const res = await get(`/logs/my-log?page=${posts.length}&perPage=2`);
             
             // 계속 똑같은 거 받아옴.. 수정하기
-            console.log(res.data.data.logs);
-            const newPosts = res.data.data.logs;
+            console.log(res.data.data);
+            const newPosts = res.data.data;
             setPosts((post) => [...post, ...newPosts]);
         } catch (err) {
             console.error("error message: ", err);
