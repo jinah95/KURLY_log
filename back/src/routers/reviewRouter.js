@@ -140,7 +140,10 @@ reviewRouter.get("/more", async (req, res, next) => {
 // 샛별 리뷰 목록 조회하기
 reviewRouter.get("/pop", async (req, res, next) => {
   try {
-    const logs = await ReviewService.getPopularLogs();
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+
+    const logs = await ReviewService.getPopularLogs({ page, perPage });
 
     res.status(200).json(logs);
   } catch (error) {

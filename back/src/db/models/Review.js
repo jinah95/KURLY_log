@@ -76,7 +76,7 @@ const Review = {
     return review;
   },
 
-  getBestLogs: async ({ grade, countLikes }) => {
+  getBestLogs: async ({ grade, page, perPage }) => {
     let bestLogs = await reviewModel.findAll({
       include: [
         {
@@ -86,25 +86,11 @@ const Review = {
           where: { grade },
         },
       ],
+      where: {},
+      limit: perPage,
+      offset: perPage * (page - 1),
     });
-
-    let result = bestLogs.map((review) => {
-      const count = countLikes.filter(
-        (obj) => review.review_id === obj.review_id
-      );
-
-      try {
-        review.dataValues.countLikes = count[0].dataValues.count;
-      } catch {
-        review.dataValues.countLikes = 0;
-      }
-      return review;
-    });
-
-    result = result.sort((a, b) => {
-      return b.dataValues.countLikes - a.dataValues.countLikes;
-    });
-    return result;
+    return bestLogs;
   },
 };
 
