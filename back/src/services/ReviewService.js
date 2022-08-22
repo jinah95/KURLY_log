@@ -79,19 +79,20 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    const logs = await Review.findByUser(userId);
+    let logs = await Review.findByUser(userId);
 
     if (!logs || !logs.length) {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
       return { message: "fail", data: errorMessage };
     }
+    const countLikes = await Like.countByReview();
+    const result = await ReviewService.addLikeCounts({ logs, countLikes });
 
-    return { message: "success", data: logs };
+    return { message: "success", data: result };
   },
 
   // 리뷰데이터에 좋아요수 추가하기
   addLikeCounts: async ({ logs, countLikes }) => {
-    console.log(logs);
     let result = logs.map((review) => {
       const count = countLikes.filter(
         (obj) => review.review_id === obj.review_id
@@ -105,33 +106,37 @@ const ReviewService = {
       return review;
     });
 
-    result = result.sort((a, b) => {
-      return b.dataValues.countLikes - a.dataValues.countLikes;
-    });
+    result = result.sort(
+      (a, b) =>
+        b.dataValues.countLikes - a.dataValues.countLikes ||
+        b.dataValues.created_at - a.dataValues.created_at
+    );
     return result;
   },
 
   // best 컬리언서 리뷰 조회하기
   getBestLogs: async () => {
     const grade = "컬리언서";
-    const page = 1;
-    const perPage = 5;
+    let now = new Date();
+    const day = now.getDate();
+    const sevenDaysAgo = new Date(new Date().setDate(day - 7));
 
-    const countLikes = await Like.countByReview();
-    const logs = await Review.getBestLogs({ grade, countLikes, page, perPage });
-    const result = await ReviewService.addLikeCounts({ logs, countLikes });
-
-    return { message: "success", data: result };
+    const bestLogs = await Review.getBestLogs({ grade, sevenDaysAgo });
+    const cnt_bestLogs = bestLogs.length;
+    // const perPage = 5 - cnt_bestLogs;
+    // const logs = await Review.getLogs({ grade, perPage });
+    // console.log(logs);
+    return { message: "success", data: bestLogs };
   },
 
   // best 컬리언서 리뷰 더보기
   getMoreLogs: async () => {
     const grade = "컬리언서";
-    const page = 1;
-    const perPage = 15;
+    const page = 2;
+    const perPage = 3;
 
     const countLikes = await Like.countByReview();
-    const logs = await Review.getBestLogs({ grade, countLikes, page, perPage });
+    const logs = await Review.getLogs({ grade, countLikes, page, perPage });
     const result = await ReviewService.addLikeCounts({ logs, countLikes });
 
     return { message: "success", data: result };
@@ -140,11 +145,11 @@ const ReviewService = {
   // 샛별 리뷰 목록 조회하기
   getPopularLogs: async ({ page, perPage }) => {
     const grade = "샛별";
+
     const countLikes = await Like.countByReview();
-
-    const logs = await Review.getBestLogs({ grade, countLikes, page, perPage });
-
-    return { message: "success", data: logs };
+    const logs = await Review.getLogs({ grade, page, perPage });
+    const result = await ReviewService.addLikeCounts({ logs, countLikes });
+    return { message: "success", data: result };
   },
 };
 
