@@ -4,12 +4,11 @@ import styled from "styled-components";
 
 const KurlioncerReview = ({ item }) => {
     const router = useRouter();
+    console.log(item);
 
     return (
         <ReviewContainer
-            onClick={() =>
-                router.push(`/kurlylog/${item.user_id}/${item.product_id}`)
-            }
+            onClick={() => router.push(`/kurlylog/post/${item.review_id}`)}
         >
             <ReviewTitle>
                 <MyKurlyName>{item.user.nickname}'s 컬리log</MyKurlyName>

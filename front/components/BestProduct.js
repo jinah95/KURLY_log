@@ -11,7 +11,6 @@ const BestProduct = ({ item }) => {
     return (
         <CardWrapper
             onClick={() => {
-                console.log(item.product_id);
                 router.push(`/product/${item.product_id}`);
             }}
         >
