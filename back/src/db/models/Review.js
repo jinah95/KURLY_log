@@ -49,7 +49,7 @@ const Review = {
       select r.review_id , r.product_id , r.user_id , r.score, 
       r.good, r.bad, r.title, r.image, r."content" , r.created_at,
       coalesce(countLikes,0) as countLikes, u.nickname, u.picture, u.grade, u.age, u.family, 
-      u.intro, countReviews, round(avgscore,2)
+      u.intro, countReviews, round(avgscore,2) as avgscore
       from reviews r 
       left join (select review_id, count(like_id) as countLikes
       from likes
