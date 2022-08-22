@@ -95,5 +95,5 @@ export default Write;
 
 const CustomReactQuill = styled(ReactQuill)`
     width: 100%;
-    height: 60vh; // 수정
+    height: 350px;
 `;
