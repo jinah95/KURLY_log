@@ -21,27 +21,20 @@ const Product = {
   },
 
   findInfo: async (productId) => {
-    const product = await productModel.findOne({
-      attributes: [
-        [
-          sequelize.fn("COUNT", sequelize.col("review.review_id")),
-          "reviewsCount",
-        ],
-        "product.*",
-      ],
-      include: [
-        {
-          model: reviewModel,
-          as: "review",
-        },
-      ],
-      where: {
-        product_id: productId,
-      },
-      group: ["products.product_id", "review.product_id"],
-    });
+    const product = await sequelize.query(`
+    select p.product_id , p.detail , p.price , 
+    coalesce(countReviews, 0) as countReviews  , round(avgscore, 2) as avgScore
+    from products p
+    left join (select product_id, count(review_id)  as countReviews,
+    avg(score) as avgScore
+    from reviews r 
+    group by product_id) r
+    on p.product_id = r.product_id 
+    where p.product_id =${productId}
+    order by countReviews desc
+    `);
 
-    return product;
+    return product[0];
   },
 };
 
