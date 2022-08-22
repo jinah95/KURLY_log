@@ -36,7 +36,7 @@ async function getQuary(endpoint, { params = {} }) {
 
 async function getPost(endpoint, params = "") {
     return axios.get(serverUrl + endpoint + params);
-} 
+}
 
 async function patch(endpoint, data) {
     return axios.patch(serverUrl + endpoint, data, {
