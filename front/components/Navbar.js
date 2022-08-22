@@ -14,22 +14,11 @@ const Navbar = () => {
     const router = useRouter();
     const productId = router.query?.item;
     // console.log(productId);
-    const pathQuery = router.pathname.slice(1);
     // 페이지 새로고침 시 이미지 변경 부분에 대하여
-    const [targetPage, setTargetPage] = useState(
-        pathQuery === "login"
-            ? "login"
-            : !pathQuery
-            ? "market"
-            : pathQuery === "kurlioncer"
-            ? "kurlioncer"
-            : "market"
-    );
-    const [targetTab, setTargetTab] = useState(
-        pathQuery === "kurlioncer" ? "kurlioncer" : "best"
-    );
+    const [targetPage, setTargetPage] = useState("market");
+    const [targetTab, setTargetTab] = useState("best");
     const [login, setLogin] = useState(false);
-
+    console.log(targetPage);
     const dispatch = useContext(DispatchContext);
     const userState = useContext(UserStateContext);
 
@@ -43,6 +32,18 @@ const Navbar = () => {
         dispatch({ type: "LOGOUT" });
         setTargetPage("market");
     };
+    useEffect(() => {
+        const pathQuery = router.query;
+        setTargetPage(
+            pathQuery === "login"
+                ? "login"
+                : !pathQuery
+                ? "market"
+                : pathQuery === "kurlioncer"
+                ? "kurlioncer"
+                : "market"
+        );
+    }, []);
 
     return (
         <>
@@ -144,11 +145,11 @@ const Navbar = () => {
                         <Link
                             href={
                                 targetPage === "market" &&
-                                pathQuery !== "product/[item]" &&
-                                pathQuery !== "review/[item]"
+                                targetPage !== "product/[item]" &&
+                                targetPage !== "review/[item]"
                                     ? "/"
-                                    : pathQuery === "product/[item]" ||
-                                      pathQuery === "review/[item]"
+                                    : targetPage === "product/[item]" ||
+                                      targetPage === "review/[item]"
                                     ? `/product/${productId}`
                                     : "/kurlioncer"
                             }
@@ -166,11 +167,11 @@ const Navbar = () => {
                                     targetTab={targetTab}
                                 >
                                     {targetPage === "market" &&
-                                    pathQuery !== "product/[item]" &&
-                                    pathQuery !== "review/[item]"
+                                    targetPage !== "product/[item]" &&
+                                    targetPage !== "review/[item]"
                                         ? "베스트"
-                                        : pathQuery === "product/[item]" ||
-                                          pathQuery === "review/[item]"
+                                        : targetPage === "product/[item]" ||
+                                          targetPage === "review/[item]"
                                         ? "상품정보"
                                         : "컬리 언서"}
                                 </PageNameSpan>
@@ -179,11 +180,11 @@ const Navbar = () => {
                         <Link
                             href={
                                 targetPage === "market" &&
-                                pathQuery !== "product/[item]" &&
-                                pathQuery !== "review/[item]"
+                                targetPage !== "product/[item]" &&
+                                targetPage !== "review/[item]"
                                     ? "/event"
-                                    : pathQuery === "product/[item]" ||
-                                      pathQuery === "review/[item]"
+                                    : targetPage === "product/[item]" ||
+                                      targetPage === "review/[item]"
                                     ? `/review/${productId}`
                                     : "/risingreview"
                             }
@@ -201,11 +202,11 @@ const Navbar = () => {
                                     targetTab={targetTab}
                                 >
                                     {targetPage === "market" &&
-                                    pathQuery !== "product/[item]" &&
-                                    pathQuery !== "review/[item]"
+                                    targetPage !== "product/[item]" &&
+                                    targetPage !== "review/[item]"
                                         ? "이벤트"
-                                        : pathQuery === "product/[item]" ||
-                                          pathQuery === "review/[item]"
+                                        : targetPage === "product/[item]" ||
+                                          targetPage === "review/[item]"
                                         ? "후기"
                                         : "샛별 리뷰"}
                                 </PageNameSpan>

@@ -1,33 +1,45 @@
 import initialItems from "./mock.json";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ReviewLists from "./ReviewLists";
+import { getPost } from "../api";
 
-const Reviews = () => {
+const Reviews = ({ reviewInitial }) => {
+    const router = useRouter();
+    const [page, setPage] = useState(1);
     const [reviewState, setReviewState] = useState({
-        items: initialItems,
+        items: reviewInitial,
         moreItemsLoading: false,
         hasNextPage: true,
     });
 
-    const loadMore = () => {
-        setReviewState({ ...reviewState, moreItemsLoading: true });
-        const newItems = [
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-        ];
-        setReviewState({
-            ...reviewState,
-            moreItemsLoading: false,
-            items: [...reviewState.items, ...newItems],
-        });
+    const loadMore = async () => {
+        const productNum = Number(router.query?.item);
+        const per = 1;
+        const res = await getPost(
+            `/logs/goods/1006?page=${page + 1}&perPage=${per}`
+        );
+
+        if (res.data.data.length === 0 || res.data.message === "fail") {
+            return;
+        } else {
+            console.log("여기 온거다");
+            setPage((cur) => cur + 1);
+            setReviewState({ ...reviewState, moreItemsLoading: true });
+            const newItems = [...res.data.data];
+            setReviewState({
+                ...reviewState,
+                moreItemsLoading: false,
+                items: [...reviewState.items, ...newItems],
+            });
+        }
     };
+
+    useEffect(() => {
+        setPage(1);
+    }, []);
+
     const { items, moreItemsLoading, hasNextPage } = reviewState;
 
     return (

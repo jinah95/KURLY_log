@@ -1,18 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import BuyingFooter from "./BuyingFooter";
+import { getPost } from "../api";
 
 const ProductDetail = () => {
+    const [itemDetail, setItemDetail] = useState({});
+    const router = useRouter();
+    const productId = router.query?.item;
+
+    const getProductDetail = async () => {
+        try {
+            const res = await getPost(`/goods/${productId}`);
+            setItemDetail(res.data.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        getProductDetail();
+    }, []);
+
     return (
         <Wrapper>
             <Header></Header>
             <ProductContents>
                 <TitleWrapper>
                     <DeliveryType>샛별 배송</DeliveryType>
-                    <ProductTitle>[직수입] 손이 움직이는 피규어</ProductTitle>
-                    <SubDetails>시선강탈 인테리어 소품</SubDetails>
+                    <ProductTitle>{itemDetail.detail}</ProductTitle>
+                    <SubDetails>지금 만나 볼 수 있는 이 가격!</SubDetails>
                     <PriceWrapper>
-                        <NumPrice>27,500</NumPrice>
+                        <NumPrice>
+                            {!!itemDetail.price ? itemDetail.price : "27,500"}
+                        </NumPrice>
                         <WonPrice>원</WonPrice>
                     </PriceWrapper>
                     <LoginNote>

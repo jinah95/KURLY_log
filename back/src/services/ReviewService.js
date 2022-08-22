@@ -83,7 +83,7 @@ const ReviewService = {
   },
 
   // 유저의 컬리로그 조회하기
-  getLogs: async (userId) => {
+  getLogs: async ({ userId, page, perPage }) => {
     const user = await User.findById(userId);
 
     if (!user) {
@@ -91,18 +91,18 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    let logs = await Review.findByUser(userId);
+    let logs = await Review.findByUser({ userId, page, perPage });
 
     if (!logs || !logs.length) {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
       return { message: "fail", data: errorMessage };
     }
 
-    const result = {
-      logs,
-      bestLogs: logs.slice(0, 3),
-    };
-    return { message: "success", data: result };
+    // const result = {
+    //   logs,
+    //   bestLogs: logs.slice(0, 3),
+    // };
+    return { message: "success", data: logs };
   },
 
   // 리뷰데이터에 좋아요수 추가하기
@@ -138,21 +138,17 @@ const ReviewService = {
   // best 컬리언서 리뷰 조회하기
   getBestLogs: async () => {
     const grade = "컬리언서";
-    const sevenDaysAgo = ReviewService.getDate();
 
-    const bestLogs = await Review.findByGradeNoPage({ grade, sevenDaysAgo });
+    const bestLogs = await Review.getBestLogs({ grade });
 
-    return { message: "success", data: bestLogs.slice(0, 5) };
+    return { message: "success", data: bestLogs };
   },
 
   // best 컬리언서 리뷰 더보기
   getMoreLogs: async ({ page, perPage }) => {
     const grade = "컬리언서";
-    const sevenDaysAgo = ReviewService.getDate();
-
-    const logs = await Review.findByGrade({
+    const logs = await Review.getMoreLogs({
       grade,
-      sevenDaysAgo,
       page,
       perPage,
     });
@@ -163,11 +159,9 @@ const ReviewService = {
   // 샛별 리뷰 목록 조회하기
   getPopularLogs: async ({ page, perPage }) => {
     const grade = "샛별";
-    const sevenDaysAgo = ReviewService.getDate();
 
-    const logs = await Review.findByGrade({
+    const logs = await Review.getMoreLogs({
       grade,
-      sevenDaysAgo,
       page,
       perPage,
     });

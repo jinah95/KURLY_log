@@ -13,37 +13,29 @@ const Loader = ({ style }) => (
 );
 
 const Item = ({ items, image, num, style, loading }) => (
-    console.log(items),
-    (
-        <CardWrapper style={{ ...style, width: "99.89%" }}>
-            <TitleWrapper>
-                <KurlyLogTitle>{items.user.nickname}'s 컬리log</KurlyLogTitle>
-                <KurlyClass>샛별</KurlyClass>
-            </TitleWrapper>
-            <ProductTitle>{items.product.detail}</ProductTitle>
-            <ContentsWrapper>
-                <div className="avatar">
-                    <Image
-                        src={plusStar}
-                        alt="product"
-                        width={80}
-                        height={90}
-                    />
-                </div>
-                <ReviewContainer>
-                    <ReviewTitleP>{items.title}</ReviewTitleP>
-                    <ReviewsContents>" {items.content} "</ReviewsContents>
-                </ReviewContainer>
-            </ContentsWrapper>
+    <CardWrapper style={{ ...style, width: "99.89%" }}>
+        <TitleWrapper>
+            <KurlyLogTitle>{items.nickname}'s 컬리log</KurlyLogTitle>
+            <KurlyClass>샛별</KurlyClass>
+        </TitleWrapper>
+        <ProductTitle>{items.detail}</ProductTitle>
+        <ContentsWrapper>
+            <div className="avatar">
+                <Image src={plusStar} alt="product" width={80} height={90} />
+            </div>
+            <ReviewContainer>
+                <ReviewTitleP>{items.title}</ReviewTitleP>
+                <ReviewsContents>" {items.content} "</ReviewsContents>
+            </ReviewContainer>
+        </ContentsWrapper>
 
-            <EtcWrapper>
-                <ArrowWrapper>
-                    <span>{`> 더보기`}</span>
-                </ArrowWrapper>
-                <LikesWrapper>{items.likesCount}💜</LikesWrapper>
-            </EtcWrapper>
-        </CardWrapper>
-    )
+        <EtcWrapper>
+            <ArrowWrapper>
+                <span>{`> 더보기`}</span>
+            </ArrowWrapper>
+            <LikesWrapper>{items.likesCount}💜</LikesWrapper>
+        </EtcWrapper>
+    </CardWrapper>
 );
 
 const RowComponent = ({ image, num, style, loading, items }) => {

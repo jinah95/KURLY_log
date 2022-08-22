@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import BuyingFooter from "./BuyingFooter";
 import Reviews from "./Reviews";
@@ -7,9 +8,14 @@ import plusStar from "../public/plusStar.png";
 import minusStar from "../public/minusStar.png";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { getPost } from "../api";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 
 const ProductPerReview = () => {
     const [open, setOpen] = useState(false);
+    const [reviewInitial, setReviewInitial] = useState([]);
+    const router = useRouter();
+    const productId = router.query?.item;
 
     const handleOpen = () => {
         setOpen(true);
@@ -18,62 +24,126 @@ const ProductPerReview = () => {
         setOpen(false);
     };
 
+    const getInitialReview = async () => {
+        try {
+            const start = 1;
+            const per = 2;
+            const res = await getPost(
+                `/logs/goods/${productId}?page=${start}&perPage=${per}`
+            );
+            if (res.data.message === "fail") {
+                return;
+            } else {
+                const newArr = res.data.data;
+                setReviewInitial([...newArr]);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        getInitialReview();
+    }, []);
+
     return (
         <Wrapper>
             <ButtonWrapper>
                 {" "}
-                <ReviewWriter onClick={handleOpen}>후기 작성</ReviewWriter>
-                <Modal hideBackdrop open={open} onClose={handleClose}>
-                    <div
-                        style={{
-                            top: "50%",
-                            left: "50%",
-                            width: "80%",
-                            height: "50px",
-                            zIndex: "10000",
-                            backgroundColor: "white",
-                        }}
-                    >
-                        어떤 후기를 작성하시겠습니까?
-                    </div>
-                </Modal>
+                <ReviewWriter onClick={() => setOpen((cur) => !cur)}>
+                    후기 작성
+                    {open && (
+                        <Dialog
+                            open={open}
+                            onClose={() => setOpen((cur) => !cur)}
+                        >
+                            <DialogTitle>단순후기 작성</DialogTitle>
+                            <DialogContent>컬리log 후기 작성</DialogContent>
+                        </Dialog>
+                    )}
+                </ReviewWriter>
                 <ReviewWrapper>
                     <StarWrapper>
-                        <Image
-                            src={plusStar}
-                            alt="plusStar"
-                            width={35}
-                            height={35}
-                        />
-                        <Image
-                            src={plusStar}
-                            alt="plusStar"
-                            width={35}
-                            height={35}
-                        />
-                        <Image
-                            src={plusStar}
-                            alt="plusStar"
-                            width={35}
-                            height={35}
-                        />
-                        <Image
-                            src={minusStar}
-                            alt="plusStar"
-                            width={35}
-                            height={35}
-                        />
-                        <Image
-                            src={minusStar}
-                            alt="plusStar"
-                            width={35}
-                            height={35}
-                        />
+                        {reviewInitial.length !== 0 ? (
+                            <>
+                                {" "}
+                                <Image
+                                    src={plusStar}
+                                    alt="plusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                                <Image
+                                    src={plusStar}
+                                    alt="plusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                                <Image
+                                    src={plusStar}
+                                    alt="plusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                                <Image
+                                    src={minusStar}
+                                    alt="plusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                                <Image
+                                    src={minusStar}
+                                    alt="plusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <Image
+                                    src={minusStar}
+                                    alt="minusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                                <Image
+                                    src={minusStar}
+                                    alt="minusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                                <Image
+                                    src={minusStar}
+                                    alt="minusStar"
+                                    width={35}
+                                    height={35}
+                                />{" "}
+                                <Image
+                                    src={minusStar}
+                                    alt="minusStar"
+                                    width={35}
+                                    height={35}
+                                />{" "}
+                                <Image
+                                    src={minusStar}
+                                    alt="minusStar"
+                                    width={35}
+                                    height={35}
+                                />
+                            </>
+                        )}
                     </StarWrapper>
                     <ReviewTotal>1,766</ReviewTotal>
                 </ReviewWrapper>
             </ButtonWrapper>
-            <Reviews />
+            {reviewInitial.length !== 0 ? (
+                <Reviews reviewInitial={reviewInitial} />
+            ) : (
+                <NoneReview>
+                    현재 리뷰가 없습니다😃
+                    <br /> 첫 작성자가 되어주세요!
+                </NoneReview>
+            )}
 
             <BuyingFooter />
         </Wrapper>
@@ -93,7 +163,7 @@ const ButtonWrapper = styled.div`
     width: 100%;
     height: 150px;
     position: fixed;
-    z-index: 100000;
+    z-index: 100;
     background-color: white;
 `;
 
@@ -124,4 +194,12 @@ const ReviewTotal = styled.div`
     color: purple;
     font-weight: 600;
     text-align: right;
+`;
+
+const NoneReview = styled.div`
+    padding-top: 200px;
+    text-align: center;
+    color: #5f0080;
+    font-size: 18px;
+    font-weight: 600;
 `;
