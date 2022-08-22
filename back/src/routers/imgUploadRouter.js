@@ -21,4 +21,22 @@ imgUploadRouter.post(
   }
 );
 
+imgUploadRouter.post(
+  "/multi",
+  uploadMiddleware.array("img"),
+  async (req, res, next) => {
+    try {
+      const files = req.files;
+
+      const imgUrl = files.map((file) => file.location);
+
+      const result = { message: "success", data: imgUrl };
+
+      res.status(201).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { imgUploadRouter };
