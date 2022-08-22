@@ -2,19 +2,26 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import Profile from "../public/profile.png";
+import KurlyLogWrite from "./KurlyLogWrite";
 import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import moment from "moment";
-import { get } from "../api";
+import { get, deleteItem } from "../api";
 
 const KurlyLogPost = ({ reviewId }) => {
+    const [write, setWrite] = useState(false);
     const [postInfo, setPostInfo] = useState({})
     const [userInfo, setUserInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])
     // 현재 로그인한 유저 알아와서 otherPosts에 들어가지 않게 해야함
     const [createdAt, setCreatedAt] = useState("");
+    const router = useRouter();
+
+    const productId = "1006";
 
     const settings = {
         dots: true,
@@ -46,58 +53,80 @@ const KurlyLogPost = ({ reviewId }) => {
         }
     };
 
+    const deletePost = async () => {
+        try {
+            const res = await deleteItem(`/logs/${reviewId}`);
+            const user_id = userInfo.user_id;
+            router.push(
+                {
+                    pathname: `/kurlylog/${user_id}`,
+                    query: {
+                        user_id,
+                    },
+                },
+            );
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    }
+
     useEffect(() => {
         getPostInfo();
-    }, [reviewId]);
+    }, [reviewId, write]);
 
     return (
-        <Wrapper>
-            <Home>
-                {userInfo.nickname}'s 컬리log
-            </Home>
-            <Contents>
-                <h3>{postInfo.title}</h3>
-                <div>{createdAt}</div>
-                <Line />
-                <Content>{postInfo.content}</Content>
-                <Line />
-                <LikeCount>{postInfo.likesCount} 💜</LikeCount>
-            </Contents>
-            <ProductInfo>
+        write ? (
+            <KurlyLogWrite setWrite={setWrite} productId={productId} postInfo={postInfo} setPostInfo={setPostInfo}/>
+        ) : (
+            <Wrapper>
+                <Home>
+                    {userInfo.nickname}'s 컬리log
+                </Home>
+                <Contents>
+                    <h3>{postInfo.title}</h3>
+                    {createdAt} | <span onClick={() => setWrite(true)}>수정하기</span> | <span onClick={deletePost}>삭제하기</span>
+                    <Line />
+                    <Content>{postInfo.content}</Content>
+                    <Line />
+                    <LikeCount>{postInfo.likesCount} 💜</LikeCount>
+                </Contents>
+                <ProductInfo>
 
-            </ProductInfo>
-            <UserInfo>
-                <UserImage>
-                    <Image
-                        src={Profile}
-                        alt="profile"
-                        width={40}
-                        height={40}
-                    />
-                </UserImage>
-                <UserName>{userInfo.nickname}</UserName>
-                <UserTitle>{userInfo.intro}</UserTitle>
-                <Line />
-            </UserInfo>
-            <Others>
-                또 다른 컬리log
-                <Line />
-                <CarouselView>
-                    <Slider {...settings}>
-                    {
-                        otherPosts
-                            .filter((post) => userInfo.user_id != post.user_id && reviewId != post.review_id)
-                            .map((post, index) => (
-                                <CarouselCard 
-                                    key={index}
-                                    post={post}
-                                />
-                            ))
-                    }
-                    </Slider>
-                </CarouselView>
-            </Others>
-        </Wrapper>
+                </ProductInfo>
+                <Link href={`/kurlylog/${userInfo.user_id}`} passHref>
+                    <UserInfo>
+                        <UserImage>
+                            <Image
+                                src={Profile}
+                                alt="profile"
+                                width={40}
+                                height={40}
+                            />
+                        </UserImage>
+                        <UserName>{userInfo.nickname}</UserName>
+                        <UserTitle>{userInfo.intro}</UserTitle>
+                    </UserInfo>
+                </Link>
+                <Others>
+                    또 다른 컬리log
+                    <Line />
+                    <CarouselView>
+                        <Slider {...settings}>
+                        {
+                            otherPosts
+                                .filter((post) => userInfo.user_id != post.user_id && reviewId != post.review_id)
+                                .map((post, index) => (
+                                    <CarouselCard 
+                                        key={index}
+                                        post={post}
+                                    />
+                                ))
+                        }
+                        </Slider>
+                    </CarouselView>
+                </Others>
+            </Wrapper>
+        )
     );
 };
 
@@ -149,6 +178,7 @@ const UserInfo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 `;
 
 const UserImage = styled.div`
@@ -161,6 +191,7 @@ const UserImage = styled.div`
 const UserName = styled.div`
     font-weight: bold;
     color: var(--purple);
+    margin: 5px auto;
 `;
 
 const UserTitle = styled.div`
@@ -177,7 +208,7 @@ const Others = styled.div`
 const Line = styled.div`
     width: 100%;
     background-color: #e2e2e2;
-    height: 2px;
+    height: 1px;
     margin: 10px auto;
 `;
 

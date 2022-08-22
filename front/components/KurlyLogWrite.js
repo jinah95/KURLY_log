@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import plusStar from "../public/plusStar.png";
@@ -7,15 +6,29 @@ import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
-import { get, post } from "../api";
+import { get, post, patch } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
-const KurlyLogWrite = ({ setWrite, userId, productId }) => {
+// bad: "좀 비싸요"
+// content: "나폴레옹 케이크~"
+// created_at: "2022-08-22T09:35:37.498Z"
+// good: "맛있어요"
+// image: []
+// likesCount: "2"
+// product_id: 1013
+// review_id: 17
+// score: 5
+// title: "나폴레옹 케이크 맛있어요"
+// user: {user_id: 'e373a5b2-4918-43b2-bf85-7af10a41b4a3', nickname: '컬리', picture: 'https://images.unsplash.com/photo-1450778869180-41…lfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80', grade: '컬리언서', age: '40대', …}
+// user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
+
+
+const KurlyLogWrite = ({ setWrite, productId, postInfo, setPostInfo }) => {
+    // console.log(postInfo);
     const viewContainerRef = useRef(null);
-    const router = useRouter();
     const [preview, setPreview] = useState(false);
-    const [htmlStr, setHtmlStr] = useState('');
+    const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
     const [kurlyLog, setKurlyLog] = useState({
         score: 0,
@@ -44,32 +57,20 @@ const KurlyLogWrite = ({ setWrite, userId, productId }) => {
         }
     };
 
-     // 게시물 작성 한 것 업로드
+     // 게시물 작성 한 것 업로드 및 수정
     const uploadPost = async () => {
-        changeKurlyLog("content", htmlStr);
-
         if (kurlyLog.title === "" || kurlyLog.content === "") {
             return;
         }
 
-        console.log("게시물 작성한 것 :", kurlyLog);
-        const res = await post(`/logs/${productId}`, kurlyLog);
-        console.log("kurlylog post: ", res.data.data)
+        // console.log("게시물 작성한 것 :", kurlyLog);
+        if (postInfo !== null) {
+            const res = await patch(`/logs/${postInfo.review_id}`, kurlyLog);
+        } else {
+            const res = await post(`/logs/${productId}`, kurlyLog);
+        }
 
-        router.push(
-            {
-                pathname: `/kurlylog/${res.data.data.review_id}`,
-                query: {
-                    review_id,
-                },
-            },
-        ); 
-
-        // 글쓰기 완료
-        // setWrite(false);
-
-        // 포스트 보기 
-        
+        setWrite(false);
     }
 
     useEffect(() => {
@@ -77,7 +78,22 @@ const KurlyLogWrite = ({ setWrite, userId, productId }) => {
         if (viewContainerRef.current) {
             viewContainerRef.current.innerHTML += htmlStr;
         }
+        changeKurlyLog("content", htmlStr.replace(/(<([^>]+)>)/gi, ""));
     }, [htmlStr, preview])
+
+    useEffect(() => {
+        if (postInfo !== null) {
+            setHtmlStr(postInfo.content);
+            setKurlyLog({
+                score: postInfo.score,
+                good : postInfo.good,
+                bad : postInfo.bad,
+                title : postInfo.title,
+                image : postInfo.image,
+                content : postInfo.content,
+            });
+        }
+    }, [postInfo])
 
     return (
         <Wrapper>
