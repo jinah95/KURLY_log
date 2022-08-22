@@ -5,23 +5,11 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import moment from "moment";
 
-// bad: "만두가 이렇게 커도 되나요"
-// content: "만두는 역시 김치만두! 김치만두가 안느끼하고 맛있죠"
-// created_at: "2022-08-21T08:15:48.165Z"
-// good: "비비고 김치만두~"
-// image: []
-// product_id: 1001
-// review_id: 2
-// score: 5
-// title: "만두에서 김치맛이.."
-// user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
-
-
 const PreviewCard = ({ post }) => {
     const created_at = moment((post.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD")
 
     return (
-        <Link href={`/kurlyLog/${post.product_id}`} passHref>
+        <Link href={`/kurlylog/${post.review_id}`} passHref>
         <CardWrapper>
             <CardDate>{created_at}</CardDate>
             <CardActionArea>

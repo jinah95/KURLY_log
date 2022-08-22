@@ -6,17 +6,6 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import { get } from "../../api";
 
-// bad: "단점 없음"
-// content: "있을때 쟁여놨어요"
-// created_at: "2022-08-21T10:41:57.251Z"
-// good: "컬리 생크림빵~"
-// image: []
-// product_id: 1006
-// review_id: 16
-// score: 5
-// title: "이거 사려고 대기탔어요"
-// user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
-
 const CarouselCard = ({ post }) => {
     const [userInfo, setUserInfo] = useState({})
 
@@ -34,7 +23,7 @@ const CarouselCard = ({ post }) => {
     }, [])
 
     return (
-        <Link href={`/kurlyLog/${post.product_id}`} passHref>
+        <Link href={`/kurlylog/${post.review_id}`} passHref>
         <CardWrapper>
             <div>
                 <CardInfo>

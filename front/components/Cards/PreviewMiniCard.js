@@ -6,21 +6,10 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 
-// bad: "매워요.."
-// content: "불닭볶음면"
-// created_at: "2022-08-21T10:33:36.800Z"
-// good: "맛있어요"
-// image: []
-// product_id: 1007
-// review_id: 8
-// score: 4
-// title: "한국인의 맛"
-// user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
-
 const PreviewMiniCard = ({ post }) => {
 
     return (
-        <Link href={`/kurlyLog/${post.product_id}`} passHref>
+        <Link href={`/kurlylog/${post.review_id}`} passHref>
         <CardWrapper>
             <CardActionArea>
                 <CardMedia
