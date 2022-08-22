@@ -6,11 +6,8 @@ import { reviewRouter } from "./routers/reviewRouter.js";
 import { followRouter } from "./routers/followRouter.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { likeRouter } from "./routers/likeRouter.js";
-<<<<<<< HEAD
 import { imgUploadRouter } from "./routers/imgUploadRouter.js";
-=======
 import { productRouter } from "./routers/productsRouter.js";
->>>>>>> c2b91180de82422c9028ce4535c198db906ab6d4
 
 const app = express();
 
@@ -34,11 +31,8 @@ app.use(userRouter);
 app.use("/logs", reviewRouter);
 app.use("/follows", followRouter);
 app.use("/likes", likeRouter);
-<<<<<<< HEAD
 app.use("/upload", imgUploadRouter);
-=======
 app.use("/goods", productRouter);
->>>>>>> c2b91180de82422c9028ce4535c198db906ab6d4
 
 app.use(errorMiddleware);
 
