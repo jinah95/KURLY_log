@@ -32,9 +32,9 @@ const User = {
 
   getBestUsers: async () => {
     const users = await sequelize.query(`
-      SELECT url.user_id, url.nickname, url.intro, url.picture, url.grade, reviews, likes, count(follow_id) AS FOLLOWERS
+      SELECT url.user_id, url.nickname, url.picture, url.grade, url.age, url.family, url.intro, reviews, likes, count(follow_id) AS FOLLOWERS
         FROM (
-          SELECT u.user_id, u.nickname, u.picture, u.grade, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
+          SELECT u.user_id, u.nickname, u.picture, u.grade, u.age, u.family, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
             FROM users AS u
               LEFT JOIN (
                 SELECT r.review_id, r.user_id, count(l.like_id) AS COUNTL
@@ -49,7 +49,7 @@ const User = {
         ) AS URL
         LEFT JOIN follow AS f
         ON url.user_id = f.follower_id
-        GROUP BY url.user_id, url.nickname, url.picture, url.grade, url.intro, reviews, likes
+        GROUP BY url.user_id, url.nickname, url.picture, url.grade, url.age, url.family, url.intro, reviews, likes
         ORDER BY likes DESC
         LIMIT 3
     `);
@@ -58,9 +58,9 @@ const User = {
 
   getMoreUsers: async () => {
     const users = await sequelize.query(`
-      SELECT url.user_id, url.nickname, url.intro, url.picture, url.grade, reviews, likes, count(follow_id) AS FOLLOWERS
+      SELECT url.user_id, url.nickname, url.picture, url.grade, url.age, url.family, url.intro, reviews, likes, count(follow_id) AS FOLLOWERS
         FROM (
-          SELECT u.user_id, u.nickname, u.picture, u.grade, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
+          SELECT u.user_id, u.nickname, u.picture, u.grade, u.age, u.family, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
             FROM users AS u
               LEFT JOIN (
                 SELECT r.review_id, r.user_id, count(l.like_id) AS COUNTL
@@ -75,7 +75,7 @@ const User = {
         ) AS URL
         LEFT JOIN follow AS f
         ON url.user_id = f.follower_id
-        GROUP BY url.user_id, url.nickname, url.picture, url.grade, url.intro, reviews, likes
+        GROUP BY url.user_id, url.nickname, url.picture, url.grade, url.age, url.family, url.intro, reviews, likes
         ORDER BY likes DESC
         LIMIT 15
     `);
