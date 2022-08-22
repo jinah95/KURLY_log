@@ -5,8 +5,11 @@ import plusStar from "../public/plusStar.png";
 import Profile from "../public/profile.png";
 
 const Loader = ({ style }) => (
-    <div style={style} className="list-group-loader">
-        <div className="loader">컨텐츠가 없습니다.</div>
+    <div
+        style={{ ...style, height: "100px", textAlign: "center" }}
+        className="list-group-loader"
+    >
+        <div className="loader">🙃더이상 컨텐츠가 없습니다.</div>
     </div>
 );
 

@@ -21,7 +21,6 @@ const Rising = ({ firstBoards }) => {
         if (newLists.length === 0) {
             return;
         } else {
-            console.log("여기 온거다");
             setPage((cur) => cur + 1);
             setRisingState({ ...risingState, moreItemsLoading: true });
             const newItems = [...newLists];
@@ -32,7 +31,7 @@ const Rising = ({ firstBoards }) => {
             });
         }
     };
-    console.log(risingState.items);
+
     useEffect(() => {
         setPage(1);
     }, []);

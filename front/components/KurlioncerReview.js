@@ -11,10 +11,9 @@ const KurlioncerReview = ({ item }) => {
             onClick={() => router.push(`/kurlylog/post/${item.review_id}`)}
         >
             <ReviewTitle>
-                <MyKurlyName>{item.user.nickname}'s 컬리log</MyKurlyName>
+                <MyKurlyName>{item.nickname}'s 컬리log</MyKurlyName>
                 <ProductName>
-                    {item.product.detail} 👉{" "}
-                    <BestTitle>" {item.title} "</BestTitle>
+                    {item.detail} 👉 <BestTitle>" {item.title} "</BestTitle>
                 </ProductName>
             </ReviewTitle>
             <ReviewInfo>
