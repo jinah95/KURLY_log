@@ -6,13 +6,13 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 
-const BestProduct = ({ productNum }) => {
+const BestProduct = ({ item }) => {
     const router = useRouter();
     return (
         <CardWrapper
             onClick={() => {
-                console.log(productNum);
-                router.push(`/product/${productNum}`);
+                console.log(item.product_id);
+                router.push(`/product/${item.product_id}`);
             }}
         >
             <CardActionArea>
@@ -28,7 +28,7 @@ const BestProduct = ({ productNum }) => {
                     </ProductSticker>
                 </ImgWrapper>
                 <CardInfo>
-                    <Title>[포비] 베이글 3종</Title>
+                    <Title>{item.detail}</Title>
                     <Price>12,000원</Price>
                 </CardInfo>
             </CardActionArea>

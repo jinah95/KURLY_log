@@ -1,22 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 import KurlyLogo from "../public/images/KurlyLogo.png";
 import cart from "../public/images/cart.png";
-import login from "../public/images/login.png";
+import loginIcon from "../public/images/login.png";
+import logoutIcon from "../public/images/logout.png";
+
+import { UserStateContext, DispatchContext } from "../pages/_app";
 
 const Navbar = () => {
     const router = useRouter();
     const productId = router.query?.item;
-    console.log(productId);
+    // console.log(productId);
     const pathQuery = router.pathname.slice(1);
     // 페이지 새로고침 시 이미지 변경 부분에 대하여
     const [targetPage, setTargetPage] = useState(
-        pathQuery !== "login" ? "market" : "login"
+        pathQuery === "login"
+            ? "login"
+            : !pathQuery
+            ? "market"
+            : pathQuery === "kurlioncer"
+            ? "kurlioncer"
+            : "market"
     );
-    const [targetTab, setTargetTab] = useState("best");
+    const [targetTab, setTargetTab] = useState(
+        pathQuery === "kurlioncer" ? "kurlioncer" : "best"
+    );
+    const [login, setLogin] = useState(false);
+
+    const dispatch = useContext(DispatchContext);
+    const userState = useContext(UserStateContext);
+
+    const isLogin = !!userState.user;
+
+    const logout = () => {
+        // sessionStorage에 저장했던 JWT 토큰 삭제
+        sessionStorage.removeItem("userToken");
+        // dispatch 함수를 이용해 로그아웃함.
+        dispatch({ type: "LOGOUT" });
+        setTargetPage("market");
+    };
 
     return (
         <>
@@ -69,7 +94,7 @@ const Navbar = () => {
                         <WrapLabel
                             color="#fff"
                             htmlFor="review"
-                            id="review"
+                            id="kurlioncer"
                             targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
@@ -80,23 +105,36 @@ const Navbar = () => {
                             <PageTitle
                                 type="radio"
                                 value="REVIEW"
-                                id="review"
+                                id="kurlioncer"
                             />
                             컬리로그
                         </WrapLabel>
                         <TapSpan targetPage={targetPage} />
                     </PageTab>
                     <ButtonWrapper>
-                        <Image
-                            src={login}
-                            alt="logo"
-                            width={25}
-                            height={25}
-                            onClick={() => {
-                                router.push("/login");
-                                setTargetPage("login");
-                            }}
-                        />
+                        {!isLogin ? (
+                            <Image
+                                src={loginIcon}
+                                alt="login"
+                                width={25}
+                                height={25}
+                                onClick={() => {
+                                    router.push("/login");
+                                    setTargetPage("login");
+                                }}
+                            />
+                        ) : (
+                            <Image
+                                src={logoutIcon}
+                                alt="logout"
+                                width={25}
+                                height={25}
+                                onClick={() => {
+                                    logout();
+                                    router.push("/");
+                                }}
+                            />
+                        )}
                         <Image src={cart} alt="logo" width={25} height={26} />
                     </ButtonWrapper>
                 </TitleDiv>

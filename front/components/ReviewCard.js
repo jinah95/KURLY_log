@@ -6,7 +6,7 @@ import Profile from "../public/profile.png";
 
 const Loader = ({ style }) => (
     <div style={style} className="list-group-loader">
-        <div className="loader"></div>
+        <div className="loader">컨텐츠가 없습니다.</div>
     </div>
 );
 

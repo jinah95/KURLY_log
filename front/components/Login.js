@@ -1,24 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import Footer from "./Footer";
+import { DispatchContext } from "../pages/_app";
+import { post } from "../api";
 
 const Login = () => {
-    const [id, setId] = useState("");
-    const [pw, setPw] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [password, setPassword] = useState("");
+
+    const dispatch = useContext(DispatchContext);
+    const router = useRouter();
 
     const LoginHandler = async (e) => {
         e.preventDefault();
         try {
             // "auth/login" 엔드포인트로 post요청함.
-            const res = await Api.post("auth/login", {
-                userId,
+            const res = await post("/login", {
+                nickname,
                 password,
             });
             // 유저 정보는 response의 data임.
-            const user = res.data;
+            const user = res.data.data;
 
             // JWT 토큰은 유저 정보의 token임.
-            const jwtToken = user.accessToken;
+            const jwtToken = user.token;
             // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
             sessionStorage.setItem("userToken", jwtToken);
             // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
@@ -27,14 +33,14 @@ const Login = () => {
                 payload: user,
             });
 
-            // 새로고침
-            // navigate(0);
-            setId("");
-            setPw("");
+            // // 새로고침;
+            router.push("/");
+            setNickname("");
+            setPassword("");
         } catch (err) {
             alert("로그인에 실패하였습니다", err);
-            setId("");
-            setPw("");
+            setNickname("");
+            setPassword("");
         }
     };
 
@@ -49,8 +55,8 @@ const Login = () => {
                             name="username"
                             placeholder="아이디"
                             required
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
                         />
                     </Spacer>
                     <Spacer>
@@ -60,8 +66,8 @@ const Login = () => {
                             placeholder="비밀번호"
                             required
                             id="pw"
-                            value={pw}
-                            onChange={(e) => setPw(e.target.value)}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </Spacer>
                     <Spacer>

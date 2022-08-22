@@ -1,33 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import RisingReviews from "./RisingReviews";
+import { getPost } from "../api";
 import initialItems from "./mock.json";
 
-const Rising = () => {
+const Rising = ({ firstBoards }) => {
+    const [page, setPage] = useState(1);
     const [risingState, setRisingState] = useState({
-        items: initialItems,
+        items: firstBoards,
         moreItemsLoading: false,
         hasNextPage: true,
     });
 
-    const loadMore = () => {
-        setRisingState({ ...risingState, moreItemsLoading: true });
-        const newItems = [
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-        ];
-        setRisingState({
-            ...risingState,
-            moreItemsLoading: false,
-            items: [...risingState.items, ...newItems],
-        });
+    const loadMore = async () => {
+        const per = 2;
+        const res = await getPost(`/logs/pop?page=${page + 1}&perPage=${per}`);
+
+        const newLists = res.data.data;
+
+        if (newLists.length === 0) {
+            return;
+        } else {
+            console.log("여기 온거다");
+            setPage((cur) => cur + 1);
+            setRisingState({ ...risingState, moreItemsLoading: true });
+            const newItems = [...newLists];
+            setRisingState({
+                ...risingState,
+                moreItemsLoading: false,
+                items: [...risingState.items, ...newItems],
+            });
+        }
     };
+
+    useEffect(() => {
+        setPage(1);
+    }, []);
+
     const { items, moreItemsLoading, hasNextPage } = risingState;
 
     return (

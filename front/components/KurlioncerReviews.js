@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import KurlioncerReview from "./KurlioncerReview";
+import { getPost } from "../api";
 
 const KurlioncerReviews = () => {
+    const [kurlyReviews, setKurlyReviews] = useState([]);
+
+    const getKurlioncerReview = async () => {
+        try {
+            const res = await getPost(`/logs`);
+            const newArr = res.data.data;
+            setKurlyReviews([...newArr]);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    useEffect(() => {
+        getKurlioncerReview();
+    }, []);
     return (
         <>
             <Wrapper>
                 <BorderContainer>
-                    <KurlioncerReview />
-                    <KurlioncerReview />
-                    <KurlioncerReview />
-                    <KurlioncerReview />
-                    <KurlioncerReview />
+                    {kurlyReviews.map((item, idx) => {
+                        return (
+                            <KurlioncerReview
+                                key={`kurlybestreview-${idx}`}
+                                item={item}
+                            />
+                        );
+                    })}
                 </BorderContainer>
             </Wrapper>
             <CreateSpacer></CreateSpacer>
