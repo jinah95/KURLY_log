@@ -74,7 +74,7 @@ const Navbar = () => {
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
                                 setTargetTab("kurlioncer");
-                                router.push("/kurlylog");
+                                router.push("/kurlioncer");
                             }}
                         >
                             <PageTitle
@@ -111,7 +111,7 @@ const Navbar = () => {
                                     : pathQuery === "product/[item]" ||
                                       pathQuery === "review/[item]"
                                     ? `/product/${productId}`
-                                    : "/kurlylog"
+                                    : "/kurlioncer"
                             }
                             passHref
                         >

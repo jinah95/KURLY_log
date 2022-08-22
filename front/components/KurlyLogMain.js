@@ -4,7 +4,7 @@ import Kurlioncer from "./kurlioncer";
 import KurlioncerReviews from "./KurlioncerReviews";
 import Footer from "./Footer";
 
-const KurlyLog = () => {
+const KurlyLogMain = () => {
     return (
         <Wrapper>
             <Header></Header>
@@ -41,7 +41,7 @@ const KurlyLog = () => {
     );
 };
 
-export default KurlyLog;
+export default KurlyLogMain;
 
 const Wrapper = styled.div`
     width: 100%;
