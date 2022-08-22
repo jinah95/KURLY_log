@@ -8,17 +8,14 @@ import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { likeRouter } from "./routers/likeRouter.js";
 import { imgUploadRouter } from "./routers/imgUploadRouter.js";
 import { productRouter } from "./routers/productsRouter.js";
+import { logger } from "./config/winston";
 
 const app = express();
 
 db.sequelize
   .sync()
-  .then(() => {
-    console.log("정상적으로 db에 연결되었습니다.");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(() => logger.info("정상적으로 db에 연결되었습니다."))
+  .catch((err) => logger.error(err));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
