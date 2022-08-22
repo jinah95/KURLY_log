@@ -32,6 +32,7 @@ const KurlyLogPost = ({ reviewId }) => {
         autoplay: true
     };
 
+    // reviewId로 해당 컬리log 조회
     const getPostInfo = async () => {
         try {
             const res = await get("/logs/log/", reviewId);
@@ -44,6 +45,7 @@ const KurlyLogPost = ({ reviewId }) => {
         }
     };
 
+    // 다른 사람의 컬리log 조회
     const getOtherPosts = async (producId) => {
         try {
             const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
@@ -53,6 +55,7 @@ const KurlyLogPost = ({ reviewId }) => {
         }
     };
 
+    // 게시물 삭제
     const deletePost = async () => {
         try {
             const res = await deleteItem(`/logs/${reviewId}`);
@@ -76,7 +79,7 @@ const KurlyLogPost = ({ reviewId }) => {
 
     return (
         write ? (
-            <KurlyLogWrite setWrite={setWrite} productId={productId} postInfo={postInfo} setPostInfo={setPostInfo}/>
+            <KurlyLogWrite setWrite={setWrite} productId={productId} postInfo={postInfo} />
         ) : (
             <Wrapper>
                 <Home>

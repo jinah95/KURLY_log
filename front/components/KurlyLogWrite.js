@@ -10,22 +10,7 @@ import { get, post, patch } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
-// bad: "좀 비싸요"
-// content: "나폴레옹 케이크~"
-// created_at: "2022-08-22T09:35:37.498Z"
-// good: "맛있어요"
-// image: []
-// likesCount: "2"
-// product_id: 1013
-// review_id: 17
-// score: 5
-// title: "나폴레옹 케이크 맛있어요"
-// user: {user_id: 'e373a5b2-4918-43b2-bf85-7af10a41b4a3', nickname: '컬리', picture: 'https://images.unsplash.com/photo-1450778869180-41…lfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80', grade: '컬리언서', age: '40대', …}
-// user_id: "e373a5b2-4918-43b2-bf85-7af10a41b4a3"
-
-
-const KurlyLogWrite = ({ setWrite, productId, postInfo, setPostInfo }) => {
-    // console.log(postInfo);
+const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     const viewContainerRef = useRef(null);
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState("");
@@ -47,29 +32,27 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo, setPostInfo }) => {
         });
     };
 
+    // productId로 상품 정보 조회
     const getProductInfo = async () => {
         try {
             const res = await get("/goods/", productId);
             setProductInfo(res.data.data);
-            // console.log(res.data)
         } catch (err) {
             console.error("error message: ", err);
         }
     };
 
-     // 게시물 작성 한 것 업로드 및 수정
+     // 게시물 작성 및 수정
     const uploadPost = async () => {
         if (kurlyLog.title === "" || kurlyLog.content === "") {
             return;
         }
 
-        // console.log("게시물 작성한 것 :", kurlyLog);
         if (postInfo !== null) {
             const res = await patch(`/logs/${postInfo.review_id}`, kurlyLog);
         } else {
             const res = await post(`/logs/${productId}`, kurlyLog);
         }
-
         setWrite(false);
     }
 
