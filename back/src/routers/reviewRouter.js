@@ -119,6 +119,18 @@ reviewRouter.get("/user/:userId", async (req, res, next) => {
   }
 });
 
+// 내 컬리로그 조회하기
+reviewRouter.get("/my-log", loginRequired, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
+    const logs = await ReviewService.getLogs(userId);
+
+    res.status(200).json(logs);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // best 컬리언서 리뷰 조회하기
 reviewRouter.get("/", async (req, res, next) => {
   try {

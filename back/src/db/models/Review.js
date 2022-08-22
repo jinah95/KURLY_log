@@ -71,13 +71,6 @@ const Review = {
     return logs;
   },
 
-  findById: async (reviewId) => {
-    const review = await reviewModel.findOne({
-      where: { review_id: reviewId },
-    });
-    return review;
-  },
-
   getBestLogs: async ({ grade, page, perPage }) => {
     let bestLogs = await reviewModel.findAll({
       include: [
