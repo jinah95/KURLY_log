@@ -7,23 +7,23 @@ import bronze from "../public/BronzeMedal.png";
 
 const medalList = [gold, silver, bronze];
 
-const PersonCard = () => {
+const PersonCard = ({ item, index }) => {
     return (
         <PersonContainer>
             <Profile>
                 <MedalWrapper>
                     <Image
-                        src={medalList[0]}
+                        src={medalList[index]}
                         alt="medal"
                         width={50}
                         height={60}
                     />
                 </MedalWrapper>
-                <ProfileImg></ProfileImg>
+                <ProfileImg url={item.picture}></ProfileImg>
             </Profile>
             <PersonContent>
-                <PersonName>민규엄마</PersonName>
-                <Introduce>50대 / 4인가구 / 아침걱정</Introduce>
+                <PersonName>{item.nickname}</PersonName>
+                <Introduce>50대 / 4인가구 / {item.intro}</Introduce>
                 <HashTagWrapper>
                     <HashTag># 요리레시피</HashTag>
                     <HashTag># 후기요정</HashTag>
@@ -33,11 +33,11 @@ const PersonCard = () => {
                 <DataWrapper>
                     {" "}
                     <DataTitle>팔로워</DataTitle>
-                    <DataCount>555</DataCount>
+                    <DataCount>{item.followers}</DataCount>
                     <DataTitle>리뷰글</DataTitle>
-                    <DataCount>55</DataCount>
+                    <DataCount>{item.reviews}</DataCount>
                     <DataTitle>좋아요</DataTitle>
-                    <DataCount>135</DataCount>
+                    <DataCount>{item.likes}</DataCount>
                 </DataWrapper>
             </PersonData>
         </PersonContainer>
@@ -73,7 +73,7 @@ const ProfileImg = styled.div`
     width: 70px;
     height: 70px;
     background-color: gray;
-    background: url("https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg");
+    background: url(${(props) => props.url});
     background-size: cover;
 `;
 
