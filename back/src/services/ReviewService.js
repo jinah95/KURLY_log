@@ -122,11 +122,8 @@ const ReviewService = {
     const sevenDaysAgo = new Date(new Date().setDate(day - 7));
 
     const bestLogs = await Review.getBestLogs({ grade, sevenDaysAgo });
-    const cnt_bestLogs = bestLogs.length;
-    // const perPage = 5 - cnt_bestLogs;
-    // const logs = await Review.getLogs({ grade, perPage });
-    // console.log(logs);
-    return { message: "success", data: bestLogs };
+
+    return { message: "success", data: bestLogs.slice(0, 5) };
   },
 
   // best 컬리언서 리뷰 더보기
