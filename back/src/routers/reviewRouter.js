@@ -97,7 +97,6 @@ reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const reviewId = req.params.reviewId;
-
     const result = await ReviewService.deleteLog({ userId, reviewId });
 
     res.status(200).json(result);
@@ -110,7 +109,6 @@ reviewRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
 reviewRouter.get("/user/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
-
     const logs = await ReviewService.getLogs(userId);
 
     res.status(200).json(logs);
@@ -145,7 +143,9 @@ reviewRouter.get("/", async (req, res, next) => {
 // best 컬리언서 리뷰 더보기
 reviewRouter.get("/more", async (req, res, next) => {
   try {
-    const logs = await ReviewService.getMoreLogs();
+    const page = req.query.page;
+    const perPage = req.query.perPage;
+    const logs = await ReviewService.getMoreLogs({ page, perPage });
 
     res.status(200).json(logs);
   } catch (error) {
@@ -158,7 +158,6 @@ reviewRouter.get("/pop", async (req, res, next) => {
   try {
     const page = req.query.page;
     const perPage = req.query.perPage;
-
     const logs = await ReviewService.getPopularLogs({ page, perPage });
 
     res.status(200).json(logs);

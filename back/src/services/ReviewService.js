@@ -85,9 +85,11 @@ const ReviewService = {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
       return { message: "fail", data: errorMessage };
     }
-    const countLikes = await Like.countByReview();
-    const result = await ReviewService.addLikeCounts({ logs, countLikes });
 
+    const result = {
+      logs,
+      bestLogs: logs.slice(0, 3),
+    };
     return { message: "success", data: result };
   },
 
@@ -114,39 +116,51 @@ const ReviewService = {
     return result;
   },
 
-  // best 컬리언서 리뷰 조회하기
-  getBestLogs: async () => {
-    const grade = "컬리언서";
+  getDate: () => {
     let now = new Date();
     const day = now.getDate();
     const sevenDaysAgo = new Date(new Date().setDate(day - 7));
+    return sevenDaysAgo;
+  },
 
-    const bestLogs = await Review.getBestLogs({ grade, sevenDaysAgo });
+  // best 컬리언서 리뷰 조회하기
+  getBestLogs: async () => {
+    const grade = "컬리언서";
+    const sevenDaysAgo = ReviewService.getDate();
+
+    const bestLogs = await Review.findByGrade({ grade, sevenDaysAgo });
 
     return { message: "success", data: bestLogs.slice(0, 5) };
   },
 
   // best 컬리언서 리뷰 더보기
-  getMoreLogs: async () => {
+  getMoreLogs: async ({ page, perPage }) => {
     const grade = "컬리언서";
-    const page = 2;
-    const perPage = 3;
+    const sevenDaysAgo = ReviewService.getDate();
 
-    const countLikes = await Like.countByReview();
-    const logs = await Review.getLogs({ grade, countLikes, page, perPage });
-    const result = await ReviewService.addLikeCounts({ logs, countLikes });
+    const logs = await Review.findByGrade({
+      grade,
+      sevenDaysAgo,
+      page,
+      perPage,
+    });
 
-    return { message: "success", data: result };
+    return { message: "success", data: logs };
   },
 
   // 샛별 리뷰 목록 조회하기
   getPopularLogs: async ({ page, perPage }) => {
     const grade = "샛별";
+    const sevenDaysAgo = ReviewService.getDate();
 
-    const countLikes = await Like.countByReview();
-    const logs = await Review.getLogs({ grade, page, perPage });
-    const result = await ReviewService.addLikeCounts({ logs, countLikes });
-    return { message: "success", data: result };
+    const logs = await Review.findByGrade({
+      grade,
+      sevenDaysAgo,
+      page,
+      perPage,
+    });
+
+    return { message: "success", data: logs };
   },
 };
 
