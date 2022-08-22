@@ -1,45 +1,72 @@
 import React from "react";
 import styled from "styled-components";
+import BestProduct from "./BestProduct";
+import Footer from "./Footer";
 
-const KurlyLog = () => {
+const Best = () => {
     return (
         <Wrapper>
+            {" "}
+            <Header></Header>
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
                         <PageMoveFirst>
-                            <PageMoveTitle>주간 BEST 컬리언서</PageMoveTitle>
-                            <MoreButton> + 상위30위 보기</MoreButton>
+                            <PageMoveTitle>BEST Review Item</PageMoveTitle>
                             <PageMoveSubTitle>
-                                인기있는 컬리언서는 ?
+                                컬리언서가 선택한 인기 상품!
                             </PageMoveSubTitle>
                         </PageMoveFirst>
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <CardView>
+                <BestProduct productNum="1" />
+                <BestProduct productNum="2" />
+                <BestProduct productNum="3" />
+                <BestProduct productNum="4" />
+            </CardView>
             <BestKurlioncer>
                 <KurlioncerPageMove>
                     <PageMoveWrapper>
                         <PageMoveFirst>
-                            <PageMoveTitle>주간 BEST 리뷰</PageMoveTitle>
-                            <MoreButton> + 더보기</MoreButton>
+                            <PageMoveTitle>🌟 샛별 상승 Item</PageMoveTitle>
                             <PageMoveSubTitle>
-                                컬리언서가 쓴 재미난 리뷰!
+                                혜성처럼 등장한 인기 급 상승템!
                             </PageMoveSubTitle>
                         </PageMoveFirst>
                     </PageMoveWrapper>
                 </KurlioncerPageMove>
             </BestKurlioncer>
+            <CardView>
+                <BestProduct />
+                <BestProduct />
+                <BestProduct />
+                <BestProduct />
+            </CardView>
+            <CreateSpacer />
+            <Footer />
         </Wrapper>
     );
 };
 
-export default KurlyLog;
+export default Best;
 
 const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+`;
+
+const Header = styled.div`
+    width: 100%;
+    height: 40%;
+    background: url("/best_main.jpg");
+    background-size: cover;
+    color: white;
+    display: grid;
+    grid-template-rows: 8fr 2fr;
+    padding: 0 20px;
 `;
 
 const BestKurlioncer = styled.div`
@@ -73,10 +100,6 @@ const PageMoveTitle = styled.span`
     letter-spacing: 0.2px;
 `;
 
-const MoreButton = styled.span`
-    font-size: 12px;
-`;
-
 const PageMoveSubTitle = styled.span`
     display: block;
     white-space: nowrap;
@@ -88,4 +111,20 @@ const PageMoveSubTitle = styled.span`
     letter-spacing: normal;
     line-height: 1.29;
     margin-top: 4px;
+`;
+
+const CardView = styled.div`
+    width: 100%;
+    margin-bottom: 1px;
+    padding: 0 8px;
+    white-space: nowrap;
+    overflow-x: auto;
+    ::-webkit-scrollbar {
+        display: none;
+    }
+`;
+
+const CreateSpacer = styled.div`
+    height: 10%;
+    width: 100%;
 `;

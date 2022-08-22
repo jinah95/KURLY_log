@@ -1,17 +1,17 @@
+import initialItems from "./mock.json";
 import React, { useState } from "react";
 import styled from "styled-components";
-import RisingReviews from "./RisingReviews";
-import initialItems from "./mock.json";
+import ReviewLists from "./ReviewLists";
 
-const Rising = () => {
-    const [risingState, setRisingState] = useState({
+const Reviews = () => {
+    const [reviewState, setReviewState] = useState({
         items: initialItems,
         moreItemsLoading: false,
         hasNextPage: true,
     });
 
     const loadMore = () => {
-        setRisingState({ ...risingState, moreItemsLoading: true });
+        setReviewState({ ...reviewState, moreItemsLoading: true });
         const newItems = [
             "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
             "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
@@ -22,47 +22,33 @@ const Rising = () => {
             "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
             "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
         ];
-        setRisingState({
-            ...risingState,
+        setReviewState({
+            ...reviewState,
             moreItemsLoading: false,
-            items: [...risingState.items, ...newItems],
+            items: [...reviewState.items, ...newItems],
         });
     };
-    const { items, moreItemsLoading, hasNextPage } = risingState;
+    const { items, moreItemsLoading, hasNextPage } = reviewState;
 
     return (
         <Wrapper>
-            <Header></Header>
-            <BestKurlioncer>
-                <KurlioncerPageMove>
-                    <PageMoveWrapper>
-                        <PageMoveFirst>
-                            <PageMoveTitle>떠오르는 샛별 리뷰</PageMoveTitle>
-                            <PageMoveSubTitle>
-                                급변하는 리뷰 사회, 나도 컬리언서가 될 수 있다?
-                            </PageMoveSubTitle>
-                        </PageMoveFirst>
-                    </PageMoveWrapper>
-                </KurlioncerPageMove>
-            </BestKurlioncer>
-            <>
-                <RisingReviews
-                    items={items}
-                    moreItemsLoading={moreItemsLoading}
-                    loadMore={loadMore}
-                    hasNextPage={hasNextPage}
-                />
-            </>
+            <ReviewLists
+                items={items}
+                moreItemsLoading={moreItemsLoading}
+                loadMore={loadMore}
+                hasNextPage={hasNextPage}
+            />
         </Wrapper>
     );
 };
 
-export default Rising;
+export default Reviews;
 
 const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+    padding-top: 150px;
 `;
 
 const Header = styled.div`
