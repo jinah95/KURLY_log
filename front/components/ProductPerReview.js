@@ -17,13 +17,6 @@ const ProductPerReview = () => {
     const router = useRouter();
     const productId = router.query?.item;
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const getInitialReview = async () => {
         try {
             const start = 1;
@@ -53,12 +46,34 @@ const ProductPerReview = () => {
                 <ReviewWriter onClick={() => setOpen((cur) => !cur)}>
                     후기 작성
                     {open && (
-                        <Dialog
-                            open={open}
-                            onClose={() => setOpen((cur) => !cur)}
-                        >
-                            <DialogTitle>단순후기 작성</DialogTitle>
-                            <DialogContent>컬리log 후기 작성</DialogContent>
+                        <Dialog open={open}>
+                            <DialogTitle
+                                style={{ color: "purple", fontWeight: "bold" }}
+                            >
+                                후기 작성 방식을 선택해주세요.
+                            </DialogTitle>
+                            <DialogContent>
+                                <ModalButtonWrapper>
+                                    <MovingButton
+                                        type="kurly"
+                                        onClick={() =>
+                                            router.push(
+                                                `/review/simple/${productId}`
+                                            )
+                                        }
+                                    >
+                                        컬리log 후기 쓰러가기
+                                    </MovingButton>
+
+                                    <MovingButton type="simple">
+                                        단순 후기 쓰러가기
+                                    </MovingButton>
+
+                                    <CancleButton onClick={() => setOpen(true)}>
+                                        취소
+                                    </CancleButton>
+                                </ModalButtonWrapper>
+                            </DialogContent>
                         </Dialog>
                     )}
                 </ReviewWriter>
@@ -202,4 +217,30 @@ const NoneReview = styled.div`
     color: #5f0080;
     font-size: 18px;
     font-weight: 600;
+`;
+
+const MovingButton = styled.button`
+    background-color: ${(props) =>
+        props.type === "kurly" ? "#5f0080" : "#b3b3b3"};
+    color: ${(props) => (props.type === "kurly" ? "#FFF" : "black")};
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    cursor: pointer;
+`;
+
+const ModalButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+const CancleButton = styled.button`
+    margin-top: 5px;
+    background: none;
+    border: 1px solid gray;
+    cursor: pointer;
 `;
