@@ -6,8 +6,9 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 
-const BestProduct = ({ item, index }) => {
+const BestProduct = ({ item, index, type }) => {
     const router = useRouter();
+    console.log(item);
 
     return (
         <CardWrapper
@@ -24,8 +25,14 @@ const BestProduct = ({ item, index }) => {
                         alt="green iguana"
                     />
                     <ProductSticker>
-                        {index % 2 === 0 ? (
-                            <StickerTitle>최다 리뷰</StickerTitle>
+                        {type === "other" ? (
+                            index % 2 === 0 ? (
+                                <StickerTitle>✍🏼리뷰 가득</StickerTitle>
+                            ) : (
+                                <StickerTitle>🌟인기 상품</StickerTitle>
+                            )
+                        ) : index % 2 === 0 ? (
+                            <StickerTitle>✍🏼리뷰{item.cnt}</StickerTitle>
                         ) : (
                             <StickerTitle>🌟인기 상품</StickerTitle>
                         )}
