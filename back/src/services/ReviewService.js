@@ -22,7 +22,7 @@ const ReviewService = {
     }
 
     const reviewInfo = await Review.getInfo({ productId });
-    console.log(reviewInfo);
+
     return { message: "success", data: { reviews, reviewInfo } };
   },
 
