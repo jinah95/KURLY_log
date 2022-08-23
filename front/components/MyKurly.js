@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
@@ -8,11 +9,12 @@ import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import Content from "./Content";
 import { get, getPost } from "../api";
 
-const MyKurly = ({ userId }) => {
+const MyKurly = () => {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [bestPosts, setBestPosts] = useState([]);
-
+    const router = useRouter();
+    const userId = router.query?.user_id;
     // 유저 조회
     const getUserInfo = async () => {
         try {

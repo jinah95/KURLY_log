@@ -6,7 +6,7 @@ import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,12 +15,13 @@ import { get, post, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
-const NewKurlyLog = ({ productId }) => {
+const NewKurlyLog = () => {
     const viewContainerRef = useRef(null);
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
     const router = useRouter();
+    const productId = router.query?.product_id;
 
     const [imgList, setImgList] = useState([]);
     const [score, setScore] = useState(1);
@@ -40,7 +41,7 @@ const NewKurlyLog = ({ productId }) => {
         }
     };
 
-     // 게시물 작성 업로드
+    // 게시물 작성 업로드
     const uploadPost = async () => {
         if (title === "" || content === "") {
             return;
@@ -50,30 +51,28 @@ const NewKurlyLog = ({ productId }) => {
         const formData = new FormData();
         imgList.map((item) => formData.append("img", item.file));
         const res = await sendPostImageFile("/upload/multi/", formData);
-        
+
         // S3 주소 저장
-        const imageS3Url = await res.data.data; 
-        
+        const imageS3Url = await res.data.data;
+
         const data = await post(`/logs/${productId}`, {
             score: score,
-            good : good,
-            bad : bad,
-            title : title,
-            image : imageS3Url, 
-            content : content,
+            good: good,
+            bad: bad,
+            title: title,
+            image: imageS3Url,
+            content: content,
         });
 
-         // 작성한 게시물로 이동
-         const review_id = data.data.data.review_id;
-         router.push(
-             {
-                 pathname: `/kurlylog/post/${review_id}`,
-                 query: {
-                     review_id,
-                 },
-             },
-         );
-    }
+        // 작성한 게시물로 이동
+        const review_id = data.data.data.review_id;
+        router.push({
+            pathname: `/kurlylog/post/${review_id}`,
+            query: {
+                review_id,
+            },
+        });
+    };
 
     // 이미지 추가
     const handleAddImages = (e) => {
@@ -149,12 +148,19 @@ const NewKurlyLog = ({ productId }) => {
                                             labelId="demo-simple-select-autowidth-label"
                                             id="demo-simple-select-autowidth"
                                             value={score}
-                                            onChange={(e) => setScore(e.target.value)}
+                                            onChange={(e) =>
+                                                setScore(e.target.value)
+                                            }
                                             autoWidth
                                             label="point"
                                             required
                                         >
-                                            <MenuItem sx={{ minWidth: 80 }} value="1">1</MenuItem>
+                                            <MenuItem
+                                                sx={{ minWidth: 80 }}
+                                                value="1"
+                                            >
+                                                1
+                                            </MenuItem>
                                             <MenuItem value="2">2</MenuItem>
                                             <MenuItem value="3">3</MenuItem>
                                             <MenuItem value="4">4</MenuItem>

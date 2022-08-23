@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from "next/router";
 import MyKurly from "../../components/MyKurly";
 
 export async function getServerSideProps() {
@@ -9,10 +8,7 @@ export async function getServerSideProps() {
 }
 
 const myKurly = () => {
-    const router = useRouter();
-    const userId = router.query?.user_id;
-    
-    return <MyKurly userId={userId}/>;
+    return <MyKurly />;
 };
 
 export default myKurly;
