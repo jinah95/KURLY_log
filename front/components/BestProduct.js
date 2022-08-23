@@ -7,7 +7,6 @@ import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 
 const BestProduct = ({ item, index }) => {
-    console.log(index);
     const router = useRouter();
 
     return (
