@@ -13,7 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
 import { get, deleteItem } from "../api";
 
-const KurlyLogPost = ({ reviewId }) => {
+const KurlyLogPost = () => {
     const [write, setWrite] = useState(false);
     const [postInfo, setPostInfo] = useState({});
     const [userInfo, setUserInfo] = useState({});
@@ -21,6 +21,7 @@ const KurlyLogPost = ({ reviewId }) => {
     // 현재 로그인한 유저 알아와서 otherPosts에 들어가지 않게 해야함
     const [createdAt, setCreatedAt] = useState("");
     const router = useRouter();
+    const reviewId = router.query?.review_id;
 
     const settings = {
         dots: true,
