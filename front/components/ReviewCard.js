@@ -29,7 +29,9 @@ const Item = ({ style, items, router }) => (
                 </StarPoint>
 
                 <HashList>
-                    <HashTag># {items.title}</HashTag>
+                    <HashTag type={items?.title}>
+                        {items.title ? `# ${items.title}` : "단순후기"}
+                    </HashTag>
                 </HashList>
             </HashTagWrapper>
             <ProfileWrapper>
@@ -60,24 +62,28 @@ const Item = ({ style, items, router }) => (
                     <Summary>{items.bad}</Summary>
                 </SummaryWrapper>
             </ReviewSummary>
-            <ReviewContainer>
-                <EtcWrapper>
-                    <LikesWrapper>
-                        💜<LikesCnt>{items.countlikes}</LikesCnt>
-                    </LikesWrapper>
-                    <ArrowWrapper
-                        onClick={() =>
-                            router.push(`/kurlylog/post/${items.review_id}`)
-                        }
-                    >
-                        <span>{`> 더보기`}</span>
-                    </ArrowWrapper>
-                </EtcWrapper>
-                <ImgWrapper>
-                    <Img />
-                    <Img />
-                </ImgWrapper>
-            </ReviewContainer>
+            {items.title && (
+                <ReviewContainer>
+                    <EtcWrapper>
+                        <LikesWrapper>
+                            💜<LikesCnt>{items.countlikes}</LikesCnt>
+                        </LikesWrapper>
+
+                        <ArrowWrapper
+                            onClick={() =>
+                                router.push(`/kurlylog/post/${items.review_id}`)
+                            }
+                        >
+                            <span>{`> 더보기`}</span>
+                        </ArrowWrapper>
+                    </EtcWrapper>
+
+                    <ImgWrapper>
+                        <Img />
+                        <Img />
+                    </ImgWrapper>
+                </ReviewContainer>
+            )}
         </Padding>
     </CardWrapper>
 );
@@ -158,13 +164,13 @@ const HashTagWrapper = styled.div`
 `;
 
 const HashTag = styled.div`
-    width: 200px;
+    width: ${(props) => (props.type ? "200px" : "100px")};
     height: 24px;
     line-height: 24px;
     border-radius: 14px;
-    background-color: #fff;
-    color: #5f0080;
-    border: 1px solid #5f0080;
+    background-color: ${(props) => (props.type ? "#fff" : "#E6E6E6")};
+    color: ${(props) => (props.type ? "#5f0080" : "#545354")};
+    border: ${(props) => (props.type ? "1px solid #5f0080" : "none")};
     font-size: 12px;
     text-align: center;
     margin: 0 2px;
