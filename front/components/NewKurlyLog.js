@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
-import { get, post, patch } from "../api";
+import { get, post, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
@@ -18,6 +18,7 @@ const NewKurlyLog = ({ productId }) => {
     const [productInfo, setProductInfo] = useState({});
     const router = useRouter();
 
+    const [imgList, setImgList] = useState([]);
     const [score, setScore] = useState(1);
     const [good, setGood] = useState("");
     const [bad, setBad] = useState("");
@@ -36,35 +37,76 @@ const NewKurlyLog = ({ productId }) => {
     };
 
      // 게시물 작성 업로드
-    const uploadPost = async () => {
+    const uploadPost = () => {
         if (title === "" || content === "") {
             return;
         }
 
-        try {
-            const res = await post(`/logs/${productId}`, {
-                score: score,
-                good : good,
-                bad : bad,
-                title : title,
-                image : image,
-                content : content,
-            });
-
-            // 작성한 게시물로 이동
-            const review_id = res.data.data.review_id;
-            router.push(
-                {
-                    pathname: `/kurlylog/post/${review_id}`,
-                    query: {
-                        review_id,
+        // s3 이미지 업로드
+        uploadImage(imgList)
+            .then(() => {
+                post(`/logs/${productId}`, {
+                    score: score,
+                    good : good,
+                    bad : bad,
+                    title : title,
+                    image : image, 
+                    content : content,
+                });
+            }).then(() => {
+                // 작성한 게시물로 이동
+                const review_id = res.data.data.review_id;
+                router.push(
+                    {
+                        pathname: `/kurlylog/post/${review_id}`,
+                        query: {
+                            review_id,
+                        },
                     },
-                },
-            );
+                );
+            })
+    }
+
+    // 이미지 추가
+    const handleAddImages = (e) => {
+        const images = e.currentTarget.files;
+        let imageUrlLists = [...imgList];
+
+        for (let i = 0; i < images.length; i++) {
+            const currentImageUrl = URL.createObjectURL(images[i]);
+            imageUrlLists.push({ show: currentImageUrl, file: images[i] });
+        }
+
+        if (imageUrlLists.length > 5) {
+            imageUrlLists = imageUrlLists.slice(0, 5);
+        }
+        setImgList(imageUrlLists);
+    };
+
+    // 이미지 삭제
+    const handleDeleteImage = (e) => {
+        const deleteIndex = e.currentTarget.id;
+        let imageUrlLists = [...imgList];
+        imageUrlLists = imageUrlLists.filter((item) => {
+            return item !== imageUrlLists[deleteIndex];
+        });
+        setImgList(imageUrlLists);
+    };
+
+    // 이미지 업로드
+    const uploadImage = async (imgList) => {
+        try {
+            const formData = new FormData();
+            imgList.map((item) => formData.append("img", item.file));
+            const res = await sendPostImageFile("/upload/multi/", formData);
+            const imageS3Url = await res.data.data; 
+            console.log("s3 이미지 주소 받은 거 :", imageS3Url);
+            setImage(imageS3Url);
+
         } catch (err) {
             console.error("error message: ", err);
         }
-    }
+    };
 
     useEffect(() => {
         getProductInfo();
@@ -130,7 +172,38 @@ const NewKurlyLog = ({ productId }) => {
                                 placeholder="제목을 입력해주세요."
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-                            <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                            <WriteContainer>
+                                <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                            </WriteContainer>
+                            <ImageUpload>
+                                <h5>사진 등록하기 (최대 5장)</h5>
+                                <InputLabel htmlFor="input-file">+</InputLabel>
+                                <input
+                                    type="file"
+                                    multiple
+                                    id="input-file"
+                                    accept="image/*"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => handleAddImages(e)}
+                                />
+                            </ImageUpload>
+                            <ImageWrapper>
+                                {imgList.map((image, id) => (
+                                    <ImageCard key={`single-${id}`}>
+                                        <Image
+                                            src={image.show}
+                                            alt={`image-${id}`}
+                                            width={50}
+                                            height={50}
+                                        />
+                                        <div
+                                            id={`${id}`}
+                                            onClick={(e) => handleDeleteImage(e)}>
+                                            x
+                                        </div>
+                                    </ImageCard>
+                                ))}
+                            </ImageWrapper>
                         </WriteContent>
                     </WriteWrapper>
                     <ButtonWrapper>
@@ -228,7 +301,7 @@ const Badge = styled.div`
 
 const WriteContent = styled.div`
     width: 90%;
-    height: 500px;
+    height: 650px;
     margin: 30px auto;
 `;
 
@@ -250,6 +323,52 @@ const Title = materialStyled(TextField)(
         }
     })
 );
+
+const WriteContainer = styled.div`
+    width: 100%;
+    height: 400px;
+`;
+
+const ImageUpload = styled.div`
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+`;
+
+const InputLabel = styled.label`
+    width: 20px;
+    height: 20px;
+    background-color: var(--purple);
+    color: white;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    margin-left: 5px;
+    cursor: pointer;
+`;
+
+const ImageWrapper = styled.div`
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f2f2f2;
+`;
+
+const ImageCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #a2a2a2;
+    padding: 4px 4px;
+    margin: 0 2px;
+`;
 
 const ButtonWrapper = styled.div`
     width: 100%;
