@@ -1,4 +1,3 @@
-import initialItems from "./mock.json";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";

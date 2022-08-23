@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import RisingReviews from "./RisingReviews";
 import { getPost } from "../api";
-import initialItems from "./mock.json";
 
 const Rising = ({ firstBoards }) => {
     const [page, setPage] = useState(1);
