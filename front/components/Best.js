@@ -38,7 +38,13 @@ const Best = () => {
             </BestKurlioncer>
             <CardView>
                 {productList.map((item, idx) => {
-                    return <BestProduct key={`product-${idx}`} item={item} />;
+                    return (
+                        <BestProduct
+                            key={`product-${idx}`}
+                            item={item}
+                            index={idx}
+                        />
+                    );
                 })}
             </CardView>
             <BestKurlioncer>
