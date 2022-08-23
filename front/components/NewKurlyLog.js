@@ -6,7 +6,11 @@ import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
-import Button from "@mui/material/Button";
+import Button from '@mui/material/Button';
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 import { get, post, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
@@ -36,35 +40,40 @@ const NewKurlyLog = ({ productId }) => {
         }
     };
 
-    // 게시물 작성 업로드
-    const uploadPost = () => {
+     // 게시물 작성 업로드
+    const uploadPost = async () => {
         if (title === "" || content === "") {
             return;
         }
 
-        // s3 이미지 업로드
-        uploadImage(imgList)
-            .then(() => {
-                post(`/logs/${productId}`, {
-                    score: score,
-                    good: good,
-                    bad: bad,
-                    title: title,
-                    image: image,
-                    content: content,
-                });
-            })
-            .then(() => {
-                // 작성한 게시물로 이동
-                const review_id = res.data.data.review_id;
-                router.push({
-                    pathname: `/kurlylog/post/${review_id}`,
-                    query: {
-                        review_id,
-                    },
-                });
-            });
-    };
+        // S3에 이미지 업로드
+        const formData = new FormData();
+        imgList.map((item) => formData.append("img", item.file));
+        const res = await sendPostImageFile("/upload/multi/", formData);
+        
+        // S3 주소 저장
+        const imageS3Url = await res.data.data; 
+        
+        const data = await post(`/logs/${productId}`, {
+            score: score,
+            good : good,
+            bad : bad,
+            title : title,
+            image : imageS3Url, 
+            content : content,
+        });
+
+         // 작성한 게시물로 이동
+         const review_id = data.data.data.review_id;
+         router.push(
+             {
+                 pathname: `/kurlylog/post/${review_id}`,
+                 query: {
+                     review_id,
+                 },
+             },
+         );
+    }
 
     // 이미지 추가
     const handleAddImages = (e) => {
@@ -90,19 +99,6 @@ const NewKurlyLog = ({ productId }) => {
             return item !== imageUrlLists[deleteIndex];
         });
         setImgList(imageUrlLists);
-    };
-
-    // 이미지 업로드
-    const uploadImage = async (imgList) => {
-        try {
-            const formData = new FormData();
-            imgList.map((item) => formData.append("img", item.file));
-            const res = await sendPostImageFile("/upload/multi/", formData);
-            const imageS3Url = await res.data.data;
-            setImage(imageS3Url);
-        } catch (err) {
-            console.error("error message: ", err);
-        }
     };
 
     useEffect(() => {
@@ -132,14 +128,41 @@ const NewKurlyLog = ({ productId }) => {
                         <Line />
                         <ReviewWrapper>
                             <h3>상품은 만족하셨나요?</h3>
-                            <div>
-                                <Image
-                                    src={plusStar}
-                                    alt="plusStar"
-                                    width={30}
-                                    height={30}
-                                />
-                            </div>
+                            <StarWrapper>
+                                <div>
+                                    <Image
+                                        src={plusStar}
+                                        alt="plusStar"
+                                        width={30}
+                                        height={30}
+                                    />
+                                </div>
+                                <div>
+                                    <Points sx={{ m: 1, minWidth: 80 }}>
+                                        <InputLabel
+                                            id="demo-simple-select-autowidth-label"
+                                            style={{ color: "#5f0080" }}
+                                        >
+                                            point
+                                        </InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-autowidth-label"
+                                            id="demo-simple-select-autowidth"
+                                            value={score}
+                                            onChange={(e) => setScore(e.target.value)}
+                                            autoWidth
+                                            label="point"
+                                            required
+                                        >
+                                            <MenuItem sx={{ minWidth: 80 }} value="1">1</MenuItem>
+                                            <MenuItem value="2">2</MenuItem>
+                                            <MenuItem value="3">3</MenuItem>
+                                            <MenuItem value="4">4</MenuItem>
+                                            <MenuItem value="5">5</MenuItem>
+                                        </Select>
+                                    </Points>
+                                </div>
+                            </StarWrapper>
                             <ReviewSummary>
                                 <div>
                                     <Badge reviewType="good">👍</Badge>
@@ -176,7 +199,7 @@ const NewKurlyLog = ({ productId }) => {
                             </WriteContainer>
                             <ImageUpload>
                                 <h5>사진 등록하기 (최대 5장)</h5>
-                                <InputLabel htmlFor="input-file">+</InputLabel>
+                                <Plus htmlFor="input-file">+</Plus>
                                 <input
                                     type="file"
                                     multiple
@@ -274,6 +297,21 @@ const ReviewWrapper = styled.div`
     padding-bottom: 10px;
 `;
 
+const StarWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Points = materialStyled(FormControl)(() => ({
+    width: "100%",
+    border: "none",
+    color: "#5f0080",
+    ".MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        border: "1px solid #5f0080",
+    },
+}));
+
 const ReviewSummary = styled.div`
     width: 100%;
     display: flex;
@@ -332,7 +370,7 @@ const ImageUpload = styled.div`
     margin-top: 20px;
 `;
 
-const InputLabel = styled.label`
+const Plus = styled.label`
     width: 20px;
     height: 20px;
     background-color: var(--purple);

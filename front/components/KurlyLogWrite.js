@@ -6,6 +6,10 @@ import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 import { get, patch, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
@@ -76,8 +80,8 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
             image : imageS3Url, 
             content : content,
         });
-        console.log("수정: ", data.data);
 
+        // 게시물 편집 종료
         changeWrite();
     }
 
@@ -164,14 +168,41 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
                         <Line />
                         <ReviewWrapper>
                             <h3>상품은 만족하셨나요?</h3>
-                            <div>
-                                <Image
-                                    src={plusStar}
-                                    alt="plusStar"
-                                    width={30}
-                                    height={30}
-                                />
-                            </div>
+                            <StarWrapper>
+                                <div>
+                                    <Image
+                                        src={plusStar}
+                                        alt="plusStar"
+                                        width={30}
+                                        height={30}
+                                    />
+                                </div>
+                                <div>
+                                    <Points sx={{ m: 1, minWidth: 80 }}>
+                                        <InputLabel
+                                            id="demo-simple-select-autowidth-label"
+                                            style={{ color: "#5f0080" }}
+                                        >
+                                            point
+                                        </InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-autowidth-label"
+                                            id="demo-simple-select-autowidth"
+                                            value={score}
+                                            onChange={(e) => setScore(e.target.value)}
+                                            autoWidth
+                                            label="point"
+                                            required
+                                        >
+                                            <MenuItem sx={{ minWidth: 80 }} value="1">1</MenuItem>
+                                            <MenuItem value="2">2</MenuItem>
+                                            <MenuItem value="3">3</MenuItem>
+                                            <MenuItem value="4">4</MenuItem>
+                                            <MenuItem value="5">5</MenuItem>
+                                        </Select>
+                                    </Points>
+                                </div>
+                            </StarWrapper>
                             <ReviewSummary>
                                 <div>
                                     <Badge reviewType="good">👍</Badge>
@@ -208,7 +239,7 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
                             </WriteContainer>
                             <ImageUpload>
                                 <h5>사진 등록하기 (최대 5장)</h5>
-                                <InputLabel htmlFor="input-file">+</InputLabel>
+                                <Plus htmlFor="input-file">+</Plus>
                                 <input
                                     type="file"
                                     multiple
@@ -306,6 +337,21 @@ const ReviewWrapper = styled.div`
     padding-bottom: 10px;
 `;
 
+const StarWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Points = materialStyled(FormControl)(() => ({
+    width: "100%",
+    border: "none",
+    color: "#5f0080",
+    ".MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        border: "1px solid #5f0080",
+    },
+}));
+
 const ReviewSummary = styled.div`
     width: 100%;
     display: flex;
@@ -368,7 +414,7 @@ const ImageUpload = styled.div`
     margin-top: 20px;
 `;
 
-const InputLabel = styled.label`
+const Plus = styled.label`
     width: 20px;
     height: 20px;
     background-color: var(--purple);
