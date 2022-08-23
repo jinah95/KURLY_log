@@ -5,7 +5,7 @@ import styled from "styled-components";
 import plusStar from "../public/plusStar.png";
 
 const Loader = ({ style }) => (
-    <div style={{ ...style, height: "100px" }}>
+    <div style={{ ...style, height: "150px" }}>
         <FinalWrapper className="loader">
             컨텐츠가 더이상 없습니다.
             <div onClick={() => window.scrollTo(0, 0)}>👆click!👆</div>
@@ -316,5 +316,5 @@ const FinalWrapper = styled.div`
     justify-content: center;
     font-weight: bold;
     color: #5f0080;
-    margin-top: 20px;
+    margin-top: 5px;
 `;
