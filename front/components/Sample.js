@@ -8,7 +8,9 @@ const Sample = () => {
         <Wrapper>
             <SampleWrapper>
                 <Image src={SSAPLogo} alt="ssap_logo" width={120} height={50} />
-                <Comment>"추후 제작 예정에 있습니다. 감사합니다."</Comment>
+                <Comment>
+                    &quot;추후 제작 예정에 있습니다. 감사합니다.&quot;
+                </Comment>
             </SampleWrapper>
         </Wrapper>
     );

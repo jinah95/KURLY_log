@@ -30,17 +30,17 @@ const Footer = () => {
                 <Image src={teamLogo} alt="teamLogo" width={150} height={50} />
             </KurlyLogoWrapper>
             <IntroduceService>
-                <b>'컬리로그'</b> 서비스는 <b>'SSAP'</b>팀에 의해
-                제작되었습니다.
+                <b>&apos;컬리로그&apos;</b> 서비스는 <b>&apos;SSAP&apos;</b>팀에
+                의해 제작되었습니다.
                 <br />
-                기존 리뷰 기능 개선과 리뷰를 활용한 마케팅 '컬리언서', 그리고
-                컬리고객들의 커뮤니티가 목적입니다.
+                기존 리뷰 기능 개선과 리뷰를 활용한 마케팅 &apos;컬리언서&apos;,
+                그리고 컬리고객들의 커뮤니티가 목적입니다.
                 <br />
                 <br />
-                간접경험이라는 '리뷰'의 강점을 이용하여, 고객들에게 새로운
-                물건을 추천하며, <br />
-                '블로그' 라는 내 공간을 사용하여 유익한 정보까지 공유하게
-                됩니다.
+                간접경험이라는 &apos;리뷰&apos;의 강점을 이용하여, 고객들에게
+                새로운 물건을 추천하며, <br />
+                &apos;블로그&apos; 라는 내 공간을 사용하여 유익한 정보까지
+                공유하게 됩니다.
             </IntroduceService>
             <hr />
             <Contact>
@@ -54,8 +54,9 @@ const Footer = () => {
                 </a>
             </Contact>
             <IntroduceTeam>
-                팀원들의 성을 모아 만든 'SSAP'은 '쌉(완전)가능, 쌉(인정)'과 같이
-                프로젝트에 대한 열의를 갖고 있습니다. <br />
+                팀원들의 성을 모아 만든 &apos;SSAP&apos;은 &apos;쌉(완전)가능,
+                쌉(인정)&apos;과 같이 프로젝트에 대한 열의를 갖고 있습니다.{" "}
+                <br />
                 <br />
                 <b>contributors</b>
                 <br />• 백엔드 : 신 도 희 / 손 현 주<br />• 프론트엔드 : 박 진

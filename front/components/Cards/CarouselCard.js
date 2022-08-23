@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
-import CardMedia from '@mui/material/CardMedia';
-import { CardActionArea } from '@mui/material';
+import CardMedia from "@mui/material/CardMedia";
+import { CardActionArea } from "@mui/material";
 import { get } from "../../api";
 
 const CarouselCard = ({ post }) => {
-    const [userInfo, setUserInfo] = useState({})
+    const [userInfo, setUserInfo] = useState({});
 
     const getUserInfo = async () => {
         try {
@@ -20,41 +20,39 @@ const CarouselCard = ({ post }) => {
 
     useEffect(() => {
         getUserInfo();
-    }, [post])
+    }, [post]);
 
     return (
         <Link href={`/kurlylog/post/${post.review_id}`} passHref>
-        <CardWrapper>
-            <div>
-                <CardInfo>
-                    <UserName>{userInfo.nickname}'s 컬리log</UserName>
-                    <Title>{post.title}</Title>
-                    <SubTitle>{post.content}</SubTitle>
-                </CardInfo>
-            </div>
-            <CardMedia
-                component="img"
-                height="100"
-                image={post.image?.[0]}
-                alt="img"
-            />
-        </CardWrapper>
+            <CardWrapper>
+                <div>
+                    <CardInfo>
+                        <UserName>{userInfo.nickname}&apos;s 컬리log</UserName>
+                        <Title>{post.title}</Title>
+                        <SubTitle>{post.content}</SubTitle>
+                    </CardInfo>
+                </div>
+                <CardMedia
+                    component="img"
+                    height="100"
+                    image={post.image?.[0]}
+                    alt="img"
+                />
+            </CardWrapper>
         </Link>
-    )
-}
+    );
+};
 
 export default CarouselCard;
 
-const CardWrapper = materialStyled(CardActionArea)(
-    () => ({
-        width: "100%",
-        height: "100%",
-        margin: "10px 0",
-        padding: "2px",
-        display: "grid",
-        gridTemplateColumns: "7fr 3fr",
-    })
-);
+const CardWrapper = materialStyled(CardActionArea)(() => ({
+    width: "100%",
+    height: "100%",
+    margin: "10px 0",
+    padding: "2px",
+    display: "grid",
+    gridTemplateColumns: "7fr 3fr",
+}));
 
 const CardInfo = styled.div`
     width: 100%;

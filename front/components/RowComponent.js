@@ -16,7 +16,7 @@ const Loader = ({ style }) => (
 const Item = ({ items, style, router }) => (
     <CardWrapper style={{ ...style, width: "99.89%" }}>
         <TitleWrapper>
-            <KurlyLogTitle>{items.nickname}'s 컬리log</KurlyLogTitle>
+            <KurlyLogTitle>{items.nickname}&apos;s 컬리log</KurlyLogTitle>
             <KurlyClass>샛별</KurlyClass>
         </TitleWrapper>
         <ProductTitle>{items.detail}</ProductTitle>
@@ -31,7 +31,7 @@ const Item = ({ items, style, router }) => (
             </div>
             <ReviewContainer>
                 <ReviewTitleP>{items.title}</ReviewTitleP>
-                <ReviewsContents>" {items.content} "</ReviewsContents>
+                <ReviewsContents>&quot; {items.content} &quot;</ReviewsContents>
             </ReviewContainer>
         </ContentsWrapper>
 

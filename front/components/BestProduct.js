@@ -8,7 +8,6 @@ import { CardActionArea } from "@mui/material";
 
 const BestProduct = ({ item, index, type }) => {
     const router = useRouter();
-    console.log(item);
 
     return (
         <CardWrapper

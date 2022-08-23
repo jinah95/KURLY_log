@@ -158,7 +158,7 @@ const Navbar = () => {
                         <Image src={cart} alt="logo" width={25} height={26} />
                     </ButtonWrapper>
                 </TitleDiv>
-                {pathName !== "/login" ? (
+                {pathName !== "/login" || pathName !== "beauty" ? (
                     <MenuNav targetPage={targetPage} pathName={pathName}>
                         <Link
                             href={
@@ -291,7 +291,7 @@ export default Navbar;
 const NavWrapper = styled.div`
     width: 100%;
     height: ${(props) =>
-        props.targetPage !== "login" || props.pathName !== "kurlylog"
+        props.targetPage !== "login" || props.pathName !== "beauty"
             ? "88px"
             : "44px"};
     position: fixed;

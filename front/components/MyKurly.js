@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styled from "styled-components";
-import { styled as materialStyled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
+import { styled as materialStyled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
 // import MyKurlyPostAll from "./MyKurlyPostAll";
 import Content from "./Content";
 import { get, getPost } from "../api";
 
 const MyKurly = ({ userId }) => {
-    const [user, setUser] = useState({})
-    const [posts, setPosts] = useState([])
-    const [bestPosts, setBestPosts] = useState([])
+    const [user, setUser] = useState({});
+    const [posts, setPosts] = useState([]);
+    const [bestPosts, setBestPosts] = useState([]);
 
     // 유저 조회
     const getUserInfo = async () => {
@@ -28,7 +28,6 @@ const MyKurly = ({ userId }) => {
         try {
             const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
             setBestPosts(res.data.data);
-            
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -43,7 +42,7 @@ const MyKurly = ({ userId }) => {
             console.error("error message: ", err);
         }
     };
-    
+
     useEffect(() => {
         getUserInfo();
         getBestPosts();
@@ -56,23 +55,26 @@ const MyKurly = ({ userId }) => {
                 <Header>
                     <LogInfo>
                         {/* <span>오늘 15 전체 46</span> */}
-                        <h1>{user.nickname}'s 컬리log</h1>
+                        <h1>{user.nickname}&apos;s 컬리log</h1>
                     </LogInfo>
                     <UserInfo>
                         <UserImage>
-                        {user?.picture && (
-                            <Image
-                                src={user?.picture}
-                                alt="profile"
-                                width={40}
-                                height={40}
-                                unoptimized={true}
-                            />
-                        )}
+                            {user?.picture && (
+                                <Image
+                                    src={user?.picture}
+                                    alt="profile"
+                                    width={40}
+                                    height={40}
+                                    unoptimized={true}
+                                />
+                            )}
                         </UserImage>
                         <UserProfile>
                             <div>{user.nickname}</div>
-                            <div>{user.age}·{user.family} | 팔로워 {user.followers}명</div>
+                            <div>
+                                {user.age}·{user.family} | 팔로워{" "}
+                                {user.followers}명
+                            </div>
                         </UserProfile>
                     </UserInfo>
                 </Header>
@@ -83,14 +85,9 @@ const MyKurly = ({ userId }) => {
                 <Popular>
                     <Title>인기글</Title>
                     <CardView>
-                    {
-                        bestPosts?.map((post, index) => (
-                            <PreviewMiniCard 
-                                key={index}
-                                post={post} 
-                            />
-                        ))
-                    }
+                        {bestPosts?.map((post, index) => (
+                            <PreviewMiniCard key={index} post={post} />
+                        ))}
                     </CardView>
                 </Popular>
                 <Contents>
@@ -118,7 +115,8 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 50vh;
-    background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url("/background.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+        url("/background.jpg");
     background-size: cover;
     color: white;
     display: grid;
@@ -126,20 +124,18 @@ const Header = styled.div`
     padding: 0 20px;
 `;
 
-const PostButton = materialStyled(Button)(
-    () => ({
-        width: '140px',
-        height: '40px',
-        backgroundColor: 'rgba(0,0,0,0)',
-        color: 'white',
-        fontSize: '0.8rem',
-        border: '1px solid white',
-        borderRadius: '0',
-        '&:hover': {
-            border: '1px solid white',
-        }
-    })
-);
+const PostButton = materialStyled(Button)(() => ({
+    width: "140px",
+    height: "40px",
+    backgroundColor: "rgba(0,0,0,0)",
+    color: "white",
+    fontSize: "0.8rem",
+    border: "1px solid white",
+    borderRadius: "0",
+    "&:hover": {
+        border: "1px solid white",
+    },
+}));
 
 const LogInfo = styled.div`
     display: flex;
@@ -194,9 +190,9 @@ const Title = styled.div`
 const CardView = styled.div`
     width: 100%;
     margin-bottom: 1px;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow-x: auto;
     ::-webkit-scrollbar {
         display: none;
-    } 
+    }
 `;
