@@ -16,7 +16,6 @@ const Best = () => {
             console.log(err);
         }
     };
-
     useEffect(() => {
         getProduct();
     }, []);
