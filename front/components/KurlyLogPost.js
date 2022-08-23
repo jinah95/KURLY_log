@@ -36,6 +36,7 @@ const KurlyLogPost = ({ reviewId }) => {
     const getPostInfo = async () => {
         try {
             const res = await get("/logs/log/", reviewId);
+            console.log("데이터: ", res.data.data);
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
@@ -45,11 +46,11 @@ const KurlyLogPost = ({ reviewId }) => {
         }
     };
 
-    // 다른 사람의 컬리log 조회
+    // 해당 상품 다른 사람의 컬리log 조회
     const getOtherPosts = async (producId) => {
         try {
             const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
-            setOtherPosts(res.data.data);
+            setOtherPosts(res.data.data.reviews);
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -117,7 +118,7 @@ const KurlyLogPost = ({ reviewId }) => {
                         <Slider {...settings}>
                         {
                             otherPosts
-                                .filter((post) => userInfo.user_id != post.user_id && reviewId != post.review_id)
+                                ?.filter((post) => userInfo.user_id != post.user_id && reviewId != post.review_id)
                                 .map((post, index) => (
                                     <CarouselCard 
                                         key={index}
