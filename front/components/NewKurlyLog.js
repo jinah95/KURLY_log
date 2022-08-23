@@ -1,36 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
-import { get, patch } from "../api";
+import { get, post, patch } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
-const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
+const NewKurlyLog = ({ productId }) => {
     const viewContainerRef = useRef(null);
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
-    const [kurlyLog, setKurlyLog] = useState({
-        score: 0,
-        good : "",
-        bad : "",
-        title : "",
-        image : "",
-        content : "",
-    });
+    const router = useRouter();
 
-    const changeKurlyLog = (key, value) => {
-        setKurlyLog((current) => {
-            let newKurlyLog = { ...current };
-            newKurlyLog[key] = value;
-            return newKurlyLog;
-        });
-    };
+    const [score, setScore] = useState(1);
+    const [good, setGood] = useState("");
+    const [bad, setBad] = useState("");
+    const [title, setTitle] = useState("");
+    const [image, setImage] = useState([]);
+    const [content, setContent] = useState("");
 
     // productId로 상품 정보 조회
     const getProductInfo = async () => {
@@ -42,14 +35,46 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
         }
     };
 
-     // 게시물 수정
+     // 게시물 작성
     const uploadPost = async () => {
-        if (kurlyLog.title === "" || kurlyLog.content === "") {
+        if (title === "" || content === "") {
             return;
         }
 
-        const res = await patch(`/logs/${postInfo.review_id}`, kurlyLog);
-        setWrite(false);
+        const newPost = {
+            score: score,
+            good : good,
+            bad : bad,
+            title : title,
+            image : image,
+            content : content,
+        }
+
+        console.log("내가 작성한 거 : ", newPost);
+
+        try {
+            const res = await post(`/logs/${productId}`, {
+                score: score,
+                good : good,
+                bad : bad,
+                title : title,
+                image : image,
+                content : content,
+            });
+            // console.log(res.data.data);
+            const review_id = res.data.data.review_id;
+            router.push(
+                {
+                    pathname: `/kurlylog/post/${review_id}`,
+                    query: {
+                        review_id,
+                    },
+                },
+            );
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+
     }
 
     useEffect(() => {
@@ -57,20 +82,8 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
         if (viewContainerRef.current) {
             viewContainerRef.current.innerHTML += htmlStr;
         }
-        changeKurlyLog("content", htmlStr.replace(/(<([^>]+)>)/gi, ""));
+        setContent(htmlStr.replace(/(<([^>]+)>)/gi, ""));
     }, [htmlStr, preview])
-
-    useEffect(() => {
-        setHtmlStr(postInfo.content);
-        setKurlyLog({
-            score: postInfo.score,
-            good : postInfo.good,
-            bad : postInfo.bad,
-            title : postInfo.title,
-            image : postInfo.image,
-            content : postInfo.content,
-        });
-    }, [postInfo])
 
     return (
         <Wrapper>
@@ -107,8 +120,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                                 </div>
                                 <Review
                                     placeholder="좋았던 점을 적어주세요!"
-                                    value={kurlyLog.good}
-                                    onChange={(e) => changeKurlyLog("good", e.target.value)}
+                                    onChange={(e) => setGood(e.target.value)}
                                 />
                             </ReviewSummary>
                             <ReviewSummary>
@@ -118,8 +130,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                                 </div>
                                 <Review
                                     placeholder="개선하면 좋을 점을 적어주세요!"
-                                    value={kurlyLog.bad}
-                                    onChange={(e) => changeKurlyLog("bad", e.target.value)}
+                                    onChange={(e) => setBad(e.target.value)}
                                 />
                             </ReviewSummary>
                         </ReviewWrapper>
@@ -128,8 +139,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                             <h5>상세 후기 작성</h5>
                             <Title
                                 placeholder="제목을 입력해주세요."
-                                value={kurlyLog.title}
-                                onChange={(e) => changeKurlyLog("title", e.target.value)}
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                             <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
                         </WriteContent>
@@ -154,7 +164,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     )
 }
 
-export default KurlyLogWrite;
+export default NewKurlyLog;
 
 const Wrapper = styled.div`
     width: 100%;

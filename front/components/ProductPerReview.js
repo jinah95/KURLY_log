@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import BuyingFooter from "./BuyingFooter";
@@ -69,7 +70,9 @@ const ProductPerReview = () => {
                                 <DialogContent>
                                     <ModalButtonWrapper>
                                         <MovingButton type="kurly">
+                                            <Link href={`/kurlylog/new/${productId}`} passHref>
                                             컬리log 후기 쓰러가기
+                                            </Link>
                                         </MovingButton>
 
                                         <MovingButton
