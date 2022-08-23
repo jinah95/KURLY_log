@@ -1,5 +1,16 @@
 # KRULY'log
 
+## Overview
+
+- [서비스 개요](#서비스-개요)
+- [아키텍처](#🖋-infra-architecture)
+- [플로우차트](#📈-flowchart)
+- [와이어프레임](#🖍-wireframe)
+- [ERD](#📦-erd)
+- [기술 스택](#🖥-using-skills)
+- [실행 방법](#💡-실행방법)
+- [팀원 소개](#🌟-팀원-소개)
+
 ## 서비스 개요
 
 <img src="https://cdn.discordapp.com/attachments/979000955657945131/1011609164734283848/Snipaste_2022-08-23_21-01-25.png" alt="컬리로그 로고" width="600" >
@@ -18,6 +29,18 @@ Makes influencer in Market-Kurly using KRULY'log system.<br /><br />
 ## 🖋 Infra Architecture
 
 ![image](https://user-images.githubusercontent.com/61112694/186138201-f4538edc-be93-4757-9d23-246f0ad72e01.png)
+
+<hr /><br />
+
+## 📈 FlowChart
+
+![image](https://cdn.discordapp.com/attachments/979000955657945131/1011610773681877103/unknown.png)
+
+<hr /><br />
+
+## 🖍 WireFrame
+
+![image](https://cdn.discordapp.com/attachments/979000955657945131/1011610853549817937/unknown.png)
 
 <hr /><br />
 
@@ -89,7 +112,11 @@ yarn start
 - [API](https://chipped-cookie-c3b.notion.site/API-c91a0d7c2a1d4df5a900039ed8c28ad7)<br /><br /><BR />
 <hr />
 
-## 👨‍👨‍👧‍👧 우리 팀 이름은 <b>SSAP</b> ('쌉')입니다. <br /> <br />
+## 🌟 팀원 소개
+
+#### 👨‍👨‍👧‍👧 우리 팀 이름은 <b>SSAP</b> ('쌉')입니다.
+
+<br /> <br />
 
 <img src="https://user-images.githubusercontent.com/97212459/185301108-05805298-8f35-47b5-a617-dd620e00ab34.png" width="300" height="100" alt="ssap로고"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://cdn.discordapp.com/attachments/979000955657945131/1011609165120143430/kurly_ssap_logo_circle.png" alt="원형 로고" width="100">
