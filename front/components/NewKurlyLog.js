@@ -35,22 +35,11 @@ const NewKurlyLog = ({ productId }) => {
         }
     };
 
-     // 게시물 작성
+     // 게시물 작성 업로드
     const uploadPost = async () => {
         if (title === "" || content === "") {
             return;
         }
-
-        const newPost = {
-            score: score,
-            good : good,
-            bad : bad,
-            title : title,
-            image : image,
-            content : content,
-        }
-
-        console.log("내가 작성한 거 : ", newPost);
 
         try {
             const res = await post(`/logs/${productId}`, {
@@ -61,7 +50,8 @@ const NewKurlyLog = ({ productId }) => {
                 image : image,
                 content : content,
             });
-            // console.log(res.data.data);
+
+            // 작성한 게시물로 이동
             const review_id = res.data.data.review_id;
             router.push(
                 {
@@ -74,7 +64,6 @@ const NewKurlyLog = ({ productId }) => {
         } catch (err) {
             console.error("error message: ", err);
         }
-
     }
 
     useEffect(() => {
@@ -149,7 +138,7 @@ const NewKurlyLog = ({ productId }) => {
                             미리보기
                         </PreviewButton>
                         <Buttons>
-                            <ConfirmButton onClick={() => setWrite(false)}>
+                            <ConfirmButton>
                                 취소
                             </ConfirmButton>
                             <ConfirmButton onClick={uploadPost}>

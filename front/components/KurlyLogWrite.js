@@ -16,12 +16,12 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
     const [kurlyLog, setKurlyLog] = useState({
-        score: 0,
-        good : "",
-        bad : "",
-        title : "",
-        image : "",
-        content : "",
+        score: postInfo.score,
+        good : postInfo.good,
+        bad : postInfo.bad,
+        title : postInfo.title,
+        image : postInfo.image,
+        content : postInfo.content,
     });
 
     const changeKurlyLog = (key, value) => {
@@ -42,7 +42,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
         }
     };
 
-     // 게시물 수정
+     // 게시물 수정 업로드
     const uploadPost = async () => {
         if (kurlyLog.title === "" || kurlyLog.content === "") {
             return;
@@ -62,14 +62,6 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
 
     useEffect(() => {
         setHtmlStr(postInfo.content);
-        setKurlyLog({
-            score: postInfo.score,
-            good : postInfo.good,
-            bad : postInfo.bad,
-            title : postInfo.title,
-            image : postInfo.image,
-            content : postInfo.content,
-        });
     }, [postInfo])
 
     return (

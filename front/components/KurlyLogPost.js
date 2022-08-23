@@ -36,7 +36,6 @@ const KurlyLogPost = ({ reviewId }) => {
     const getPostInfo = async () => {
         try {
             const res = await get("/logs/log/", reviewId);
-            console.log("데이터: ", res.data.data);
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
