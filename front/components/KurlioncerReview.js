@@ -4,20 +4,19 @@ import styled from "styled-components";
 
 const KurlioncerReview = ({ item }) => {
     const router = useRouter();
-
+    console.log(item);
     return (
         <ReviewContainer
             onClick={() => router.push(`/kurlylog/post/${item.review_id}`)}
         >
             <ReviewTitle>
                 <MyKurlyName>{item.nickname}'s 컬리log</MyKurlyName>
-                <ProductName>
-                    {item.detail} 👉 <BestTitle>" {item.title} "</BestTitle>
-                </ProductName>
+                <ProductName>{item.detail}</ProductName>
+                <BestTitle>👉 " {item.title} "</BestTitle>
             </ReviewTitle>
             <ReviewInfo>
                 <KurlyRanking> 컬리언서 🌟</KurlyRanking>
-                <LikeCount>{item.likesCount} 💜</LikeCount>
+                <LikeCount>{item.countlikes} 💜</LikeCount>
             </ReviewInfo>
         </ReviewContainer>
     );
@@ -27,10 +26,14 @@ export default KurlioncerReview;
 
 const ReviewContainer = styled.div`
     width: 100%;
+    height: 100px;
     display: grid;
     grid-template-columns: 7fr 3fr;
     padding: 15px;
     margin: 5px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     background-color: rgb(244, 244, 244);
     &:hover {
         border: 1.5px solid #5f0080;
@@ -83,4 +86,8 @@ const LikeCount = styled.div`
 const BestTitle = styled.div`
     font-size: 13px;
     color: gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-top: 5px;
 `;

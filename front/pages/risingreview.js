@@ -15,7 +15,6 @@ export const getServerSideProps = async (context) => {
 };
 
 const risingreview = ({ firstBoards }) => {
-    console.log(firstBoards);
     return <Rising firstBoards={firstBoards} />;
 };
 
