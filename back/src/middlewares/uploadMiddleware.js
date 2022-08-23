@@ -1,5 +1,5 @@
 import multer from "multer";
-import multerS3 from "multer-s3";
+const s3Storage = require("multer-sharp-s3");
 import AWS from "aws-sdk";
 import dotenv from "dotenv";
 dotenv.config();
@@ -8,7 +8,7 @@ const {
   REGION: region,
   AWS_ACCESS_KEY: accessKey,
   AWS_SECRET_KEY: secretKey,
-  BUCKET_NAME: bucket,
+  BUCKET_NAME: Bucket,
 } = process.env;
 
 const s3 = new AWS.S3({
@@ -17,16 +17,22 @@ const s3 = new AWS.S3({
   region,
 });
 
+const storage = s3Storage({
+  s3,
+  Bucket,
+  Key: (req, file, cb) => {
+    cb(null, `uploads/${Date.now()}_${file.originalname}`);
+  },
+  resize: {
+    width: 400,
+    height: 400,
+  },
+  ACL: "private",
+  multiple: true,
+});
+
 const uploadMiddleware = multer({
-  storage: multerS3({
-    s3,
-    bucket,
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    key: (req, file, cb) => {
-      cb(null, `uploads/${Date.now()}_${file.originalname}`);
-    },
-    limits: { fileSize: 5 * 1024 * 1024 },
-  }),
+  storage,
 });
 
 export { uploadMiddleware };

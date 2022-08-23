@@ -13,7 +13,7 @@ imgUploadRouter.post(
   uploadMiddleware.single("img"),
   (req, res, next) => {
     try {
-      const imgUrl = req.file.location;
+      const imgUrl = req.file.Location;
 
       const result = { message: "success", data: imgUrl };
       res.status(200).json(result);
@@ -30,7 +30,7 @@ imgUploadRouter.post(
     try {
       const files = req.files;
 
-      const imgUrl = files.map((file) => file.location);
+      const imgUrl = files.map((file) => file.Location);
 
       const result = { message: "success", data: imgUrl };
 
