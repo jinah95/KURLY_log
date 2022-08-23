@@ -26,8 +26,10 @@ const Navbar = () => {
             ? "beauty"
             : pathName === "/login"
             ? "login"
-            : pathName === "/product/[item]"
+            : pathName === "/product/[item]" || pathName === "/review/[item]"
             ? "product"
+            : pathName === "/kurlylog/post/[review_id]"
+            ? "kurlioncer"
             : undefined
     );
     const [targetTab, setTargetTab] = useState(
@@ -41,7 +43,9 @@ const Navbar = () => {
             ? "kurlioncer"
             : pathName === "/product/[item]"
             ? "detail"
-            : pathName
+            : pathName === "/review/[item]"
+            ? "review"
+            : "kurlylog"
     );
     const [login, setLogin] = useState(false);
 
@@ -58,13 +62,12 @@ const Navbar = () => {
         sessionStorage.removeItem("userToken");
         // dispatch 함수를 이용해 로그아웃함.
         dispatch({ type: "LOGOUT" });
-        setTargetPage("market");
     };
 
     return (
         <>
             {" "}
-            <NavWrapper targetPage={targetPage}>
+            <NavWrapper targetPage={targetPage} pathName={pathName}>
                 <TitleDiv>
                     <LogoWrapper>
                         <Image
@@ -79,7 +82,11 @@ const Navbar = () => {
                             htmlFor="market"
                             id="market"
                             targetPage={
-                                targetPage === "product" ? "market" : "market"
+                                targetPage === "product" || pathName === "/"
+                                    ? "market"
+                                    : targetPage === "kurlioncer"
+                                    ? "kurlioncer"
+                                    : "market"
                             }
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
@@ -115,7 +122,9 @@ const Navbar = () => {
                             color="#fff"
                             htmlFor="review"
                             id="kurlioncer"
-                            targetPage={targetPage}
+                            targetPage={
+                                pathName === "/" ? "market" : targetPage
+                            }
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
                                 router.push("/kurlioncer");
@@ -129,7 +138,7 @@ const Navbar = () => {
                             />
                             컬리로그
                         </WrapLabel>
-                        <TapSpan targetPage={targetPage} />
+                        <TapSpan targetPage={targetPage} pathName={pathName} />
                     </PageTab>
                     <ButtonWrapper>
                         {!isLogin ? (
@@ -148,7 +157,6 @@ const Navbar = () => {
                                 height={25}
                                 onClick={() => {
                                     logout();
-                                    router.push("/");
                                 }}
                             />
                         )}
@@ -156,7 +164,7 @@ const Navbar = () => {
                     </ButtonWrapper>
                 </TitleDiv>
                 {pathName !== "/login" ? (
-                    <MenuNav targetPage={targetPage}>
+                    <MenuNav targetPage={targetPage} pathName={pathName}>
                         <Link
                             href={
                                 targetPage === "market"
@@ -172,16 +180,43 @@ const Navbar = () => {
                                 onClick={(e) => setTargetTab(e.target.id)}
                             >
                                 <PageNameSpan
-                                    id="best"
+                                    id={
+                                        targetPage === "market"
+                                            ? "best"
+                                            : targetPage === "kurlioncer"
+                                            ? "kurlioncer"
+                                            : targetTab === "detail"
+                                            ? "detail"
+                                            : pathName === "/"
+                                            ? "best"
+                                            : targetTab === "review"
+                                            ? "kurlioncer"
+                                            : targetPage === "product"
+                                            ? "best"
+                                            : "rising"
+                                    }
                                     targetTab={
-                                        targetTab === "detail" ? "best" : "best"
+                                        targetPage === "kurlioncer" &&
+                                        targetTab === "kurlioncer"
+                                            ? "kurlioncer"
+                                            : targetTab === "detail"
+                                            ? "detail"
+                                            : pathName === "/"
+                                            ? "best"
+                                            : pathName === "kurlioncer"
+                                            ? "kurlioncer"
+                                            : targetPage === "product"
+                                            ? "best"
+                                            : targetTab
                                     }
                                 >
-                                    {targetPage === "product" ||
+                                    {(targetPage === "product" &&
+                                        pathName !== "/") ||
                                     pathName === "/product/[item]" ||
                                     targetPage === "review"
                                         ? "상품정보"
-                                        : targetPage === "market"
+                                        : targetPage === "market" ||
+                                          pathName === "/"
                                         ? "베스트"
                                         : "컬리 언서"}
                                 </PageNameSpan>
@@ -189,11 +224,12 @@ const Navbar = () => {
                         </Link>
                         <Link
                             href={
-                                targetPage === "market"
-                                    ? "/event"
-                                    : targetPage === "product" ||
-                                      targetPage === "review"
+                                targetPage === "product" ||
+                                pathName === "/product/[item]" ||
+                                targetPage === "review"
                                     ? `/review/${productId}`
+                                    : targetPage === "market"
+                                    ? `/event`
                                     : "/risingreview"
                             }
                             passHref
@@ -205,23 +241,31 @@ const Navbar = () => {
                                     id={
                                         targetPage === "market"
                                             ? "event"
-                                            : targetPage === "product"
+                                            : targetPage === "product" ||
+                                              pathName === "/review/[item]"
                                             ? "review"
                                             : "rising"
                                     }
-                                    targetTab={targetTab}
+                                    targetTab={
+                                        pathName === "/" ? "" : targetTab
+                                    }
                                 >
-                                    {targetPage === "market"
-                                        ? "이벤트"
-                                        : targetPage === "product" ||
-                                          pathName === "/product/[item]" ||
-                                          targetPage === "review"
+                                    {(targetPage === "product" &&
+                                        pathName !== "/") ||
+                                    pathName === "/product/[item]" ||
+                                    pathName === "/review/[item]" ||
+                                    targetPage === "review"
                                         ? "후기"
+                                        : targetPage === "market" ||
+                                          pathName === "/"
+                                        ? "이벤트"
                                         : "샛별 리뷰"}
                                 </PageNameSpan>
                             </PageATag>
                         </Link>
-                        {targetPage === "market" || targetPage === "product" ? (
+                        {targetPage === "market" ||
+                        targetPage === "product" ||
+                        pathName === "/" ? (
                             <></>
                         ) : (
                             <Link href={`/kurlylog/${userId}`} passHref>
@@ -242,7 +286,7 @@ const Navbar = () => {
                     <></>
                 )}
             </NavWrapper>
-            <ParDiv targetPage={targetPage}></ParDiv>
+            <ParDiv targetPage={targetPage} pathName={pathName}></ParDiv>
         </>
     );
 };
@@ -251,7 +295,10 @@ export default Navbar;
 
 const NavWrapper = styled.div`
     width: 100%;
-    height: ${(props) => (props.targetPage !== "login" ? "88px" : "44px")};
+    height: ${(props) =>
+        props.targetPage !== "login" || props.pathName !== "kurlylog"
+            ? "88px"
+            : "44px"};
     position: fixed;
     z-index: 1000;
     box-shadow: rgb(221 221 221) 0px -0.5px 0px 0px inset;
@@ -263,7 +310,10 @@ const NavWrapper = styled.div`
 `;
 const ParDiv = styled.div`
     width: 100%;
-    height: ${(props) => (props.targetPage !== "login" ? "88px" : "44px")};
+    height: ${(props) =>
+        props.targetPage !== "login" || props.pathName !== "kurlylog"
+            ? "88px"
+            : "44px"};
 `;
 
 const TitleDiv = styled.div`
@@ -286,7 +336,9 @@ const MenuNav = styled.nav`
     width: 100%;
     display: flex;
     justify-content: ${(props) =>
-        props.targetPage === "market" || props.targetPage === "product"
+        props.targetPage === "market" ||
+        props.targetPage === "product" ||
+        props.pathName === "/"
             ? "space-evenly"
             : "space-between"};
     align-items: center;
@@ -319,13 +371,17 @@ const TapSpan = styled.span`
     border-radius: 14px;
     top: 0px;
     left: ${(props) =>
-        props.targetPage === "market" || props.targetPage === "product"
+        props.targetPage === "market" ||
+        props.targetPage === "product" ||
+        props.pathName === "/"
             ? "0px"
             : props.targetPage === "beauty"
             ? "33%"
             : "unset"};
     right: ${(props) =>
-        props.targetPage === "market" || props.targetPage === "product"
+        props.targetPage === "market" ||
+        props.targetPage === "product" ||
+        props.pathName === "/"
             ? "unset"
             : "0px"};
     bottom: 0px;
