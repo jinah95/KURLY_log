@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
-import { get, post, patch } from "../api";
+import { get, patch } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
@@ -42,17 +42,13 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
         }
     };
 
-     // 게시물 작성 및 수정
+     // 게시물 수정
     const uploadPost = async () => {
         if (kurlyLog.title === "" || kurlyLog.content === "") {
             return;
         }
 
-        if (postInfo !== null) {
-            const res = await patch(`/logs/${postInfo.review_id}`, kurlyLog);
-        } else {
-            const res = await post(`/logs/${productId}`, kurlyLog);
-        }
+        const res = await patch(`/logs/${postInfo.review_id}`, kurlyLog);
         setWrite(false);
     }
 
@@ -65,17 +61,15 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     }, [htmlStr, preview])
 
     useEffect(() => {
-        if (postInfo !== null) {
-            setHtmlStr(postInfo.content);
-            setKurlyLog({
-                score: postInfo.score,
-                good : postInfo.good,
-                bad : postInfo.bad,
-                title : postInfo.title,
-                image : postInfo.image,
-                content : postInfo.content,
-            });
-        }
+        setHtmlStr(postInfo.content);
+        setKurlyLog({
+            score: postInfo.score,
+            good : postInfo.good,
+            bad : postInfo.bad,
+            title : postInfo.title,
+            image : postInfo.image,
+            content : postInfo.content,
+        });
     }, [postInfo])
 
     return (
