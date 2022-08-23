@@ -27,10 +27,6 @@ function MyApp({ Component, pageProps }) {
                     payload: user,
                 });
             } else {
-                console.error(
-                    "%c SessionStorage에 토큰 없음.",
-                    "color: #d93d1a;"
-                );
             }
         } catch (err) {
             console.error("error message: ", err);
