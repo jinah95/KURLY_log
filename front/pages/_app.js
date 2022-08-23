@@ -11,6 +11,7 @@ function MyApp({ Component, pageProps }) {
     const [userState, dispatch] = useReducer(loginReducer, {
         user: null,
     });
+
     const [isFetchCompleted, setIsFetchCompleted] = useState(false);
 
     const fetchCurrentUser = async () => {
