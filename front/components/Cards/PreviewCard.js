@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import CardMedia from '@mui/material/CardMedia';
@@ -16,8 +16,8 @@ const PreviewCard = ({ post }) => {
                 <CardMedia
                     component="img"
                     height="100"
-                    image="/background.jpg"
-                    alt="green iguana"
+                    image={post.image?.[0]}
+                    alt="img"
                 />
                 <CardInfo>
                     <Title>{post.title}</Title>
