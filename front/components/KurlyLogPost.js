@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Profile from "../public/profile.png";
+import Background from "../public/background.jpg"
 import KurlyLogWrite from "./KurlyLogWrite";
 import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
@@ -36,11 +37,11 @@ const KurlyLogPost = ({ reviewId }) => {
     const getPostInfo = async () => {
         try {
             const res = await get("/logs/log/", reviewId);
-            console.log("데이터: ", res.data.data);
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
             setCreatedAt(moment((res.data.data.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD"));
+            console.log("컬리log 데이터: ", res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -90,6 +91,20 @@ const KurlyLogPost = ({ reviewId }) => {
                     <h3>{postInfo.title}</h3>
                     {createdAt} | <span onClick={() => setWrite(true)}>수정하기</span> | <span onClick={deletePost}>삭제하기</span>
                     <Line />
+                    <ImageWrapper>
+                        <ImageCardWrapper>
+                        {postInfo.image?.map((img, index) => (
+                            <ImageCard
+                                key={index}
+                                src={img}
+                                alt={`image-${index}`}
+                                width={150}
+                                height={150}
+                                unoptimized={true}
+                            />
+                        ))}
+                        </ImageCardWrapper>
+                    </ImageWrapper>
                     <Content>{postInfo.content}</Content>
                     <Line />
                     <LikeCount>{postInfo.likesCount} 💜</LikeCount>
@@ -101,7 +116,7 @@ const KurlyLogPost = ({ reviewId }) => {
                     <UserInfo>
                         <UserImage>
                             <Image
-                                src={Profile}
+                                src={userInfo.picture}
                                 alt="profile"
                                 width={40}
                                 height={40}
@@ -158,8 +173,31 @@ const Contents = styled.div`
     padding: 20px;
 `;
 
+const ImageWrapper = styled.div`
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+`;
+
+const ImageCardWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    white-space: nowrap; 
+    background-color: #f7f7f7;
+    overflow-x: auto;
+    ::-webkit-scrollbar {
+        display: none;
+    } 
+`;
+
+const ImageCard = styled(Image)`
+    margin-right: 10px;
+    display: inline-block;
+`;
+
 const Content = styled.div`
-    min-height: 300px;
+    min-height: 150px;
     margin: 20px auto;
 `;
 

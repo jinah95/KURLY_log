@@ -15,12 +15,12 @@ const PreviewMiniCard = ({ post }) => {
                 <CardMedia
                     component="img"
                     height="150"
-                    image="/background.jpg"
-                    alt="green iguana"
+                    image={post.image?.[0]}
+                    alt="img"
                 />
                 <CardInfo>
                     <Title>{post.title}</Title>
-                    <SubTitle>기타</SubTitle>
+                    {/* <SubTitle>기타</SubTitle> */}
                 </CardInfo>
             </CardActionArea>
         </CardWrapper>
@@ -49,7 +49,7 @@ const CardInfo = styled.div`
 `;
 
 const Title = styled.div`
-    margin: auto 5px;
+    margin: auto 10px;
     font-weight: bold;
     overflow: hidden;
 `;
