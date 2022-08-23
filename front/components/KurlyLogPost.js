@@ -8,11 +8,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import { get } from "../api";
 
-// user+productId에 대한 컬리log(게시글) 불러오기
 const KurlyLogPost = ({ reviewId }) => {
     const [postInfo, setPostInfo] = useState({})
     const [userInfo, setUserInfo] = useState({})
     const [otherPosts, setOtherPosts] = useState([])
+    // 현재 로그인한 유저 알아와서 otherPosts에 들어가지 않게 해야함
 
     const settings = {
         dots: true,
@@ -28,17 +28,16 @@ const KurlyLogPost = ({ reviewId }) => {
             const res = await get("/logs/log/", reviewId);
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
-            console.log(res.data)
+            getOtherPosts(res.data.data.product_id);
         } catch (err) {
             console.error("error message: ", err);
         }
     };
 
-    const getOtherPosts = async () => {
+    const getOtherPosts = async (producId) => {
         try {
-            const res = await get("/logs/goods/", prouctId);
+            const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
             setOtherPosts(res.data.data);
-            // console.log(res.data.data)
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -46,8 +45,7 @@ const KurlyLogPost = ({ reviewId }) => {
 
     useEffect(() => {
         getPostInfo();
-        // getOtherPosts();
-    }, []);
+    }, [reviewId]);
 
     return (
         <Wrapper>
@@ -55,7 +53,8 @@ const KurlyLogPost = ({ reviewId }) => {
                 {userInfo.nickname}'s 컬리log
             </Home>
             <Contents>
-                <Title></Title>
+                <Title>{postInfo.title}</Title>
+                {postInfo.content}
             </Contents>
             <ProductInfo>
 
@@ -76,11 +75,11 @@ const KurlyLogPost = ({ reviewId }) => {
             <Others>
                 또 다른 컬리log
                 <Line />
-                {/* <CarouselView>
+                <CarouselView>
                     <Slider {...settings}>
                     {
                         otherPosts
-                            .filter((post) => userId !== post.user_id)
+                            .filter((post) => userInfo.user_id != post.user_id && reviewId != post.review_id)
                             .map((post, index) => (
                                 <CarouselCard 
                                     key={index}
@@ -89,7 +88,7 @@ const KurlyLogPost = ({ reviewId }) => {
                             ))
                     }
                     </Slider>
-                </CarouselView> */}
+                </CarouselView>
             </Others>
         </Wrapper>
     );

@@ -10,13 +10,12 @@ import Content from "./Content";
 import { get } from "../api";
 
 const MyKurly = ({ userId }) => {
-    const [write, setWrite] = useState(false);
     const [user, setUser] = useState({})
     const [posts, setPosts] = useState([])
     const [bestPosts, setBestPosts] = useState([])
+    const [write, setWrite] = useState(false);
 
     // 글씌기 테스트용
-    // const userId = "e373a5b2-4918-43b2-bf85-7af10a41b4a3";
     const productId = "1006";
 
     // 유저 조회
@@ -39,10 +38,10 @@ const MyKurly = ({ userId }) => {
         }
     };
 
-    // 유저의 컬리로그 전체글 (무한스크롤 구현하기)
+    // 유저의 컬리로그 전체글
     const getPosts = async () => {
         try {
-            const res = await get("/logs/my-log");
+            const res = await get("/logs/my-log?page=1&perPage=3");
             setPosts(res.data.data.logs);
             // console.log(res.data.data);
         } catch (err) {

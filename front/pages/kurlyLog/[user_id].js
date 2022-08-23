@@ -11,8 +11,8 @@ export async function getServerSideProps() {
 const myKurly = () => {
     const router = useRouter();
     const userId = router.query?.user_id;
-    console.log(router.query);
-    return <MyKurly userId={userId} />;
+    
+    return <MyKurly userId={userId}/>;
 };
 
 export default myKurly;
