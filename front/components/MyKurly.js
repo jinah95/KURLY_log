@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Profile from "../public/profile.png";
 import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -24,11 +23,13 @@ const MyKurly = ({ userId }) => {
     };
 
     // 유저의 컬리로그 인기글
-    // 다른 유저의 인기글 3개도 필요함!
     const getBestPosts = async () => {
         try {
-            const res = await get("/logs/my-log?page=1&perPage=10");
+            const res = await get("/logs/my-log?page=1&perPage=5");
             setBestPosts(res.data.data);
+
+            // 다른 유저인 경우
+            // const res = await get("/logs/user/:user_id?page=1&perPage=5");
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -60,11 +61,15 @@ const MyKurly = ({ userId }) => {
                     </LogInfo>
                     <UserInfo>
                         <UserImage>
+                            {
+                                console.log(user.picture)
+                            }
                             <Image
-                                src={Profile}
+                                src={user.picture}
                                 alt="profile"
                                 width={40}
                                 height={40}
+                                unoptimized={true}
                             />
                         </UserImage>
                         <UserProfile>

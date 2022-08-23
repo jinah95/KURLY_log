@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
-import { get, patch } from "../api";
+import { get, patch, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
@@ -15,6 +15,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
+    const [imgList, setImgList] = useState(postInfo.image);
     const [kurlyLog, setKurlyLog] = useState({
         score: postInfo.score,
         good : postInfo.good,
@@ -28,6 +29,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
         setKurlyLog((current) => {
             let newKurlyLog = { ...current };
             newKurlyLog[key] = value;
+            // console.log("업데이트 데이터: ", newKurlyLog);
             return newKurlyLog;
         });
     };
@@ -43,14 +45,63 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     };
 
      // 게시물 수정 업로드
-    const uploadPost = async () => {
+    const uploadPost = () => {
         if (kurlyLog.title === "" || kurlyLog.content === "") {
             return;
         }
 
-        const res = await patch(`/logs/${postInfo.review_id}`, kurlyLog);
-        setWrite(false);
+        // s3 이미지 업로드
+        uploadImage(imgList)
+            .then(() => {
+                // console.log("수정할 데이터(이미지 확인): ", kurlyLog);
+                patch(`/logs/${postInfo.review_id}`, kurlyLog);
+            }).then(()=> {
+                setWrite(false);
+            });
     }
+
+    // 이미지 추가
+    const handleAddImages = (e) => {
+        const images = e.currentTarget.files;
+        let imageUrlLists = [...imgList];
+
+        for (let i = 0; i < images.length; i++) {
+            const currentImageUrl = URL.createObjectURL(images[i]);
+            imageUrlLists.push({ show: currentImageUrl, file: images[i] });
+        }
+
+        if (imageUrlLists.length > 5) {
+            imageUrlLists = imageUrlLists.slice(0, 5);
+        }
+        setImgList(imageUrlLists);
+    };
+
+    // 이미지 삭제
+    const handleDeleteImage = (e) => {
+        const deleteIndex = e.currentTarget.id;
+        let imageUrlLists = [...imgList];
+        imageUrlLists = imageUrlLists.filter((item) => {
+            return item !== imageUrlLists[deleteIndex];
+        });
+        setImgList(imageUrlLists);
+    };
+
+    // 이미지 업로드
+    const uploadImage = async (imgList) => {
+        try {
+            const formData = new FormData();
+            imgList.map((item) => formData.append("img", item.file));
+            const res = await sendPostImageFile("/upload/multi/", formData);
+            const imageS3Url = await res.data.data; 
+
+            changeKurlyLog("image", imageS3Url);
+            // location.reload();
+
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
 
     useEffect(() => {
         getProductInfo();
@@ -117,13 +168,46 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                         </ReviewWrapper>
                         <Line />
                         <WriteContent>
-                            <h5>상세 후기 작성</h5>
+                            <h5>상세 후기 작성!</h5>
                             <Title
                                 placeholder="제목을 입력해주세요."
                                 value={kurlyLog.title}
                                 onChange={(e) => changeKurlyLog("title", e.target.value)}
                             />
-                            <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                            <WriteContainer>
+                                <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                            </WriteContainer>
+                            <ImageUpload>
+                                <h5>사진 등록하기 (최대 5장)</h5>
+                                <InputLabel htmlFor="input-file">+</InputLabel>
+                                <input
+                                    type="file"
+                                    multiple
+                                    id="input-file"
+                                    accept="image/*"
+                                    style={{ display: "none" }}
+                                    onChange={(e) =>
+                                        handleAddImages(e)
+                                    }
+                                />
+                            </ImageUpload>
+                            <ImageWrapper>
+                                {imgList.map((image, id) => (
+                                    <ImageCard key={`single-${id}`}>
+                                        <Image
+                                            src={image.show}
+                                            alt={`image-${id}`}
+                                            width={50}
+                                            height={50}
+                                        />
+                                        <div
+                                            id={`${id}`}
+                                            onClick={(e) => handleDeleteImage(e)}>
+                                            x
+                                        </div>
+                                    </ImageCard>
+                                ))}
+                            </ImageWrapper>
                         </WriteContent>
                     </WriteWrapper>
                     <ButtonWrapper>
@@ -221,7 +305,7 @@ const Badge = styled.div`
 
 const WriteContent = styled.div`
     width: 90%;
-    height: 500px;
+    height: 650px;
     margin: 30px auto;
 `;
 
@@ -243,6 +327,52 @@ const Title = materialStyled(TextField)(
         }
     })
 );
+
+const WriteContainer = styled.div`
+    width: 100%;
+    height: 400px;
+`;
+
+const ImageUpload = styled.div`
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+`;
+
+const InputLabel = styled.label`
+    width: 20px;
+    height: 20px;
+    background-color: var(--purple);
+    color: white;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    margin-left: 5px;
+    cursor: pointer;
+`;
+
+const ImageWrapper = styled.div`
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f2f2f2;
+`;
+
+const ImageCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #a2a2a2;
+    padding: 4px 4px;
+    margin: 0 2px;
+`;
 
 const ButtonWrapper = styled.div`
     width: 100%;
