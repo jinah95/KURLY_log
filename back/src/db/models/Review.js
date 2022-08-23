@@ -46,6 +46,7 @@ const Review = {
 
   findByProduct: async ({ productId, page, perPage }) => {
     const reviews = await sequelize.query(`
+<<<<<<< HEAD
       select r.review_id , r.product_id , r.user_id , r.score, 
       r.good, r.bad, r.title, r.image, r."content" , r.created_at,
       coalesce(countLikes,0) as countLikes, u.nickname, u.picture, u.grade, u.age, u.family, 
@@ -68,9 +69,39 @@ const Review = {
       where r.product_id = ${productId}
       order by countLikes desc, r.created_at desc
       limit ${perPage} offset ${perPage * (page - 1)}
+=======
+    select r.review_id , r.product_id , r.user_id , r.score, 
+    r.good, r.bad, r.title, r.image, r."content" , r.created_at,
+    coalesce(countLikes,0) as countLikes, u.nickname, u.picture, u.grade, u.age, u.family, 
+    u.intro
+    from reviews r 
+    left join (select review_id, count(like_id) as countLikes
+    from likes
+    group by review_id) l
+    on r.review_id = l.review_id
+    join (select *
+    from users u 
+    ) u
+    on r.user_id = u.user_id
+    where r.product_id = ${productId}
+    order by countLikes desc, r.created_at desc
+    limit ${perPage} offset ${perPage * (page - 1)}  
+>>>>>>> dev-back
     `);
 
     return reviews[0];
+  },
+
+  getInfo: async ({ productId }) => {
+    const info = await sequelize.query(`
+    select product_id, 
+    count(review_id)  as countReviews,
+    round(avg(score),2) as avgScore
+    from reviews r
+   where product_id = ${productId}
+    group by product_id
+    `);
+    return info[0];
   },
 
   findByUser: async ({ userId, page, perPage }) => {

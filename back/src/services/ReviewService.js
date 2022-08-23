@@ -21,7 +21,9 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    return { message: "success", data: reviews };
+    const reviewInfo = await Review.getInfo({ productId });
+    console.log(reviewInfo);
+    return { message: "success", data: { reviews, reviewInfo } };
   },
 
   // 컬리로그 1개 조회하기
