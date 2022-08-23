@@ -79,8 +79,18 @@ const Item = ({ style, items, router }) => (
                     </EtcWrapper>
 
                     <ImgWrapper>
-                        <Img />
-                        <Img />
+                        {items.image.length > 2
+                            ? Array(2)
+                                  .fill(0)
+                                  .map((i, idx) => (
+                                      <Img
+                                          key={`review-img-${idx}`}
+                                          url={items.image[idx]}
+                                      />
+                                  ))
+                            : items.image.map((i, idx) => (
+                                  <Img key={`review-img-${idx}`} url={i} />
+                              ))}
                     </ImgWrapper>
                 </ReviewContainer>
             )}
@@ -192,13 +202,14 @@ const ProfileWrapper = styled.div`
     align-items: center;
 `;
 const ProfileImgWrapper = styled.div`
-    height: 65px;
-    width: 65px;
+    height: 80px;
+    width: 80px;
     border-radius: 50px;
     border: 2px dashed #5f0080;
     padding: 6px;
     background: url(${(props) => props.url});
     background-size: cover;
+    background-position: center center;
     color: white;
     margin: 0 3px;
 `;
@@ -291,8 +302,9 @@ const ImgWrapper = styled.div`
 
 const Img = styled.div`
     width: 50%;
-    background: url("/best_main.jpg");
+    background: url(${(props) => props.url});
     background-size: cover;
+    background-position: center center;
     color: white;
     margin: 0 3px;
 `;
