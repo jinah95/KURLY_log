@@ -44,7 +44,7 @@ const ProductPerReview = () => {
             console.log(err);
         }
     };
-    console.log(totalPoint);
+
     useEffect(() => {
         getInitialReview();
     }, []);
@@ -169,7 +169,11 @@ const ProductPerReview = () => {
                             </>
                         )}
 
-                        <span>{totalPoint[0].avgscore}</span>
+                        {totalPoint.length !== 0 ? (
+                            <span>{totalPoint[0].avgscore}</span>
+                        ) : (
+                            ""
+                        )}
                     </StarWrapper>
 
                     {totalPoint.length !== 0 ? (
