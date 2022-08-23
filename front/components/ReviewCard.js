@@ -5,11 +5,11 @@ import styled from "styled-components";
 import plusStar from "../public/plusStar.png";
 
 const Loader = ({ style }) => (
-    <div
-        style={{ ...style, height: "100px", textAlign: "center" }}
-        className="list-group-loader"
-    >
-        <div className="loader">🙃더이상 컨텐츠가 없습니다.</div>
+    <div style={{ ...style, height: "100px" }}>
+        <FinalWrapper className="loader">
+            컨텐츠가 더이상 없습니다.
+            <div onClick={() => window.scrollTo(0, 0)}>👆click!👆</div>
+        </FinalWrapper>
     </div>
 );
 
@@ -307,4 +307,14 @@ const Img = styled.div`
     background-position: center center;
     color: white;
     margin: 0 3px;
+`;
+
+const FinalWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #5f0080;
+    margin-top: 20px;
 `;

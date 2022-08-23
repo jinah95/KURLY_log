@@ -89,11 +89,12 @@ const GradeNumber = styled.span`
 `;
 
 const ProfileImg = styled.div`
-    width: 70px;
-    height: 70px;
+    width: 75px;
+    height: 75px;
     background-color: gray;
     background: url(${(props) => props.url});
     background-size: cover;
+    background-position: center center;
 `;
 
 const PersonContent = styled.div`

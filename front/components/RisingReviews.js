@@ -1,6 +1,5 @@
 import React from "react";
 import { FixedSizeList } from "react-window";
-import styled from "styled-components";
 import InfiniteLoader from "react-window-infinite-loader";
 import RowComponent from "./RowComponent";
 
