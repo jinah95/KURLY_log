@@ -7,8 +7,7 @@ import ReviewCard from "./ReviewCard";
 const ReviewLists = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
     const Row = ({ index, style }) => (
         <ReviewCard
-            image={items[index]}
-            num={index}
+            items={items[index]}
             style={style}
             loading={index === items.length}
         />
