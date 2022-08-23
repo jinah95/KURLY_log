@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ReviewService } from "../services/reviewService";
+import { ReviewService } from "../services/ReviewService";
 import loginRequired from "../middlewares/loginRequired";
 import {
   reviewValidator,
