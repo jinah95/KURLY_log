@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
 import { styled as materialStyled } from '@mui/material/styles';
@@ -15,12 +16,13 @@ const NewKurlyLog = ({ productId }) => {
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
+    const router = useRouter();
 
-    const [score, setScore] = useState(0);
+    const [score, setScore] = useState(1);
     const [good, setGood] = useState("");
     const [bad, setBad] = useState("");
     const [title, setTitle] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState([]);
     const [content, setContent] = useState("");
 
     // productId로 상품 정보 조회
