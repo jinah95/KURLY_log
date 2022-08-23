@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import styled from "styled-components";
 import plusStar from "../public/plusStar.png";
@@ -12,7 +13,7 @@ const Loader = ({ style }) => (
     </div>
 );
 
-const Item = ({ items, image, num, style, loading }) => (
+const Item = ({ items, style, router }) => (
     <CardWrapper style={{ ...style, width: "99.89%" }}>
         <TitleWrapper>
             <KurlyLogTitle>{items.nickname}'s 컬리log</KurlyLogTitle>
@@ -30,25 +31,22 @@ const Item = ({ items, image, num, style, loading }) => (
         </ContentsWrapper>
 
         <EtcWrapper>
-            <ArrowWrapper>
+            <ArrowWrapper
+                onClick={() => router.push(`/kurlylog/post/${items.review_id}`)}
+            >
                 <span>{`> 더보기`}</span>
             </ArrowWrapper>
-            <LikesWrapper>{items.likesCount}💜</LikesWrapper>
+            <LikesWrapper>{items.countlikes}💜</LikesWrapper>
         </EtcWrapper>
     </CardWrapper>
 );
 
-const RowComponent = ({ image, num, style, loading, items }) => {
+const RowComponent = ({ style, loading, items }) => {
+    const router = useRouter();
     return loading ? (
         <Loader style={style} />
     ) : (
-        <Item
-            items={items}
-            image={image}
-            num={num}
-            style={style}
-            loading={loading}
-        />
+        <Item items={items} style={style} router={router} />
     );
 };
 

@@ -8,8 +8,6 @@ const RisingReviews = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
     const Row = ({ index, style }) => (
         <RowComponent
             items={items[index]}
-            image={items[index]}
-            num={index}
             style={style}
             loading={index === items.length}
         />
