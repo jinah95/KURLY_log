@@ -10,34 +10,44 @@ import { get, patch, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
 
-const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
+const KurlyLogWrite = ({ changeWrite, postInfo }) => {
     const viewContainerRef = useRef(null);
     const [preview, setPreview] = useState(false);
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
-    const [imgList, setImgList] = useState(postInfo.image);
-    const [kurlyLog, setKurlyLog] = useState({
-        score: postInfo.score,
-        good : postInfo.good,
-        bad : postInfo.bad,
-        title : postInfo.title,
-        image : postInfo.image,
-        content : postInfo.content,
-    });
 
-    const changeKurlyLog = (key, value) => {
-        setKurlyLog((current) => {
-            let newKurlyLog = { ...current };
-            newKurlyLog[key] = value;
-            // console.log("업데이트 데이터: ", newKurlyLog);
-            return newKurlyLog;
-        });
-    };
+    const [imgList, setImgList] = useState([]);
+    const [score, setScore] = useState(postInfo.score);
+    const [good, setGood] = useState(postInfo.good);
+    const [bad, setBad] = useState(postInfo.bad);
+    const [title, setTitle] = useState(postInfo.title);
+    const [image, setImage] = useState(postInfo.image);
+    const [content, setContent] = useState(postInfo.content);
+
+
+    // const [kurlyLog, setKurlyLog] = useState({
+    //     score: postInfo.score,
+    //     good : postInfo.good,
+    //     bad : postInfo.bad,
+    //     title : postInfo.title,
+    //     image : postInfo.image,
+    //     content : postInfo.content,
+    // });
+
+    // const changeKurlyLog = (key, value) => {
+    //     setKurlyLog((current) => {
+    //         let newKurlyLog = { ...current };
+    //         newKurlyLog[key] = value;
+    //         // console.log("업데이트 데이터: ", newKurlyLog);
+    //         return newKurlyLog;
+    //     });
+    // };
 
     // productId로 상품 정보 조회
+    
     const getProductInfo = async () => {
         try {
-            const res = await get("/goods/", productId);
+            const res = await get("/goods/", postInfo.product_id);
             setProductInfo(res.data.data);
         } catch (err) {
             console.error("error message: ", err);
@@ -45,19 +55,30 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
     };
 
      // 게시물 수정 업로드
-    const uploadPost = () => {
-        if (kurlyLog.title === "" || kurlyLog.content === "") {
+    const uploadPost = async () => {
+        if (title === "" || content === "") {
             return;
         }
 
-        // s3 이미지 업로드
-        uploadImage(imgList)
-            .then(() => {
-                // console.log("수정할 데이터(이미지 확인): ", kurlyLog);
-                patch(`/logs/${postInfo.review_id}`, kurlyLog);
-            }).then(()=> {
-                setWrite(false);
-            });
+        // S3에 이미지 업로드
+        const formData = new FormData();
+        imgList.map((item) => formData.append("img", item.file));
+        const res = await sendPostImageFile("/upload/multi/", formData);
+        
+        // S3 주소 저장
+        const imageS3Url = await res.data.data; 
+        
+        const data = await patch(`/logs/${postInfo.review_id}`, {
+            score: score,
+            good : good,
+            bad : bad,
+            title : title,
+            image : imageS3Url, 
+            content : content,
+        });
+        console.log("수정: ", data.data);
+
+        changeWrite();
     }
 
     // 이미지 추가
@@ -86,29 +107,37 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
         setImgList(imageUrlLists);
     };
 
-    // 이미지 업로드
-    const uploadImage = async (imgList) => {
-        try {
-            const formData = new FormData();
-            imgList.map((item) => formData.append("img", item.file));
-            const res = await sendPostImageFile("/upload/multi/", formData);
-            const imageS3Url = await res.data.data; 
-
-            changeKurlyLog("image", imageS3Url);
-            // location.reload();
-
-        } catch (err) {
-            console.error("error message: ", err);
-        }
+    // url로 file 변환
+    const convertURLtoFile = async (url) => {
+        const response = await fetch(url);
+        const data = await response.blob();
+        const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+        console.log(ext);
+        const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+        console.log(filename);
+        const metadata = { type: `image/${ext}` };
+        return new File([data], filename, metadata);
     };
 
+    // postInfo.image url 배열을 {show:, file:} 객체로 변환
+    // useEffect(() => {
+    //     console.log(postInfo.image);
+    //     console.log(typeof(postInfo.image));
+    //     const newImgList = postInfo.image.map((url) => {
+    //         let obj = { show: url, file: convertURLtoFile(url) };
+    //         return obj;
+    //     })
+
+    //     console.log(newImgList);
+    //     setImgList(newImgList);
+    // }, [])
 
     useEffect(() => {
         getProductInfo();
         if (viewContainerRef.current) {
             viewContainerRef.current.innerHTML += htmlStr;
         }
-        changeKurlyLog("content", htmlStr.replace(/(<([^>]+)>)/gi, ""));
+        setContent(htmlStr.replace(/(<([^>]+)>)/gi, ""));
     }, [htmlStr, preview])
 
     useEffect(() => {
@@ -150,8 +179,8 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                                 </div>
                                 <Review
                                     placeholder="좋았던 점을 적어주세요!"
-                                    value={kurlyLog.good}
-                                    onChange={(e) => changeKurlyLog("good", e.target.value)}
+                                    value={good}
+                                    onChange={(e) => setGood(e.target.value)}
                                 />
                             </ReviewSummary>
                             <ReviewSummary>
@@ -161,18 +190,18 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                                 </div>
                                 <Review
                                     placeholder="개선하면 좋을 점을 적어주세요!"
-                                    value={kurlyLog.bad}
-                                    onChange={(e) => changeKurlyLog("bad", e.target.value)}
+                                    value={bad}
+                                    onChange={(e) => setBad(e.target.value)}
                                 />
                             </ReviewSummary>
                         </ReviewWrapper>
                         <Line />
                         <WriteContent>
-                            <h5>상세 후기 작성!</h5>
+                            <h5>상세 후기 작성</h5>
                             <Title
                                 placeholder="제목을 입력해주세요."
-                                value={kurlyLog.title}
-                                onChange={(e) => changeKurlyLog("title", e.target.value)}
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                             <WriteContainer>
                                 <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
@@ -186,22 +215,20 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                                     id="input-file"
                                     accept="image/*"
                                     style={{ display: "none" }}
-                                    onChange={(e) =>
-                                        handleAddImages(e)
-                                    }
+                                    onChange={(e) => handleAddImages(e)}
                                 />
                             </ImageUpload>
                             <ImageWrapper>
-                                {imgList.map((image, id) => (
-                                    <ImageCard key={`single-${id}`}>
+                                {imgList.map((img, index) => (
+                                    <ImageCard key={index}>
                                         <Image
-                                            src={image.show}
-                                            alt={`image-${id}`}
+                                            src={img.show}
+                                            alt={index}
                                             width={50}
                                             height={50}
                                         />
                                         <div
-                                            id={`${id}`}
+                                            id={index}
                                             onClick={(e) => handleDeleteImage(e)}>
                                             x
                                         </div>
@@ -215,7 +242,7 @@ const KurlyLogWrite = ({ setWrite, productId, postInfo }) => {
                             미리보기
                         </PreviewButton>
                         <Buttons>
-                            <ConfirmButton onClick={() => setWrite(false)}>
+                            <ConfirmButton onClick={changeWrite}>
                                 취소
                             </ConfirmButton>
                             <ConfirmButton onClick={uploadPost}>

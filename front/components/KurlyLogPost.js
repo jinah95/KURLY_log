@@ -22,8 +22,6 @@ const KurlyLogPost = ({ reviewId }) => {
     const [createdAt, setCreatedAt] = useState("");
     const router = useRouter();
 
-    const productId = "1006";
-
     const settings = {
         dots: true,
         infinite: true,
@@ -33,6 +31,10 @@ const KurlyLogPost = ({ reviewId }) => {
         autoplay: true
     };
 
+    const changeWrite = () => {
+        setWrite((current) => !current);
+    }
+
     // reviewId로 해당 컬리log 조회
     const getPostInfo = async () => {
         try {
@@ -41,7 +43,7 @@ const KurlyLogPost = ({ reviewId }) => {
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
             setCreatedAt(moment((res.data.data.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD"));
-            console.log("컬리log 데이터: ", res.data.data);
+            // console.log("수정된 데이터: ", res.data.data);
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -81,7 +83,7 @@ const KurlyLogPost = ({ reviewId }) => {
 
     return (
         write ? (
-            <KurlyLogWrite setWrite={setWrite} productId={productId} postInfo={postInfo} />
+            <KurlyLogWrite changeWrite={changeWrite} postInfo={postInfo} />
         ) : (
             <Wrapper>
                 <Home>
@@ -115,12 +117,17 @@ const KurlyLogPost = ({ reviewId }) => {
                 <Link href={`/kurlylog/${userInfo.user_id}`} passHref>
                     <UserInfo>
                         <UserImage>
-                            <Image
-                                src={userInfo.picture}
-                                alt="profile"
-                                width={40}
-                                height={40}
-                            />
+                        {
+                            userInfo.picture && (
+                                <Image
+                                    src={userInfo.picture}
+                                    alt="profile"
+                                    width={40}
+                                    height={40}
+                                    unoptimized={true}
+                                />
+                            )
+                        }
                         </UserImage>
                         <UserName>{userInfo.nickname}</UserName>
                         <UserTitle>{userInfo.intro}</UserTitle>

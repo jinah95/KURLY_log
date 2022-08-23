@@ -6,3 +6,4 @@ migrations/
 seeders/
 models/
 back/config/
+.DS_Store

@@ -25,11 +25,9 @@ const MyKurly = ({ userId }) => {
     // 유저의 컬리로그 인기글
     const getBestPosts = async () => {
         try {
-            const res = await get("/logs/my-log?page=1&perPage=5");
+            const res = await get(`/logs/user/${userId}?page=1&perPage=5`);
             setBestPosts(res.data.data);
-
-            // 다른 유저인 경우
-            // const res = await get("/logs/user/:user_id?page=1&perPage=5");
+            
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -38,7 +36,7 @@ const MyKurly = ({ userId }) => {
     // 유저의 컬리로그 전체글
     const getPosts = async () => {
         try {
-            const res = await get("/logs/my-log?page=1&perPage=3");
+            const res = await get(`/logs/user/${userId}?page=1&perPage=3`);
             setPosts(res.data.data);
         } catch (err) {
             console.error("error message: ", err);
@@ -61,16 +59,15 @@ const MyKurly = ({ userId }) => {
                     </LogInfo>
                     <UserInfo>
                         <UserImage>
-                            {
-                                console.log(user.picture)
-                            }
+                        {user?.picture && (
                             <Image
-                                src={user.picture}
+                                src={user?.picture}
                                 alt="profile"
                                 width={40}
                                 height={40}
                                 unoptimized={true}
                             />
+                        )}
                         </UserImage>
                         <UserProfile>
                             <div>{user.nickname}</div>
