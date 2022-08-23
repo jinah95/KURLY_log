@@ -54,18 +54,18 @@ const ProductPerReview = () => {
                             </DialogTitle>
                             <DialogContent>
                                 <ModalButtonWrapper>
+                                    <MovingButton type="kurly">
+                                        컬리log 후기 쓰러가기
+                                    </MovingButton>
+
                                     <MovingButton
-                                        type="kurly"
+                                        type="simple"
                                         onClick={() =>
                                             router.push(
                                                 `/review/simple/${productId}`
                                             )
                                         }
                                     >
-                                        컬리log 후기 쓰러가기
-                                    </MovingButton>
-
-                                    <MovingButton type="simple">
                                         단순 후기 쓰러가기
                                     </MovingButton>
 
