@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const KurlioncerReview = ({ item }) => {
     const router = useRouter();
-    console.log(item);
+
     return (
         <ReviewContainer
             onClick={() => router.push(`/kurlylog/post/${item.review_id}`)}
