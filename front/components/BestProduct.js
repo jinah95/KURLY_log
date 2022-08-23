@@ -8,6 +8,7 @@ import { CardActionArea } from "@mui/material";
 
 const BestProduct = ({ item }) => {
     const router = useRouter();
+
     return (
         <CardWrapper
             onClick={() => {
@@ -19,7 +20,7 @@ const BestProduct = ({ item }) => {
                     <CardMedia
                         component="img"
                         height="216"
-                        image="/background.jpg"
+                        image={item.image[0]}
                         alt="green iguana"
                     />
                     <ProductSticker>
@@ -38,7 +39,7 @@ const BestProduct = ({ item }) => {
 export default BestProduct;
 
 const CardWrapper = materialStyled(Card)(() => ({
-    maxWidth: "calc(40vw + 16px)",
+    width: "calc(40vw + 16px)",
     height: "auto",
     paddingLeft: "16px",
     display: "inline-block",

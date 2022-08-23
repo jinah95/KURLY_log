@@ -70,8 +70,11 @@ const ProductPerReview = () => {
                                 <DialogContent>
                                     <ModalButtonWrapper>
                                         <MovingButton type="kurly">
-                                            <Link href={`/kurlylog/new/${productId}`} passHref>
-                                            컬리log 후기 쓰러가기
+                                            <Link
+                                                href={`/kurlylog/new/${productId}`}
+                                                passHref
+                                            >
+                                                컬리log 후기 쓰러가기
                                             </Link>
                                         </MovingButton>
 
@@ -173,14 +176,22 @@ const ProductPerReview = () => {
                         )}
 
                         {totalPoint.length !== 0 ? (
-                            <span> {totalPoint[0].avgscore}</span>
+                            <AverageStarPoint>
+                                {" "}
+                                {totalPoint[0].avgscore}
+                            </AverageStarPoint>
                         ) : (
                             ""
                         )}
                     </StarWrapper>
 
                     {totalPoint.length !== 0 ? (
-                        <ReviewTotal>{totalPoint[0].countreviews}</ReviewTotal>
+                        <>
+                            <ReviewTotal>
+                                <ReviewTotalSpan>reviews</ReviewTotalSpan>
+                                {totalPoint[0].countreviews}
+                            </ReviewTotal>
+                        </>
                     ) : (
                         <ReviewTotal>0</ReviewTotal>
                     )}
@@ -244,7 +255,7 @@ const DisabledButton = styled.div`
 const ReviewWrapper = styled.div`
     display: grid;
     grid-template-columns: 8fr 2fr;
-    padding: 15px 2px;
+    padding: 15px 10px;
 `;
 
 const StarWrapper = styled.div`
@@ -260,6 +271,11 @@ const ReviewTotal = styled.div`
     color: purple;
     font-weight: 600;
     text-align: right;
+`;
+
+const ReviewTotalSpan = styled.span`
+    font-size: 12px;
+    color: #b3b3b3;
 `;
 
 const NoneReview = styled.div`
@@ -294,4 +310,8 @@ const CancleButton = styled.button`
     background: none;
     border: 1px solid gray;
     cursor: pointer;
+`;
+
+const AverageStarPoint = styled.div`
+    padding-left: 10px;
 `;

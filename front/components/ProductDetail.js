@@ -6,6 +6,7 @@ import { getPost } from "../api";
 
 const ProductDetail = () => {
     const [itemDetail, setItemDetail] = useState({});
+    const [imgUrl, setImageUrl] = useState("");
     const router = useRouter();
     const productId = router.query?.item;
 
@@ -13,18 +14,18 @@ const ProductDetail = () => {
         try {
             const res = await getPost(`/goods/${productId}`);
             setItemDetail(res.data.data);
+            setImageUrl(res.data.data.image[0]);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
-
     useEffect(() => {
         getProductDetail();
     }, []);
 
     return (
         <Wrapper>
-            <Header></Header>
+            <Header url={imgUrl}></Header>
             <ProductContents>
                 <TitleWrapper>
                     <DeliveryType>샛별 배송</DeliveryType>
@@ -57,8 +58,9 @@ const Wrapper = styled.div`
 const Header = styled.div`
     width: 100%;
     height: 60%;
-    background: url("/product_sample.jpg");
+    background: url(${(props) => props.url});
     background-size: cover;
+    background-position: center center;
     color: white;
     display: grid;
     grid-template-rows: 8fr 2fr;
