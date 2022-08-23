@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ReviewLists from "./ReviewLists";
 import { getPost } from "../api";
 
-const Reviews = ({ reviewInitial }) => {
+const Reviews = ({ reviewInitial, productId }) => {
     const router = useRouter();
     const [page, setPage] = useState(1);
     const [reviewState, setReviewState] = useState({
@@ -14,10 +14,9 @@ const Reviews = ({ reviewInitial }) => {
     });
 
     const loadMore = async () => {
-        const productNum = Number(router.query?.item);
         const per = 2;
         const res = await getPost(
-            `/logs/goods/1006?page=${page + 1}&perPage=${per}`
+            `/logs/goods/${productId}?page=${page + 1}&perPage=${per}`
         );
 
         if (
@@ -61,7 +60,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
-    padding-top: 150px;
+    padding-top: 185px;
 `;
 
 const Header = styled.div`

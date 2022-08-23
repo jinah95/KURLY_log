@@ -18,12 +18,22 @@ const ProductPerReview = () => {
     const [open, setOpen] = useState(false);
     const [reviewInitial, setReviewInitial] = useState([]);
     const [totalPoint, setTotalPoint] = useState([]);
+    const [productName, setProductName] = useState("");
     const router = useRouter();
     const productId = router.query?.item;
 
     const userState = useContext(UserStateContext);
 
     const isLogin = !!userState.user;
+
+    const getProductName = async () => {
+        try {
+            const res = await getPost(`/goods/${productId}`);
+            setProductName(res.data.data.detail);
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const getInitialReview = async () => {
         try {
@@ -48,12 +58,14 @@ const ProductPerReview = () => {
 
     useEffect(() => {
         getInitialReview();
+        getProductName();
     }, []);
 
     return (
         <Wrapper>
             <ButtonWrapper>
                 {" "}
+                <ProductName>[ {productName} ]</ProductName>
                 {isLogin ? (
                     <ReviewWriter onClick={() => setOpen((cur) => !cur)}>
                         후기 작성
@@ -109,36 +121,28 @@ const ProductPerReview = () => {
                         {totalPoint.length !== 0 ? (
                             <>
                                 {" "}
-                                <Image
-                                    src={plusStar}
-                                    alt="plusStar"
-                                    width={35}
-                                    height={35}
-                                />
-                                <Image
-                                    src={plusStar}
-                                    alt="plusStar"
-                                    width={35}
-                                    height={35}
-                                />
-                                <Image
-                                    src={plusStar}
-                                    alt="plusStar"
-                                    width={35}
-                                    height={35}
-                                />
-                                <Image
-                                    src={minusStar}
-                                    alt="plusStar"
-                                    width={35}
-                                    height={35}
-                                />
-                                <Image
-                                    src={minusStar}
-                                    alt="plusStar"
-                                    width={35}
-                                    height={35}
-                                />
+                                {Array(Math.floor(totalPoint[0].avgscore))
+                                    .fill(0)
+                                    .map((item, idx) => (
+                                        <Image
+                                            key={`plus-${idx + 1}`}
+                                            src={plusStar}
+                                            alt="plusStar"
+                                            width={35}
+                                            height={35}
+                                        />
+                                    ))}
+                                {Array(5 - Math.floor(totalPoint[0].avgscore))
+                                    .fill(0)
+                                    .map((item, idx) => (
+                                        <Image
+                                            key={`minus-${idx + 1}`}
+                                            src={minusStar}
+                                            alt="plusStar"
+                                            width={35}
+                                            height={35}
+                                        />
+                                    ))}
                             </>
                         ) : (
                             <>
@@ -198,7 +202,7 @@ const ProductPerReview = () => {
                 </ReviewWrapper>
             </ButtonWrapper>
             {totalPoint.length !== 0 ? (
-                <Reviews reviewInitial={reviewInitial} />
+                <Reviews reviewInitial={reviewInitial} productId={productId} />
             ) : (
                 <NoneReview>
                     현재 리뷰가 없습니다😃
@@ -219,10 +223,18 @@ const Wrapper = styled.div`
     position: relative;
 `;
 
+const ProductName = styled.div`
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 10px;
+`;
 const ButtonWrapper = styled.div`
-    padding: 20px 10px;
+    padding: 10px 10px;
     width: 100%;
-    height: 150px;
+    height: 180px;
     position: fixed;
     z-index: 100;
     background-color: white;

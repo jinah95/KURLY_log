@@ -22,7 +22,12 @@ const Item = ({ items, style, router }) => (
         <ProductTitle>{items.detail}</ProductTitle>
         <ContentsWrapper>
             <div className="avatar">
-                <Image src={plusStar} alt="product" width={80} height={90} />
+                <Image
+                    src={items.image[0] ? items.image[0] : plusStar}
+                    alt="product"
+                    width={100}
+                    height={100}
+                />
             </div>
             <ReviewContainer>
                 <ReviewTitleP>{items.title}</ReviewTitleP>
@@ -43,6 +48,7 @@ const Item = ({ items, style, router }) => (
 
 const RowComponent = ({ style, loading, items }) => {
     const router = useRouter();
+
     return loading ? (
         <Loader style={style} />
     ) : (
