@@ -2,7 +2,7 @@
 
 ## 서비스 개요
 
-<img src="file:///Users/shj/Desktop/Snipaste_2022-08-23_21-01-25.png" alt="컬리로그 로고" width="600" >
+<img src="https://cdn.discordapp.com/attachments/979000955657945131/1011609164734283848/Snipaste_2022-08-23_21-01-25.png" alt="컬리로그 로고" width="600" >
 
 #### Kurly'log는 이커머스와 SNS를 통합한 서비스입니다.<br />
 
@@ -92,7 +92,7 @@ yarn start
 ## 👨‍👨‍👧‍👧 우리 팀 이름은 <b>SSAP</b> ('쌉')입니다. <br /> <br />
 
 <img src="https://user-images.githubusercontent.com/97212459/185301108-05805298-8f35-47b5-a617-dd620e00ab34.png" width="300" height="100" alt="ssap로고"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="file:///Users/shj/Documents/%E1%84%8F%E1%85%A5%E1%86%AF%E1%84%85%E1%85%B5%20%E1%84%92%E1%85%A2%E1%84%8F%E1%85%A5%E1%84%90%E1%85%A9%E1%86%AB/kurly_ssap_logo_circle.png" alt="원형 로고" width="100">
+<img src="https://cdn.discordapp.com/attachments/979000955657945131/1011609165120143430/kurly_ssap_logo_circle.png" alt="원형 로고" width="100">
 <br /><br />
 ‘SSAP’은 팀원들의 성 이니셜( S도희 / S현주 / A민영 / P진아 )을 조합한 팀 명입니다.<br />
 또한, 'SSAP(쌉)'가능은 완전 가능한 상태를 의미하는 신조어입니다. 여기서 '쌉'은 완전의 의미를 가진 접두어로 사용되고 있습니다. <br />
