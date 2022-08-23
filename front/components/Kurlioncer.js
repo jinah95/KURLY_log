@@ -12,7 +12,7 @@ const Kurlioncer = () => {
             const newArr = res.data.data;
             setPersonList([...newArr]);
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
 

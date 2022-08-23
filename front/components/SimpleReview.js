@@ -38,7 +38,7 @@ const SimpleReview = () => {
                 good: good,
                 bad: bad,
             });
-            // console.log(res.data.data);
+
             router.push(`/review/${productId}`);
         } catch (err) {
             console.error("error message: ", err);

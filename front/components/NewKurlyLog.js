@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
-import { styled as materialStyled } from '@mui/material/styles';
+import { styled as materialStyled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import { get, post, sendPostImageFile } from "../api";
 
 const Write = dynamic(() => import("./Write"), { ssr: false });
@@ -36,7 +36,7 @@ const NewKurlyLog = ({ productId }) => {
         }
     };
 
-     // 게시물 작성 업로드
+    // 게시물 작성 업로드
     const uploadPost = () => {
         if (title === "" || content === "") {
             return;
@@ -47,25 +47,24 @@ const NewKurlyLog = ({ productId }) => {
             .then(() => {
                 post(`/logs/${productId}`, {
                     score: score,
-                    good : good,
-                    bad : bad,
-                    title : title,
-                    image : image, 
-                    content : content,
+                    good: good,
+                    bad: bad,
+                    title: title,
+                    image: image,
+                    content: content,
                 });
-            }).then(() => {
+            })
+            .then(() => {
                 // 작성한 게시물로 이동
                 const review_id = res.data.data.review_id;
-                router.push(
-                    {
-                        pathname: `/kurlylog/post/${review_id}`,
-                        query: {
-                            review_id,
-                        },
+                router.push({
+                    pathname: `/kurlylog/post/${review_id}`,
+                    query: {
+                        review_id,
                     },
-                );
-            })
-    }
+                });
+            });
+    };
 
     // 이미지 추가
     const handleAddImages = (e) => {
@@ -99,10 +98,8 @@ const NewKurlyLog = ({ productId }) => {
             const formData = new FormData();
             imgList.map((item) => formData.append("img", item.file));
             const res = await sendPostImageFile("/upload/multi/", formData);
-            const imageS3Url = await res.data.data; 
-            console.log("s3 이미지 주소 받은 거 :", imageS3Url);
+            const imageS3Url = await res.data.data;
             setImage(imageS3Url);
-
         } catch (err) {
             console.error("error message: ", err);
         }
@@ -114,12 +111,11 @@ const NewKurlyLog = ({ productId }) => {
             viewContainerRef.current.innerHTML += htmlStr;
         }
         setContent(htmlStr.replace(/(<([^>]+)>)/gi, ""));
-    }, [htmlStr, preview])
+    }, [htmlStr, preview]);
 
     return (
         <Wrapper>
-        {
-            preview ? (
+            {preview ? (
                 <div>
                     {/* 제목 이미지 등 보이기 */}
                     <ViewContainer ref={viewContainerRef} />
@@ -173,7 +169,10 @@ const NewKurlyLog = ({ productId }) => {
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                             <WriteContainer>
-                                <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                                <Write
+                                    htmlStr={htmlStr}
+                                    setHtmlStr={setHtmlStr}
+                                />
                             </WriteContainer>
                             <ImageUpload>
                                 <h5>사진 등록하기 (최대 5장)</h5>
@@ -198,7 +197,10 @@ const NewKurlyLog = ({ productId }) => {
                                         />
                                         <div
                                             id={`${id}`}
-                                            onClick={(e) => handleDeleteImage(e)}>
+                                            onClick={(e) =>
+                                                handleDeleteImage(e)
+                                            }
+                                        >
                                             x
                                         </div>
                                     </ImageCard>
@@ -211,20 +213,17 @@ const NewKurlyLog = ({ productId }) => {
                             미리보기
                         </PreviewButton>
                         <Buttons>
-                            <ConfirmButton>
-                                취소
-                            </ConfirmButton>
+                            <ConfirmButton>취소</ConfirmButton>
                             <ConfirmButton onClick={uploadPost}>
                                 완료
                             </ConfirmButton>
                         </Buttons>
                     </ButtonWrapper>
                 </div>
-            )
-        }
+            )}
         </Wrapper>
-    )
-}
+    );
+};
 
 export default NewKurlyLog;
 
@@ -235,7 +234,7 @@ const Wrapper = styled.div`
 `;
 
 const ViewContainer = styled.div`
-    border: 1px solid #e2e2e2;;
+    border: 1px solid #e2e2e2;
     margin: 10px;
 
     .ql-align-center {
@@ -305,24 +304,20 @@ const WriteContent = styled.div`
     margin: 30px auto;
 `;
 
-const Review = materialStyled(TextField)(
-    () => ({
-        width: "70vw",
-        '.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "none",
-        }
-    })
-);
-
-const Title = materialStyled(TextField)(
-    () => ({
-        width: "100%",
+const Review = materialStyled(TextField)(() => ({
+    width: "70vw",
+    ".MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
         border: "none",
-        '.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "none",
-        }
-    })
-);
+    },
+}));
+
+const Title = materialStyled(TextField)(() => ({
+    width: "100%",
+    border: "none",
+    ".MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        border: "none",
+    },
+}));
 
 const WriteContainer = styled.div`
     width: 100%;
@@ -387,35 +382,31 @@ const Buttons = styled.div`
     justify-content: space-between;
 `;
 
-const PreviewButton = materialStyled(Button)(
-    () => ({
-        width: '140px',
-        height: '40px',
-        backgroundColor: 'white',
-        color: 'black',
-        fontSize: '0.8rem',
-        border: '0',
-        borderRadius: '0',
-        '&:hover': {
-            border: '0',
-        }
-    })
-);
+const PreviewButton = materialStyled(Button)(() => ({
+    width: "140px",
+    height: "40px",
+    backgroundColor: "white",
+    color: "black",
+    fontSize: "0.8rem",
+    border: "0",
+    borderRadius: "0",
+    "&:hover": {
+        border: "0",
+    },
+}));
 
-const ConfirmButton = materialStyled(Button)(
-    () => ({
-        width: '70px',
-        height: '40px',
-        backgroundColor: 'black',
-        color: 'white',
-        fontSize: '0.8rem',
-        border: '0',
-        borderRadius: '25px',
-        '&:hover': {
-            backgroundColor: 'var(--purple)',
-        }
-    })
-);
+const ConfirmButton = materialStyled(Button)(() => ({
+    width: "70px",
+    height: "40px",
+    backgroundColor: "black",
+    color: "white",
+    fontSize: "0.8rem",
+    border: "0",
+    borderRadius: "25px",
+    "&:hover": {
+        backgroundColor: "var(--purple)",
+    },
+}));
 
 const Line = styled.div`
     width: 80%;
