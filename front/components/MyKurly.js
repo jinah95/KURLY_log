@@ -54,7 +54,7 @@ const MyKurly = ({ userId }) => {
             <div>
                 <Header>
                     <LogInfo>
-                        <span>오늘 15 전체 46</span>
+                        {/* <span>오늘 15 전체 46</span> */}
                         <h1>{user.nickname}'s 컬리log</h1>
                     </LogInfo>
                     <UserInfo>
@@ -71,7 +71,7 @@ const MyKurly = ({ userId }) => {
                         </UserImage>
                         <UserProfile>
                             <div>{user.nickname}</div>
-                            <div>{user.age}·{user.family}  팔로워 {user.followers}명</div>
+                            <div>{user.age}·{user.family} | 팔로워 {user.followers}명</div>
                         </UserProfile>
                     </UserInfo>
                 </Header>
@@ -149,6 +149,7 @@ const UserInfo = styled.div`
 const UserImage = styled.div`
     width: 40px;
     height: 40px;
+    border: 2px solid white;
     border-radius: 25px;
     overflow: hidden;
 `;

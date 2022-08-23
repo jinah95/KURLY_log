@@ -233,6 +233,7 @@ const UserInfo = styled.div`
 const UserImage = styled.div`
     width: 40px;
     height: 40px;
+    border: 1px solid white;
     border-radius: 25px;
     overflow: hidden;
 `;
