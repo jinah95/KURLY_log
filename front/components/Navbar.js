@@ -18,7 +18,7 @@ const Navbar = () => {
     const [targetPage, setTargetPage] = useState("market");
     const [targetTab, setTargetTab] = useState("best");
     const [login, setLogin] = useState(false);
-    console.log(targetPage);
+
     const dispatch = useContext(DispatchContext);
     const userState = useContext(UserStateContext);
 
