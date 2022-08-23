@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
@@ -14,9 +14,7 @@ const Navbar = () => {
     const router = useRouter();
     const productId = router.query?.item;
     const pathName = router.pathname;
-    console.log(pathName);
-    // console.log(productId);
-    // 페이지 새로고침 시 이미지 변경 부분에 대하여
+
     const [targetPage, setTargetPage] = useState(
         pathName === "/" || pathName === "/event"
             ? "market"
@@ -47,9 +45,6 @@ const Navbar = () => {
             ? "review"
             : "kurlylog"
     );
-    const [login, setLogin] = useState(false);
-
-    console.log(targetPage, targetTab);
 
     const dispatch = useContext(DispatchContext);
     const userState = useContext(UserStateContext);
