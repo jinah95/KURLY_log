@@ -15,6 +15,7 @@ const PersonCard = ({ item, index }) => {
             onClick={() => router.push(`/kurlylog/${item.user_id}`)}
         >
             <Profile>
+                <GradeNumber>{index + 1}</GradeNumber>
                 <MedalWrapper>
                     <Image
                         src={medalList[index]}
@@ -79,6 +80,12 @@ const MedalWrapper = styled.div`
     width: 30px;
     height: 30px;
     left: 500px;
+`;
+
+const GradeNumber = styled.span`
+    font-weight: bold;
+    color: #5f0080;
+    padding-right: 3px;
 `;
 
 const ProfileImg = styled.div`
