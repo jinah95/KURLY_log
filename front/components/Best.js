@@ -13,7 +13,7 @@ const Best = () => {
             const newArr = res.data.data;
             setProductList([...newArr]);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
     useEffect(() => {

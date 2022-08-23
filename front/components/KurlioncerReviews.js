@@ -12,7 +12,7 @@ const KurlioncerReviews = () => {
             const newArr = res.data.data;
             setKurlyReviews([...newArr]);
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
 
