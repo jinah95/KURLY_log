@@ -18,6 +18,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      image: {
+        type: DataTypes.ARRAY(Sequelize.STRING),
+        allowNull: true,
+      },
     },
     {
       tableName: "products",
