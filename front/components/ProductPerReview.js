@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -11,11 +11,18 @@ import Box from "@mui/material/Box";
 import { getPost } from "../api";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 
+import { UserStateContext } from "../pages/_app";
+
 const ProductPerReview = () => {
     const [open, setOpen] = useState(false);
     const [reviewInitial, setReviewInitial] = useState([]);
+    const [totalPoint, setTotalPoint] = useState([]);
     const router = useRouter();
     const productId = router.query?.item;
+
+    const userState = useContext(UserStateContext);
+
+    const isLogin = !!userState.user;
 
     const getInitialReview = async () => {
         try {
@@ -24,17 +31,20 @@ const ProductPerReview = () => {
             const res = await getPost(
                 `/logs/goods/${productId}?page=${start}&perPage=${per}`
             );
+
             if (res.data.message === "fail") {
                 return;
             } else {
-                const newArr = res.data.data;
+                const newArr = res.data.data.reviews;
+                const newTotal = res.data.data.reviewInfo;
                 setReviewInitial([...newArr]);
+                setTotalPoint([...newTotal]);
             }
         } catch (err) {
             console.log(err);
         }
     };
-
+    console.log(totalPoint);
     useEffect(() => {
         getInitialReview();
     }, []);
@@ -43,43 +53,54 @@ const ProductPerReview = () => {
         <Wrapper>
             <ButtonWrapper>
                 {" "}
-                <ReviewWriter onClick={() => setOpen((cur) => !cur)}>
-                    후기 작성
-                    {open && (
-                        <Dialog open={open}>
-                            <DialogTitle
-                                style={{ color: "purple", fontWeight: "bold" }}
-                            >
-                                후기 작성 방식을 선택해주세요.
-                            </DialogTitle>
-                            <DialogContent>
-                                <ModalButtonWrapper>
-                                    <MovingButton type="kurly">
-                                        컬리log 후기 쓰러가기
-                                    </MovingButton>
+                {!isLogin ? (
+                    <ReviewWriter onClick={() => setOpen((cur) => !cur)}>
+                        후기 작성
+                        {open && (
+                            <Dialog open={open}>
+                                <DialogTitle
+                                    style={{
+                                        color: "purple",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    후기 작성 방식을 선택해주세요.
+                                </DialogTitle>
+                                <DialogContent>
+                                    <ModalButtonWrapper>
+                                        <MovingButton type="kurly">
+                                            컬리log 후기 쓰러가기
+                                        </MovingButton>
 
-                                    <MovingButton
-                                        type="simple"
-                                        onClick={() =>
-                                            router.push(
-                                                `/review/simple/${productId}`
-                                            )
-                                        }
-                                    >
-                                        단순 후기 쓰러가기
-                                    </MovingButton>
+                                        <MovingButton
+                                            type="simple"
+                                            onClick={() =>
+                                                router.push(
+                                                    `/review/simple/${productId}`
+                                                )
+                                            }
+                                        >
+                                            단순 후기 쓰러가기
+                                        </MovingButton>
 
-                                    <CancleButton onClick={() => setOpen(true)}>
-                                        취소
-                                    </CancleButton>
-                                </ModalButtonWrapper>
-                            </DialogContent>
-                        </Dialog>
-                    )}
-                </ReviewWriter>
+                                        <CancleButton
+                                            onClick={() => setOpen(true)}
+                                        >
+                                            취소
+                                        </CancleButton>
+                                    </ModalButtonWrapper>
+                                </DialogContent>
+                            </Dialog>
+                        )}
+                    </ReviewWriter>
+                ) : (
+                    <DisabledButton>
+                        후기 쓰기는 로그인 후 이용 가능 합니다.
+                    </DisabledButton>
+                )}
                 <ReviewWrapper>
                     <StarWrapper>
-                        {reviewInitial.length !== 0 ? (
+                        {totalPoint.length !== 0 ? (
                             <>
                                 {" "}
                                 <Image
@@ -147,11 +168,18 @@ const ProductPerReview = () => {
                                 />
                             </>
                         )}
+
+                        <span>{totalPoint[0].avgscore}</span>
                     </StarWrapper>
-                    <ReviewTotal>1,766</ReviewTotal>
+
+                    {totalPoint.length !== 0 ? (
+                        <ReviewTotal>{totalPoint[0].countreviews}</ReviewTotal>
+                    ) : (
+                        <ReviewTotal>0</ReviewTotal>
+                    )}
                 </ReviewWrapper>
             </ButtonWrapper>
-            {reviewInitial.length !== 0 ? (
+            {totalPoint.length !== 0 ? (
                 <Reviews reviewInitial={reviewInitial} />
             ) : (
                 <NoneReview>
@@ -191,6 +219,19 @@ const ReviewWriter = styled.button`
     font-weight: 600;
     background-color: #fff;
     cursor: pointer;
+`;
+
+const DisabledButton = styled.div`
+    width: 100%;
+    height: 50px;
+    border: 1px solid rgb(95, 0, 128);
+    color: rgb(95, 0, 128);
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #fff;
+    cursor: pointer;
+    line-height: 50px;
+    text-align: center;
 `;
 
 const ReviewWrapper = styled.div`
