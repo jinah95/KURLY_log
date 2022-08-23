@@ -42,7 +42,7 @@ const ProductPerReview = () => {
                 setTotalPoint([...newTotal]);
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
 
@@ -54,7 +54,7 @@ const ProductPerReview = () => {
         <Wrapper>
             <ButtonWrapper>
                 {" "}
-                {!isLogin ? (
+                {isLogin ? (
                     <ReviewWriter onClick={() => setOpen((cur) => !cur)}>
                         후기 작성
                         {open && (
@@ -173,7 +173,7 @@ const ProductPerReview = () => {
                         )}
 
                         {totalPoint.length !== 0 ? (
-                            <span>{totalPoint[0].avgscore}</span>
+                            <span> {totalPoint[0].avgscore}</span>
                         ) : (
                             ""
                         )}
@@ -250,6 +250,9 @@ const ReviewWrapper = styled.div`
 const StarWrapper = styled.div`
     display: flex;
     align-items: center;
+    color: gray;
+    font-weight: bold;
+    font-size: 18px;
 `;
 
 const ReviewTotal = styled.div`

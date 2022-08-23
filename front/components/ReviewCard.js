@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import plusStar from "../public/plusStar.png";
-import Profile from "../public/profile.png";
 
 const Loader = ({ style }) => (
     <div
@@ -13,7 +13,7 @@ const Loader = ({ style }) => (
     </div>
 );
 
-const Item = ({ image, num, style, loading }) => (
+const Item = ({ style, items, router }) => (
     <CardWrapper style={{ ...style, width: "99.89%" }}>
         <Padding>
             <HashTagWrapper>
@@ -25,42 +25,51 @@ const Item = ({ image, num, style, loading }) => (
                         width={30}
                         height={30}
                     />
-                    <span>X 5</span>
+                    <span>X {items.score}</span>
                 </StarPoint>
 
                 <HashList>
-                    <HashTag># 1인 가구</HashTag>
-                    <HashTag># 행복뿜뿜</HashTag>
+                    <HashTag># {items.title}</HashTag>
                 </HashList>
             </HashTagWrapper>
             <ProfileWrapper>
-                <ProfileImgWrapper></ProfileImgWrapper>
+                <ProfileImgWrapper url={items.picture}></ProfileImgWrapper>
                 <PersonContent>
                     <NameWrapper>
-                        <PersonName>민규엄마</PersonName>
-                        <UserGrade>🥈 컬리언서</UserGrade>
+                        <PersonName>{items.nickname}</PersonName>
+                        <UserGrade>
+                            {items.grade === "샛별"
+                                ? `🥉 ${items.grade}`
+                                : `🥈 ${items.grade}`}
+                        </UserGrade>
                     </NameWrapper>
-                    <Introduce>50대 / 4인가구 / 아침걱정</Introduce>
+                    <Introduce>
+                        {items.age} / {items.family} / {items.intro}
+                    </Introduce>
                 </PersonContent>
             </ProfileWrapper>
             <ReviewSummary>
                 <Badge reviewType="good">👍</Badge>
                 <SummaryWrapper>
-                    <Summary>안녕하세요 장점은 빠르다는거에요!</Summary>
+                    <Summary>{items.good}</Summary>
                 </SummaryWrapper>
             </ReviewSummary>
             <ReviewSummary>
                 <Badge reviewType="bad">👎</Badge>
                 <SummaryWrapper>
-                    <Summary>단점은 없어요! 우리 애들도 쉽게 해요!</Summary>
+                    <Summary>{items.bad}</Summary>
                 </SummaryWrapper>
             </ReviewSummary>
             <ReviewContainer>
                 <EtcWrapper>
                     <LikesWrapper>
-                        💜<LikesCnt>55</LikesCnt>
+                        💜<LikesCnt>{items.countlikes}</LikesCnt>
                     </LikesWrapper>
-                    <ArrowWrapper>
+                    <ArrowWrapper
+                        onClick={() =>
+                            router.push(`/kurlylog/post/${items.review_id}`)
+                        }
+                    >
                         <span>{`> 더보기`}</span>
                     </ArrowWrapper>
                 </EtcWrapper>
@@ -73,11 +82,12 @@ const Item = ({ image, num, style, loading }) => (
     </CardWrapper>
 );
 
-const ReviewCard = ({ image, num, style, loading }) => {
+const ReviewCard = ({ image, num, style, loading, items }) => {
+    const router = useRouter();
     return loading ? (
         <Loader style={style} />
     ) : (
-        <Item image={image} num={num} style={style} loading={loading} />
+        <Item items={items} style={style} loading={loading} router={router} />
     );
 };
 
@@ -148,7 +158,7 @@ const HashTagWrapper = styled.div`
 `;
 
 const HashTag = styled.div`
-    width: 80px;
+    width: 200px;
     height: 24px;
     line-height: 24px;
     border-radius: 14px;
@@ -158,6 +168,10 @@ const HashTag = styled.div`
     font-size: 12px;
     text-align: center;
     margin: 0 2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-left: 3px;
 `;
 
 const HashList = styled.div`
@@ -177,7 +191,7 @@ const ProfileImgWrapper = styled.div`
     border-radius: 50px;
     border: 2px dashed #5f0080;
     padding: 6px;
-    background: url("/best_main.jpg");
+    background: url(${(props) => props.url});
     background-size: cover;
     color: white;
     margin: 0 3px;

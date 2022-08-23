@@ -16,18 +16,20 @@ const Reviews = ({ reviewInitial }) => {
 
     const loadMore = async () => {
         const productNum = Number(router.query?.item);
-        const per = 1;
+        const per = 2;
         const res = await getPost(
             `/logs/goods/1006?page=${page + 1}&perPage=${per}`
         );
 
-        if (res.data.data.length === 0 || res.data.message === "fail") {
+        if (
+            res.data.data?.reviews?.length === 0 ||
+            res.data.message === "fail"
+        ) {
             return;
         } else {
-            console.log("여기 온거다");
             setPage((cur) => cur + 1);
             setReviewState({ ...reviewState, moreItemsLoading: true });
-            const newItems = [...res.data.data];
+            const newItems = [...res.data.data.reviews];
             setReviewState({
                 ...reviewState,
                 moreItemsLoading: false,
