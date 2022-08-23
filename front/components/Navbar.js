@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
-import KurlyLogo from "../public/images/KurlyLogo.png";
-import cart from "../public/images/cart.png";
+import kurlylogLogo from "../public/kurlylog_logo.png";
+import cart from "../public/images/cart.PNG";
 import loginIcon from "../public/images/login.png";
 import logoutIcon from "../public/images/logout.png";
 
@@ -66,7 +66,7 @@ const Navbar = () => {
                 <TitleDiv>
                     <LogoWrapper>
                         <Image
-                            src={KurlyLogo}
+                            src={kurlylogLogo}
                             alt="logo"
                             width={60}
                             height={32}
