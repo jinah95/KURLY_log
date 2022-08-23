@@ -3,6 +3,16 @@ import { UserService } from "../services/UserService";
 import loginRequired from "../middlewares/loginRequired";
 const userRouter = Router();
 
+userRouter.get("/users/current", loginRequired, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
+    const user = await UserService.getUserInfo(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 userRouter.post("/login", async (req, res, next) => {
   try {
     const { nickname, password } = req.body;
