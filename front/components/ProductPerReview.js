@@ -146,36 +146,17 @@ const ProductPerReview = () => {
                             </>
                         ) : (
                             <>
-                                <Image
-                                    src={minusStar}
-                                    alt="minusStar"
-                                    width={35}
-                                    height={35}
-                                />
-                                <Image
-                                    src={minusStar}
-                                    alt="minusStar"
-                                    width={35}
-                                    height={35}
-                                />
-                                <Image
-                                    src={minusStar}
-                                    alt="minusStar"
-                                    width={35}
-                                    height={35}
-                                />{" "}
-                                <Image
-                                    src={minusStar}
-                                    alt="minusStar"
-                                    width={35}
-                                    height={35}
-                                />{" "}
-                                <Image
-                                    src={minusStar}
-                                    alt="minusStar"
-                                    width={35}
-                                    height={35}
-                                />
+                                {Array(5)
+                                    .fill(0)
+                                    .map((item, idx) => (
+                                        <Image
+                                            key={`minus-${idx + 1}`}
+                                            src={minusStar}
+                                            alt="minusStar"
+                                            width={35}
+                                            height={35}
+                                        />
+                                    ))}
                             </>
                         )}
 
@@ -199,6 +180,9 @@ const ProductPerReview = () => {
                     ) : (
                         <ReviewTotal>0</ReviewTotal>
                     )}
+                    <AlertComment>
+                        {`> 카드를 클릭하면 컬리로그로 이동합니다.`}
+                    </AlertComment>
                 </ReviewWrapper>
             </ButtonWrapper>
             {totalPoint.length !== 0 ? (
@@ -326,4 +310,9 @@ const CancleButton = styled.button`
 
 const AverageStarPoint = styled.div`
     padding-left: 10px;
+`;
+
+const AlertComment = styled.div`
+    font-size: 12px;
+    padding-top: 2px;
 `;

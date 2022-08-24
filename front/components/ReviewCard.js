@@ -14,7 +14,10 @@ const Loader = ({ style }) => (
 );
 
 const Item = ({ style, items, router }) => (
-    <CardWrapper style={{ ...style, width: "99.89%" }}>
+    <CardWrapper
+        style={{ ...style, width: "99.89%" }}
+        onClick={() => router.push(`/kurlylog/post/${items.review_id}`)}
+    >
         <Padding>
             <HashTagWrapper>
                 <StarPoint>
@@ -68,14 +71,6 @@ const Item = ({ style, items, router }) => (
                         <LikesWrapper>
                             💜<LikesCnt>{items.countlikes}</LikesCnt>
                         </LikesWrapper>
-
-                        <ArrowWrapper
-                            onClick={() =>
-                                router.push(`/kurlylog/post/${items.review_id}`)
-                            }
-                        >
-                            <span>{`> 더보기`}</span>
-                        </ArrowWrapper>
                     </EtcWrapper>
 
                     <ImgWrapper>
@@ -125,6 +120,13 @@ const Padding = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    &:hover {
+        border: 1.5px solid #5f0080;
+        background-color: #ecc3fb;
+    }
+    &:click {
+        border: 1.5px solid #5f0080;
+    }
 `;
 
 const EtcWrapper = styled.div`
@@ -134,16 +136,6 @@ const EtcWrapper = styled.div`
     align-items: flex-start;
     justify-content: flex-end;
     padding-left: 15px;
-`;
-
-const ArrowWrapper = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-weight: bold;
-    font-size: 16px;
-    color: rgb(95, 0, 128);
-    padding-top: 12px;
 `;
 
 const LikesWrapper = styled.div`
@@ -270,7 +262,7 @@ const Badge = styled.div`
 const SummaryWrapper = styled.div`
     display: flex;
     align-items: center;
-    height: 80px;
+    height: 50px;
     width: 100%;
     margin: 5px 0;
 `;
@@ -301,7 +293,8 @@ const ImgWrapper = styled.div`
 `;
 
 const Img = styled.div`
-    width: 50%;
+    width: 110px;
+    height: 110px;
     background: url(${(props) => props.url});
     background-size: cover;
     background-position: center center;

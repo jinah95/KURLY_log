@@ -26,7 +26,7 @@ const ReviewLists = ({ items, moreItemsLoading, loadMore, hasNextPage }) => {
                     className="fixed-style"
                     height={1000}
                     itemCount={itemCount}
-                    itemSize={450}
+                    itemSize={420}
                     onItemsRendered={onItemsRendered}
                     ref={ref}
                 >
