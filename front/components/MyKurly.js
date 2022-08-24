@@ -68,17 +68,16 @@ const MyKurly = () => {
             const res = await post(`/follows/${userId}`);
             setPossibleFollow(true);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
     // 언팔로우
     const unFollow = async () => {
         try {
             const res = await deleteItem(`/follows/${userId}`);
-            console.log(res, "언팔!");
             setPossibleFollow(false);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
 

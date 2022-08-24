@@ -50,7 +50,7 @@ const KurlyLogPost = () => {
         //     console.log(res.data);
         // }
         // setLike((current) => !current);
-    }
+    };
 
     // reviewId로 해당 컬리log 조회
     const getPostInfo = async () => {
@@ -66,7 +66,6 @@ const KurlyLogPost = () => {
                     "YYYY-MM-DD"
                 ).format("YYYY-MM-DD")
             );
-            // console.log("수정된 데이터: ", res.data.data);
         } catch (err) {
             // console.error("error message: ", err);
         }
@@ -107,7 +106,7 @@ const KurlyLogPost = () => {
             // console.error("error message: ", err);
         }
     };
-    
+
     useEffect(() => {
         getPostInfo();
     }, [reviewId, write, like]);
@@ -123,7 +122,13 @@ const KurlyLogPost = () => {
                 <span onClick={() => setWrite(true)}>수정하기</span> |{" "}
                 {/* <span onClick={deletePost}>삭제하기</span> */}
                 <span onClick={handleOpen}>삭제하기</span>
-                { open && <Modal open={open} handleClose={handleClose} func={deletePost}/> }
+                {open && (
+                    <Modal
+                        open={open}
+                        handleClose={handleClose}
+                        func={deletePost}
+                    />
+                )}
                 <Line />
                 <ImageWrapper>
                     <ImageCardWrapper>
@@ -141,9 +146,13 @@ const KurlyLogPost = () => {
                 </ImageWrapper>
                 <Content>{postInfo.content}</Content>
                 <Line />
-                <LikeCount onClick={changeLikesCount}>{postInfo.likesCount} 💜</LikeCount>
+                <LikeCount onClick={changeLikesCount}>
+                    {postInfo.likesCount} 💜
+                </LikeCount>
             </Contents>
-            <ProductInfo onClick={() => router.push(`/product/${postInfo.product_id}`)}>
+            <ProductInfo
+                onClick={() => router.push(`/product/${postInfo.product_id}`)}
+            >
                 [{product.detail}] 사러가기
             </ProductInfo>
             <Link href={`/kurlylog/${userInfo.user_id}`} passHref>

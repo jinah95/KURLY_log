@@ -3,9 +3,9 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import plusStar from "../public/plusStar.png";
 import styled from "styled-components";
-import { styled as materialStyled } from '@mui/material/styles';
+import { styled as materialStyled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -28,7 +28,6 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
     const [image, setImage] = useState(postInfo.image);
     const [content, setContent] = useState(postInfo.content);
 
-
     // const [kurlyLog, setKurlyLog] = useState({
     //     score: postInfo.score,
     //     good : postInfo.good,
@@ -48,7 +47,7 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
     // };
 
     // productId로 상품 정보 조회
-    
+
     const getProductInfo = async () => {
         try {
             const res = await get("/goods/", postInfo.product_id);
@@ -58,7 +57,7 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
         }
     };
 
-     // 게시물 수정 업로드
+    // 게시물 수정 업로드
     const uploadPost = async () => {
         if (title === "" || content === "") {
             return;
@@ -68,22 +67,22 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
         const formData = new FormData();
         imgList.map((item) => formData.append("img", item.file));
         const res = await sendPostImageFile("/upload/multi/", formData);
-        
+
         // S3 주소 저장
-        const imageS3Url = await res.data.data; 
-        
+        const imageS3Url = await res.data.data;
+
         const data = await patch(`/logs/${postInfo.review_id}`, {
             score: score,
-            good : good,
-            bad : bad,
-            title : title,
-            image : imageS3Url, 
-            content : content,
+            good: good,
+            bad: bad,
+            title: title,
+            image: imageS3Url,
+            content: content,
         });
 
         // 게시물 편집 종료
         changeWrite();
-    }
+    };
 
     // 이미지 추가
     const handleAddImages = (e) => {
@@ -116,25 +115,12 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
         const response = await fetch(url);
         const data = await response.blob();
         const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-        console.log(ext);
+
         const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-        console.log(filename);
+
         const metadata = { type: `image/${ext}` };
         return new File([data], filename, metadata);
     };
-
-    // postInfo.image url 배열을 {show:, file:} 객체로 변환
-    // useEffect(() => {
-    //     console.log(postInfo.image);
-    //     console.log(typeof(postInfo.image));
-    //     const newImgList = postInfo.image.map((url) => {
-    //         let obj = { show: url, file: convertURLtoFile(url) };
-    //         return obj;
-    //     })
-
-    //     console.log(newImgList);
-    //     setImgList(newImgList);
-    // }, [])
 
     useEffect(() => {
         getProductInfo();
@@ -142,16 +128,15 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
             viewContainerRef.current.innerHTML += htmlStr;
         }
         setContent(htmlStr.replace(/(<([^>]+)>)/gi, ""));
-    }, [htmlStr, preview])
+    }, [htmlStr, preview]);
 
     useEffect(() => {
         setHtmlStr(postInfo.content);
-    }, [postInfo])
+    }, [postInfo]);
 
     return (
         <Wrapper>
-        {
-            preview ? (
+            {preview ? (
                 <div>
                     {/* 제목 이미지 등 보이기 */}
                     <ViewContainer ref={viewContainerRef} />
@@ -189,12 +174,19 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
                                             labelId="demo-simple-select-autowidth-label"
                                             id="demo-simple-select-autowidth"
                                             value={score}
-                                            onChange={(e) => setScore(e.target.value)}
+                                            onChange={(e) =>
+                                                setScore(e.target.value)
+                                            }
                                             autoWidth
                                             label="point"
                                             required
                                         >
-                                            <MenuItem sx={{ minWidth: 80 }} value="1">1</MenuItem>
+                                            <MenuItem
+                                                sx={{ minWidth: 80 }}
+                                                value="1"
+                                            >
+                                                1
+                                            </MenuItem>
                                             <MenuItem value="2">2</MenuItem>
                                             <MenuItem value="3">3</MenuItem>
                                             <MenuItem value="4">4</MenuItem>
@@ -235,7 +227,10 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                             <WriteContainer>
-                                <Write htmlStr={htmlStr} setHtmlStr={setHtmlStr} />
+                                <Write
+                                    htmlStr={htmlStr}
+                                    setHtmlStr={setHtmlStr}
+                                />
                             </WriteContainer>
                             <ImageUpload>
                                 <h5>사진 등록하기 (최대 5장)</h5>
@@ -260,7 +255,10 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
                                         />
                                         <div
                                             id={index}
-                                            onClick={(e) => handleDeleteImage(e)}>
+                                            onClick={(e) =>
+                                                handleDeleteImage(e)
+                                            }
+                                        >
                                             x
                                         </div>
                                     </ImageCard>
@@ -282,11 +280,10 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
                         </Buttons>
                     </ButtonWrapper>
                 </div>
-            )
-        }
+            )}
         </Wrapper>
-    )
-}
+    );
+};
 
 export default KurlyLogWrite;
 
@@ -297,7 +294,7 @@ const Wrapper = styled.div`
 `;
 
 const ViewContainer = styled.div`
-    border: 1px solid #e2e2e2;;
+    border: 1px solid #e2e2e2;
     padding: 10px;
     min-height: 300px;
 
@@ -391,24 +388,20 @@ const WriteContent = styled.div`
     margin: 30px auto;
 `;
 
-const Review = materialStyled(TextField)(
-    () => ({
-        width: "70vw",
-        '.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "none",
-        }
-    })
-);
-
-const Title = materialStyled(TextField)(
-    () => ({
-        width: "100%",
+const Review = materialStyled(TextField)(() => ({
+    width: "70vw",
+    ".MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
         border: "none",
-        '.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "none",
-        }
-    })
-);
+    },
+}));
+
+const Title = materialStyled(TextField)(() => ({
+    width: "100%",
+    border: "none",
+    ".MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        border: "none",
+    },
+}));
 
 const WriteContainer = styled.div`
     width: 100%;
@@ -473,35 +466,31 @@ const Buttons = styled.div`
     justify-content: space-between;
 `;
 
-const PreviewButton = materialStyled(Button)(
-    () => ({
-        width: '140px',
-        height: '40px',
-        backgroundColor: 'white',
-        color: 'black',
-        fontSize: '0.8rem',
-        border: '0',
-        borderRadius: '0',
-        '&:hover': {
-            border: '0',
-        }
-    })
-);
+const PreviewButton = materialStyled(Button)(() => ({
+    width: "140px",
+    height: "40px",
+    backgroundColor: "white",
+    color: "black",
+    fontSize: "0.8rem",
+    border: "0",
+    borderRadius: "0",
+    "&:hover": {
+        border: "0",
+    },
+}));
 
-const ConfirmButton = materialStyled(Button)(
-    () => ({
-        width: '70px',
-        height: '40px',
-        backgroundColor: 'black',
-        color: 'white',
-        fontSize: '0.8rem',
-        border: '0',
-        borderRadius: '25px',
-        '&:hover': {
-            backgroundColor: 'var(--purple)',
-        }
-    })
-);
+const ConfirmButton = materialStyled(Button)(() => ({
+    width: "70px",
+    height: "40px",
+    backgroundColor: "black",
+    color: "white",
+    fontSize: "0.8rem",
+    border: "0",
+    borderRadius: "25px",
+    "&:hover": {
+        backgroundColor: "var(--purple)",
+    },
+}));
 
 const Line = styled.div`
     width: 80%;

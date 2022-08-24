@@ -50,8 +50,6 @@ const Navbar = () => {
             : "kurlylog"
     );
 
-    console.log(pathName, targetPage, targetTab);
-
     const logout = () => {
         // sessionStorage에 저장했던 JWT 토큰 삭제
         sessionStorage.removeItem("userToken");
@@ -78,6 +76,8 @@ const Navbar = () => {
                             id="market"
                             targetPage={
                                 targetPage === "product" || pathName === "/"
+                                    ? "market"
+                                    : pathName === "/product/[item]"
                                     ? "market"
                                     : targetPage === "kurlioncer"
                                     ? "kurlioncer"
