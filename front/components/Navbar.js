@@ -14,6 +14,10 @@ const Navbar = () => {
     const router = useRouter();
     const productId = router.query?.item;
     const pathName = router.pathname;
+    const dispatch = useContext(DispatchContext);
+    const userState = useContext(UserStateContext);
+    const isLogin = !!userState.user;
+    const userId = userState?.user?.userId;
 
     const [targetPage, setTargetPage] = useState(
         pathName === "/" || pathName === "/event"
@@ -46,12 +50,6 @@ const Navbar = () => {
             : "kurlylog"
     );
 
-    const dispatch = useContext(DispatchContext);
-    const userState = useContext(UserStateContext);
-
-    const isLogin = !!userState.user;
-    const userId = userState.user?.userId;
-
     const logout = () => {
         // sessionStorage에 저장했던 JWT 토큰 삭제
         sessionStorage.removeItem("userToken");
@@ -81,6 +79,8 @@ const Navbar = () => {
                                     ? "market"
                                     : targetPage === "kurlioncer"
                                     ? "kurlioncer"
+                                    : targetPage === "beauty"
+                                    ? "beauty"
                                     : "market"
                             }
                             onClick={(e) => {
@@ -158,7 +158,7 @@ const Navbar = () => {
                         <Image src={cart} alt="logo" width={25} height={26} />
                     </ButtonWrapper>
                 </TitleDiv>
-                {pathName !== "/login" || pathName !== "beauty" ? (
+                {pathName !== "/login" && pathName !== "/beauty" ? (
                     <MenuNav targetPage={targetPage} pathName={pathName}>
                         <Link
                             href={
@@ -291,7 +291,7 @@ export default Navbar;
 const NavWrapper = styled.div`
     width: 100%;
     height: ${(props) =>
-        props.targetPage !== "login" || props.pathName !== "beauty"
+        props.targetPage !== "login" && props.pathName !== "/beauty"
             ? "88px"
             : "44px"};
     position: fixed;
@@ -306,7 +306,7 @@ const NavWrapper = styled.div`
 const ParDiv = styled.div`
     width: 100%;
     height: ${(props) =>
-        props.targetPage !== "login" || props.pathName !== "kurlylog"
+        props.targetPage !== "login" && props.pathName !== "/beauty"
             ? "88px"
             : "44px"};
 `;
