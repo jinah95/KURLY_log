@@ -121,7 +121,6 @@ const KurlyLogPost = () => {
                 <h3>{postInfo.title}</h3>
                 {createdAt} |{" "}
                 <span onClick={() => setWrite(true)}>수정하기</span> |{" "}
-                {/* <span onClick={deletePost}>삭제하기</span> */}
                 <span onClick={handleOpen}>삭제하기</span>
                 { open && <Modal open={open} handleClose={handleClose} func={deletePost}/> }
                 <Line />
