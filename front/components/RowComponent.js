@@ -14,7 +14,10 @@ const Loader = ({ style }) => (
 );
 
 const Item = ({ items, style, router }) => (
-    <CardWrapper style={{ ...style, width: "99.89%" }}>
+    <CardWrapper
+        style={{ ...style, width: "99.89%" }}
+        onClick={() => router.push(`/kurlylog/post/${items.review_id}`)}
+    >
         <TitleWrapper>
             <KurlyLogTitle>{items.nickname}&apos;s 컬리log</KurlyLogTitle>
             <KurlyClass>샛별</KurlyClass>
@@ -36,11 +39,6 @@ const Item = ({ items, style, router }) => (
         </ContentsWrapper>
 
         <EtcWrapper>
-            <ArrowWrapper
-                onClick={() => router.push(`/kurlylog/post/${items.review_id}`)}
-            >
-                <span>{`> 더보기`}</span>
-            </ArrowWrapper>
             <LikesWrapper>{items.countlikes}💜</LikesWrapper>
         </EtcWrapper>
     </CardWrapper>
@@ -65,6 +63,14 @@ const CardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    &:hover {
+        border: 1.5px solid #5f0080;
+        background-color: #ecc3fb;
+    }
+    &:click {
+        border: 1.5px solid #5f0080;
+        background-color: #ecc3fb;
+    }
 `;
 
 const TitleWrapper = styled.div`
@@ -120,7 +126,7 @@ const ReviewsContents = styled.div`
 const EtcWrapper = styled.div`
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 `;
 

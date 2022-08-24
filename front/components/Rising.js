@@ -12,7 +12,7 @@ const Rising = ({ firstBoards }) => {
     });
 
     const loadMore = async () => {
-        const per = 2;
+        const per = 5;
         const res = await getPost(`/logs/pop?page=${page + 1}&perPage=${per}`);
 
         const newLists = res.data.data;

@@ -38,7 +38,7 @@ const ProductPerReview = () => {
     const getInitialReview = async () => {
         try {
             const start = 1;
-            const per = 2;
+            const per = 5;
             const res = await getPost(
                 `/logs/goods/${productId}?page=${start}&perPage=${per}`
             );
