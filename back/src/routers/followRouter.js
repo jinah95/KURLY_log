@@ -20,6 +20,25 @@ followRouter.post("/:userId", loginRequired, async (req, res, next) => {
   }
 });
 
+followRouter.get("/:userId", loginRequired, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
+    const kurlyencerId = req.params.userId;
+
+    if (userId === kurlyencerId) {
+      throw new Error("스스로를 팔로우할 수 없습니다.");
+    }
+
+    const followOrNot = await FollowService.checkFollow({
+      userId,
+      kurlyencerId,
+    });
+    res.status(200).json(followOrNot);
+  } catch (error) {
+    next(error);
+  }
+});
+
 followRouter.delete("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
