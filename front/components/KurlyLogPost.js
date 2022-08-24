@@ -51,7 +51,7 @@ const KurlyLogPost = () => {
             );
             // console.log("수정된 데이터: ", res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
@@ -61,7 +61,7 @@ const KurlyLogPost = () => {
             const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
             setOtherPosts(res.data.data.reviews);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
@@ -77,7 +77,7 @@ const KurlyLogPost = () => {
                 },
             });
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 

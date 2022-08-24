@@ -54,7 +54,7 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
             const res = await get("/goods/", postInfo.product_id);
             setProductInfo(res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
