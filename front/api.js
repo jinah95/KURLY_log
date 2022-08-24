@@ -5,7 +5,7 @@ const backendPortNumber = "5000";
 
 const serverUrl =
     "http://" +
-    +"kurly.cyuyus9rbtt3.ap-northeast-2.rds.amazonaws.com" +
+    +"ec2-3-34-194-179.ap-northeast-2.compute.amazonaws.com" +
     ":" +
     backendPortNumber;
 
