@@ -208,7 +208,8 @@ const Navbar = () => {
                                     {(targetPage === "product" &&
                                         pathName !== "/") ||
                                     pathName === "/product/[item]" ||
-                                    targetPage === "review"
+                                    targetPage === "product" ||
+                                    pathName === "/review/[item]"
                                         ? "상품정보"
                                         : targetPage === "market" ||
                                           pathName === "/"
