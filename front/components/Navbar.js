@@ -50,6 +50,8 @@ const Navbar = () => {
             : "kurlylog"
     );
 
+    console.log(pathName, targetPage, targetTab);
+
     const logout = () => {
         // sessionStorage에 저장했던 JWT 토큰 삭제
         sessionStorage.removeItem("userToken");
@@ -62,7 +64,7 @@ const Navbar = () => {
             {" "}
             <NavWrapper targetPage={targetPage} pathName={pathName}>
                 <TitleDiv>
-                    <LogoWrapper onClick={() => router.push("/")}>
+                    <LogoWrapper>
                         <Image
                             src={kurlylogLogo}
                             alt="logo"
