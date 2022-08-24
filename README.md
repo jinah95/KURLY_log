@@ -48,6 +48,8 @@ Makes influencer in Market-Kurly using KRULY'log system.<br /><br />
 
 ## 📦 ERD
 
+👉 [웹으로 보기](https://www.erdcloud.com/d/CbLoq2KQTdoZ6RPnQ)
+
 ![image](https://cdn.discordapp.com/attachments/979000955657945131/1011594777973751829/unknown.png)
 
 <br />
@@ -107,11 +109,31 @@ yarn
 yarn start
 ```
 
+#### 로그인 필요한 서비스
+
+```
+{
+  nickname: "컬리",
+  password: "password"
+  grade: "컬리언서",
+},
+{
+  nickname: "빵떡",
+  password: "password1",
+  grade: "컬리언서",
+
+},
+{
+  nickname: "대구댁",
+  password: "password4"
+  grade: "샛별",
+},
+```
+
+nickname과 password로 로그인해주세요 😆<br />
+
 ## ✍🏼 Structure
 
-- [Wire frame](https://www.figma.com/file/pSbjxnNH4YSfBlJqjo4fqS/SSAP?node-id=0%3A1)<br />
-- [Flow chart](https://www.figma.com/file/1GyGG6TfHAF3B0meHGpoyZ/%EC%BB%AC%EB%A6%AC-log---%ED%94%8C%EB%A1%9C%EC%9A%B0?node-id=0%3A1)
-- [ERD](https://www.erdcloud.com/d/CbLoq2KQTdoZ6RPnQ)
 - [API](https://chipped-cookie-c3b.notion.site/API-c91a0d7c2a1d4df5a900039ed8c28ad7)<br /><br /><BR />
 <hr />
 

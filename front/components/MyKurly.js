@@ -5,8 +5,9 @@ import styled from "styled-components";
 import { styled as materialStyled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
+import PreviewCard from "./Cards/PreviewCard";
 // import MyKurlyPostAll from "./MyKurlyPostAll";
-import Content from "./Content";
+// import Content from "./Content";
 import { get, getPost } from "../api";
 
 const MyKurly = () => {
@@ -15,13 +16,14 @@ const MyKurly = () => {
     const [bestPosts, setBestPosts] = useState([]);
     const router = useRouter();
     const userId = router.query?.user_id;
+
     // 유저 조회
     const getUserInfo = async () => {
         try {
             const res = await get("/users/", userId);
             setUser(res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
@@ -31,17 +33,17 @@ const MyKurly = () => {
             const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
             setBestPosts(res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
     // 유저의 컬리로그 전체글
     const getPosts = async () => {
         try {
-            const res = await getPost(`/logs/user/${userId}?page=1&perPage=3`);
+            const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
             setPosts(res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
@@ -94,11 +96,15 @@ const MyKurly = () => {
                 </Popular>
                 <Contents>
                     <Title>전체글</Title>
-                    {/* { 
-                        posts && (
-                            <Content data={posts}/>
-                        )
-                    } */}
+                    {/* <Content data={posts}/> */}
+                    {
+                        posts.map((post, index) => (
+                            <PreviewCard 
+                                key={index}
+                                post={post} 
+                            />
+                        ))
+                    }
                 </Contents>
             </div>
         </Wrapper>
