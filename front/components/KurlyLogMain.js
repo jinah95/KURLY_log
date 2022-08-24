@@ -13,7 +13,7 @@ const KurlyLogMain = () => {
                     <PageMoveWrapper>
                         <PageMoveFirst>
                             <PageMoveTitle>주간 BEST 컬리언서</PageMoveTitle>
-                            <MoreButton> + 상위30위 보기</MoreButton>
+                            <MoreButton> + 상위 15위 보기</MoreButton>
                             <PageMoveSubTitle>
                                 인기있는 컬리언서는 ?
                             </PageMoveSubTitle>
