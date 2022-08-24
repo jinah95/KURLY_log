@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Kurlioncer from "./kurlioncer";
+import Kurlioncer from "./Kurlioncer";
 import KurlioncerReviews from "./KurlioncerReviews";
 import Footer from "./Footer";
 

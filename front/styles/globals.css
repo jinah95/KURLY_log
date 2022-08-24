@@ -1,7 +1,6 @@
 :root {
-  --purple: #5f0080;
-  --gray: #f2f2f2;
-
+    --purple: #5f0080;
+    --gray: #f2f2f2;
 }
 
 html,
@@ -37,14 +36,4 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-@media (prefers-color-scheme: dark) {
-    html {
-        color-scheme: dark;
-    }
-    body {
-        color: white;
-        background: black;
-    }
 }

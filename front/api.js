@@ -1,13 +1,11 @@
 import axios from "axios";
 var os = require("os");
-// var hostname = os.hostname();
 
 const backendPortNumber = "5000";
 
 const serverUrl =
     "http://" +
-    "localhost" +
-    // "kurly.cyuyus9rbtt3.ap-northeast-2.rds.amazonaws.com" +
+    "ec2-3-34-194-179.ap-northeast-2.compute.amazonaws.com" +
     ":" +
     backendPortNumber;
 
