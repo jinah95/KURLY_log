@@ -40,7 +40,7 @@ const NewKurlyLog = () => {
             // console.error("error message: ", err);
         }
     };
-
+    
     // 게시물 작성 업로드
     const uploadPost = async () => {
         if (title === "" || content === "") {
@@ -242,7 +242,9 @@ const NewKurlyLog = () => {
                             미리보기
                         </PreviewButton>
                         <Buttons>
-                            <ConfirmButton>취소</ConfirmButton>
+                            <ConfirmButton onClick={() =>
+                                router.push(`/review/${productId}`)
+                            }>취소</ConfirmButton>
                             <ConfirmButton onClick={uploadPost}>
                                 완료
                             </ConfirmButton>
@@ -263,11 +265,20 @@ const Wrapper = styled.div`
 `;
 
 const ViewContainer = styled.div`
-    border: 1px solid #e2e2e2;
-    margin: 10px;
+    border: 1px solid #e2e2e2;;
+    padding: 10px;
+    min-height: 300px;
 
     .ql-align-center {
         text-align: center;
+    }
+
+    .ql-align-left {
+        text-align: left;
+    }
+
+    .ql-align-right {
+        text-align: right;
     }
 
     .ql-syntax {
