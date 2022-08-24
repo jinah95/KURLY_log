@@ -79,8 +79,6 @@ const KurlyLogPost = () => {
         try {
             const res = await get("/goods/", producId);
             setProduct(res.data.data);
-            console.log(res.data.data);
-            console.log(product);
         } catch (err) {
             // console.error("error message: ", err);
         }
@@ -251,6 +249,7 @@ const ProductInfo = styled.div`
     background: white;
     margin-top: 10px;
     padding: 20px;
+    cursor: pointer;
 `;
 
 const UserInfo = styled.div`
