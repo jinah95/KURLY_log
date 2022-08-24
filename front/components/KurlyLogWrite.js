@@ -298,10 +298,19 @@ const Wrapper = styled.div`
 
 const ViewContainer = styled.div`
     border: 1px solid #e2e2e2;;
-    margin: 10px;
+    padding: 10px;
+    min-height: 300px;
 
     .ql-align-center {
         text-align: center;
+    }
+
+    .ql-align-left {
+        text-align: left;
+    }
+
+    .ql-align-right {
+        text-align: right;
     }
 
     .ql-syntax {
