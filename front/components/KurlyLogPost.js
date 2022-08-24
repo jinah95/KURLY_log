@@ -9,6 +9,7 @@ import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
+import Modal from "./Modal";
 import { get, post, deleteItem } from "../api";
 
 const KurlyLogPost = () => {
@@ -21,6 +22,10 @@ const KurlyLogPost = () => {
     const [like, setLike] = useState(false);
     const router = useRouter();
     const reviewId = router.query?.review_id;
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const settings = {
         dots: true,
@@ -35,13 +40,16 @@ const KurlyLogPost = () => {
         setWrite((current) => !current);
     };
 
-    const changeLikesCount = () => {
-        if (like) {
-            //postlike();
-        } else {
-            //deletelike();
-        }
-        setLike((current) => !current);
+    const changeLikesCount = async () => {
+        // console.log('like: ', like);
+        // if (like) {
+        //     const res = await deleteItem("/likes/", reviewId);
+        //     console.log(res.data);
+        // } else {
+        //     const res = await post(`/likes/${reviewId}`);
+        //     console.log(res.data);
+        // }
+        // setLike((current) => !current);
     }
 
     // reviewId로 해당 컬리log 조회
@@ -79,8 +87,6 @@ const KurlyLogPost = () => {
         try {
             const res = await get("/goods/", producId);
             setProduct(res.data.data);
-            console.log(res.data.data);
-            console.log(product);
         } catch (err) {
             // console.error("error message: ", err);
         }
@@ -101,20 +107,7 @@ const KurlyLogPost = () => {
             // console.error("error message: ", err);
         }
     };
-
-    // 좋아요 
-    const postlike = async () => {
-        const res = await post(`/likes/${reviewId}`, {
-            review_id : reviewId
-        });
-    };
     
-    const deletelike = async () => {
-        const res = await deleteItem(`/likes/${reviewId}`, {
-            review_id : reviewId
-        });
-    };
-
     useEffect(() => {
         getPostInfo();
     }, [reviewId, write, like]);
@@ -128,7 +121,9 @@ const KurlyLogPost = () => {
                 <h3>{postInfo.title}</h3>
                 {createdAt} |{" "}
                 <span onClick={() => setWrite(true)}>수정하기</span> |{" "}
-                <span onClick={deletePost}>삭제하기</span>
+                {/* <span onClick={deletePost}>삭제하기</span> */}
+                <span onClick={handleOpen}>삭제하기</span>
+                { open && <Modal open={open} handleClose={handleClose} func={deletePost}/> }
                 <Line />
                 <ImageWrapper>
                     <ImageCardWrapper>
@@ -251,6 +246,7 @@ const ProductInfo = styled.div`
     background: white;
     margin-top: 10px;
     padding: 20px;
+    cursor: pointer;
 `;
 
 const UserInfo = styled.div`

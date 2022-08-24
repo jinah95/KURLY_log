@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styled from "styled-components";
@@ -8,14 +8,19 @@ import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import PreviewCard from "./Cards/PreviewCard";
 // import MyKurlyPostAll from "./MyKurlyPostAll";
 // import Content from "./Content";
-import { get, getPost } from "../api";
+import { get, getPost, post, deleteItem } from "../api";
+import { UserStateContext } from "../pages/_app";
 
 const MyKurly = () => {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [bestPosts, setBestPosts] = useState([]);
+    const [possibleFollow, setPossibleFollow] = useState(false);
     const router = useRouter();
     const userId = router.query?.user_id;
+    const userState = useContext(UserStateContext);
+    const isLogin = !!userState.user;
+    const loginUser = userState.user?.userId;
 
     // 유저 조회
     const getUserInfo = async () => {
@@ -47,11 +52,47 @@ const MyKurly = () => {
         }
     };
 
+    // 팔로우 가능 여부 확인
+    const canFollow = async () => {
+        try {
+            const res = await get(`/follows/${userId}`);
+            setPossibleFollow(res.data.data);
+        } catch (err) {
+            console.error("error message: ", err);
+        }
+    };
+
+    // 팔로우
+    const makeFollow = async () => {
+        try {
+            const res = await post(`/follows/${userId}`);
+            setPossibleFollow(true);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    // 언팔로우
+    const unFollow = async () => {
+        try {
+            const res = await deleteItem(`/follows/${userId}`);
+            console.log(res, "언팔!");
+            setPossibleFollow(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         getUserInfo();
         getBestPosts();
         getPosts();
+        canFollow();
     }, [userId]);
+
+    useEffect(() => {
+        getUserInfo();
+        canFollow();
+    }, [possibleFollow]);
 
     return (
         <Wrapper>
@@ -79,6 +120,28 @@ const MyKurly = () => {
                                 {user.age}·{user.family} | 팔로워{" "}
                                 {user.followers}명
                             </div>
+                            {loginUser !== userId ? (
+                                !possibleFollow ? (
+                                    isLogin ? (
+                                        <FollowButton onClick={makeFollow}>
+                                            팔로우
+                                        </FollowButton>
+                                    ) : (
+                                        <FollowButton>로그인필요</FollowButton>
+                                    )
+                                ) : isLogin ? (
+                                    <FollowButton
+                                        type="cancel"
+                                        onClick={unFollow}
+                                    >
+                                        팔로우취소
+                                    </FollowButton>
+                                ) : (
+                                    <FollowButton>로그인필요</FollowButton>
+                                )
+                            ) : (
+                                <></>
+                            )}
                         </UserProfile>
                     </UserInfo>
                 </Header>
@@ -97,14 +160,9 @@ const MyKurly = () => {
                 <Contents>
                     <Title>전체글</Title>
                     {/* <Content data={posts}/> */}
-                    {
-                        posts.map((post, index) => (
-                            <PreviewCard 
-                                key={index}
-                                post={post} 
-                            />
-                        ))
-                    }
+                    {posts.map((post, index) => (
+                        <PreviewCard key={index} post={post} />
+                    ))}
                 </Contents>
             </div>
         </Wrapper>
@@ -203,4 +261,12 @@ const CardView = styled.div`
     ::-webkit-scrollbar {
         display: none;
     }
+`;
+
+const FollowButton = styled.button`
+    background-color: transparent;
+    color: ${(props) => (props.type === "cancel" ? "red" : "#fff")};
+    border: 1px solid #fff;
+    margin-top: 3px;
+    padding: 5px 0;
 `;
