@@ -28,17 +28,19 @@ Makes influencer in Market-Kurly using KRULY'log system.<br /><br />
 
 ## 🖋 Infra Architecture
 
-![image](https://user-images.githubusercontent.com/61112694/186138201-f4538edc-be93-4757-9d23-246f0ad72e01.png)
+![image](https://cdn.discordapp.com/attachments/979000955657945131/1011746840506544178/architecture.png)
 
 <hr /><br />
 
 ## 📈 FlowChart
+
 👉 [웹으로 보기](https://www.figma.com/file/1GyGG6TfHAF3B0meHGpoyZ/%EC%BB%AC%EB%A6%AC-log---%ED%94%8C%EB%A1%9C%EC%9A%B0?node-id=0%3A1)
 ![image](https://cdn.discordapp.com/attachments/979000955657945131/1011610773681877103/unknown.png)
 
 <hr /><br />
 
 ## 🖍 WireFrame
+
 👉 [웹으로 보기](https://www.figma.com/file/pSbjxnNH4YSfBlJqjo4fqS/SSAP?node-id=0%3A1)
 ![image](https://cdn.discordapp.com/attachments/979000955657945131/1011610853549817937/unknown.png)
 
@@ -54,7 +56,7 @@ Makes influencer in Market-Kurly using KRULY'log system.<br /><br />
 
 ## 🖥 Using Skills
 
-![image](https://cdn.discordapp.com/attachments/979000955657945131/1011593259635716217/skillstack.png)
+![image](https://cdn.discordapp.com/attachments/979000955657945131/1011748688588181514/skills.png)
 
 <hr /><br />
 
@@ -66,7 +68,8 @@ shell
 
 ```shell
 yarn
-yarn dev
+yarn build
+yarn start
 ```
 
 #### 백엔드
