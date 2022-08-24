@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-import styled from "styled-components";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Profile from "../public/profile.png";
-import Background from "../public/background.jpg";
+import styled from "styled-components";
 import KurlyLogWrite from "./KurlyLogWrite";
 import CarouselCard from "./Cards/CarouselCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
-import { get, deleteItem } from "../api";
+import { get, post, deleteItem } from "../api";
 
 const KurlyLogPost = () => {
     const [write, setWrite] = useState(false);
     const [postInfo, setPostInfo] = useState({});
     const [userInfo, setUserInfo] = useState({});
     const [otherPosts, setOtherPosts] = useState([]);
-    // 현재 로그인한 유저 알아와서 otherPosts에 들어가지 않게 해야함
     const [createdAt, setCreatedAt] = useState("");
+    const [product, setProduct] = useState({});
+    const [like, setLike] = useState(false);
     const router = useRouter();
     const reviewId = router.query?.review_id;
 
@@ -36,6 +35,15 @@ const KurlyLogPost = () => {
         setWrite((current) => !current);
     };
 
+    const changeLikesCount = () => {
+        if (like) {
+            //postlike();
+        } else {
+            //deletelike();
+        }
+        setLike((current) => !current);
+    }
+
     // reviewId로 해당 컬리log 조회
     const getPostInfo = async () => {
         try {
@@ -43,6 +51,7 @@ const KurlyLogPost = () => {
             setPostInfo(res.data.data);
             setUserInfo(res.data.data.user);
             getOtherPosts(res.data.data.product_id);
+            getProductInfo(res.data.data.product_id);
             setCreatedAt(
                 moment(
                     res.data.data.created_at.substr(0, 10),
@@ -65,6 +74,18 @@ const KurlyLogPost = () => {
         }
     };
 
+    // 해당 상품 조회
+    const getProductInfo = async (producId) => {
+        try {
+            const res = await get("/goods/", producId);
+            setProduct(res.data.data);
+            console.log(res.data.data);
+            console.log(product);
+        } catch (err) {
+            // console.error("error message: ", err);
+        }
+    };
+
     // 게시물 삭제
     const deletePost = async () => {
         try {
@@ -81,9 +102,22 @@ const KurlyLogPost = () => {
         }
     };
 
+    // 좋아요 
+    const postlike = async () => {
+        const res = await post(`/likes/${reviewId}`, {
+            review_id : reviewId
+        });
+    };
+    
+    const deletelike = async () => {
+        const res = await deleteItem(`/likes/${reviewId}`, {
+            review_id : reviewId
+        });
+    };
+
     useEffect(() => {
         getPostInfo();
-    }, [reviewId, write]);
+    }, [reviewId, write, like]);
 
     return write ? (
         <KurlyLogWrite changeWrite={changeWrite} postInfo={postInfo} />
@@ -112,9 +146,11 @@ const KurlyLogPost = () => {
                 </ImageWrapper>
                 <Content>{postInfo.content}</Content>
                 <Line />
-                <LikeCount>{postInfo.likesCount} 💜</LikeCount>
+                <LikeCount onClick={changeLikesCount}>{postInfo.likesCount} 💜</LikeCount>
             </Contents>
-            <ProductInfo></ProductInfo>
+            <ProductInfo onClick={() => router.push(`/product/${postInfo.product_id}`)}>
+                [{product.detail}] 사러가기
+            </ProductInfo>
             <Link href={`/kurlylog/${userInfo.user_id}`} passHref>
                 <UserInfo>
                     <UserImage>
