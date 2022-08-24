@@ -8,6 +8,7 @@ const nextConfig = {
             "search.pstatic.net",
             "blog.kakaocdn.net",
             "ssap-kurly.s3.ap-northeast-2.amazonaws.com",
+            "recipe1.ezmember.co.kr",
         ],
     },
     swcMinify: true,

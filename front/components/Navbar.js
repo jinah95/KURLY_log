@@ -62,12 +62,12 @@ const Navbar = () => {
             {" "}
             <NavWrapper targetPage={targetPage} pathName={pathName}>
                 <TitleDiv>
-                    <LogoWrapper>
+                    <LogoWrapper onClick={() => router.push("/")}>
                         <Image
                             src={kurlylogLogo}
                             alt="logo"
-                            width={60}
-                            height={32}
+                            width={65}
+                            height={45}
                         />
                     </LogoWrapper>
                     <PageTab>
