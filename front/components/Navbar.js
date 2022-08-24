@@ -262,8 +262,21 @@ const Navbar = () => {
                         targetPage === "product" ||
                         pathName === "/" ? (
                             <></>
-                        ) : (
+                        ) : isLogin ? (
                             <Link href={`/kurlylog/${userId}`} passHref>
+                                <PageATag
+                                    onClick={(e) => setTargetTab(e.target.id)}
+                                >
+                                    <PageNameSpan
+                                        id="kurlyLog"
+                                        targetTab={targetTab}
+                                    >
+                                        내 컬리log
+                                    </PageNameSpan>
+                                </PageATag>
+                            </Link>
+                        ) : (
+                            <Link href={`/login`} passHref>
                                 <PageATag
                                     onClick={(e) => setTargetTab(e.target.id)}
                                 >
