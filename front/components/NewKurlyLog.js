@@ -37,7 +37,7 @@ const NewKurlyLog = () => {
             const res = await get("/goods/", productId);
             setProductInfo(res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 

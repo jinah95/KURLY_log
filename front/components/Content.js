@@ -16,8 +16,6 @@ const Content = ({ data }) => {
             const res = await getPost(`/logs/my-log?page=${posts.length}&perPage=2`);
             // (`/logs/user/${userId}?page=1&perPage=3`);
             
-            // 계속 똑같은 거 받아옴.. 수정하기
-            console.log(res.data.data);
             const newPosts = res.data.data;
             setPosts((post) => [...post, ...newPosts]);
         } catch (err) {
