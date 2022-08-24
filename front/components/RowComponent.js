@@ -14,7 +14,10 @@ const Loader = ({ style }) => (
 );
 
 const Item = ({ items, style, router }) => (
-    <CardWrapper style={{ ...style, width: "99.89%" }}>
+    <CardWrapper
+        style={{ ...style, width: "99.89%" }}
+        onClick={() => router.push(`/kurlylog/post/${items.review_id}`)}
+    >
         <TitleWrapper>
             <KurlyLogTitle>{items.nickname}&apos;s 컬리log</KurlyLogTitle>
             <KurlyClass>샛별</KurlyClass>
@@ -36,11 +39,6 @@ const Item = ({ items, style, router }) => (
         </ContentsWrapper>
 
         <EtcWrapper>
-            <ArrowWrapper
-                onClick={() => router.push(`/kurlylog/post/${items.review_id}`)}
-            >
-                <span>{`> 더보기`}</span>
-            </ArrowWrapper>
             <LikesWrapper>{items.countlikes}💜</LikesWrapper>
         </EtcWrapper>
     </CardWrapper>
@@ -65,6 +63,14 @@ const CardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    &:hover {
+        border: 1.5px solid #5f0080;
+        background-color: #ecc3fb;
+    }
+    &:click {
+        border: 1.5px solid #5f0080;
+        background-color: #ecc3fb;
+    }
 `;
 
 const TitleWrapper = styled.div`
@@ -102,10 +108,13 @@ const ContentsWrapper = styled.div`
     display: grid;
     grid-template-columns: 3fr 7fr;
     padding: 5px 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const ReviewsContents = styled.div`
     font-size: 12px;
+    height: 100px;
     font-weight: 400;
     color: rgb(51, 51, 51);
     letter-spacing: normal;
@@ -115,22 +124,14 @@ const ReviewsContents = styled.div`
     overflow: hidden;
     word-break: keep-all;
     padding: 0 10px;
+    margin-top: 10x;
 `;
 
 const EtcWrapper = styled.div`
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-`;
-
-const ArrowWrapper = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-weight: 800;
-    font-size: 13px;
-    color: rgb(95, 0, 128);
 `;
 
 const LikesWrapper = styled.div`
@@ -143,15 +144,19 @@ const ReviewContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const ReviewTitleP = styled.div`
     padding: 5px 15px;
+    margin-bottom: 5px;
     font-weight: bold;
     letter-spacing: normal;
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: keep-all;
+    white-space: nowrap;
 `;
 
 const FinalWrapper = styled.div`

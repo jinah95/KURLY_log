@@ -93,7 +93,7 @@ const Item = ({ style, items, router }) => (
     </CardWrapper>
 );
 
-const ReviewCard = ({ image, num, style, loading, items }) => {
+const ReviewCard = ({ style, loading, items }) => {
     const router = useRouter();
     return loading ? (
         <Loader style={style} />
@@ -126,6 +126,7 @@ const Padding = styled.div`
     }
     &:click {
         border: 1.5px solid #5f0080;
+        background-color: #ecc3fb;
     }
 `;
 

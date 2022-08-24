@@ -5,7 +5,7 @@ import { getPost } from "../api";
 
 export const getServerSideProps = async (context) => {
     const start = 1;
-    const per = 2;
+    const per = 5;
     const res = await getPost(`/logs/pop?page=${start}&perPage=${per}`);
     const firstBoards = res.data.data || null;
 
