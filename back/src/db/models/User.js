@@ -34,7 +34,7 @@ const User = {
     const users = await sequelize.query(`
       SELECT url.user_id, url.nickname, url.picture, url.grade, url.age, url.family, url.intro, reviews, likes, count(follow_id) AS FOLLOWERS
         FROM (
-          SELECT u.user_id, u.nickname, u.picture, u.grade, u.age, u.family, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
+          SELECT u.user_id, u.nickname, u.picture, u.grade, u.age, u.family, u.intro, count(review_id) AS REVIEWS, SUM(countl) AS LIKES
             FROM users AS u
               LEFT JOIN (
                 SELECT r.review_id, r.user_id, count(l.like_id) AS COUNTL
@@ -60,7 +60,7 @@ const User = {
     const users = await sequelize.query(`
       SELECT url.user_id, url.nickname, url.picture, url.grade, url.age, url.family, url.intro, reviews, likes, count(follow_id) AS FOLLOWERS
         FROM (
-          SELECT u.user_id, u.nickname, u.picture, u.grade, u.age, u.family, u.intro, count(review_id) AS REVIEWS, count(countl) AS LIKES
+          SELECT u.user_id, u.nickname, u.picture, u.grade, u.age, u.family, u.intro, count(review_id) AS REVIEWS, SUM(countl) AS LIKES
             FROM users AS u
               LEFT JOIN (
                 SELECT r.review_id, r.user_id, count(l.like_id) AS COUNTL
