@@ -4,7 +4,7 @@ import MyKurly from "../../components/MyKurly";
 export async function getServerSideProps() {
     return {
         props: {},
-        fallback: true,
+        fallback: true, 
     };
 }
 
