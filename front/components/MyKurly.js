@@ -58,7 +58,7 @@ const MyKurly = () => {
             const res = await get(`/follows/${userId}`);
             setPossibleFollow(res.data.data);
         } catch (err) {
-            console.error("error message: ", err);
+            // console.error("error message: ", err);
         }
     };
 
@@ -68,16 +68,17 @@ const MyKurly = () => {
             const res = await post(`/follows/${userId}`);
             setPossibleFollow(true);
         } catch (err) {
-            console.error(err);
+            // console.error(err);
         }
     };
+
     // 언팔로우
     const unFollow = async () => {
         try {
             const res = await deleteItem(`/follows/${userId}`);
             setPossibleFollow(false);
         } catch (err) {
-            console.error(err);
+            // console.error(err);
         }
     };
 
@@ -98,7 +99,6 @@ const MyKurly = () => {
             <div>
                 <Header>
                     <LogInfo>
-                        {/* <span>오늘 15 전체 46</span> */}
                         <h1>{user.nickname}&apos;s 컬리log</h1>
                     </LogInfo>
                     <UserInfo>
@@ -119,30 +119,30 @@ const MyKurly = () => {
                                 {user.age}·{user.family} | 팔로워{" "}
                                 {user.followers}명
                             </div>
-                            {loginUser !== userId ? (
-                                !possibleFollow ? (
-                                    isLogin ? (
-                                        <FollowButton onClick={makeFollow}>
-                                            팔로우
-                                        </FollowButton>
-                                    ) : (
-                                        <FollowButton>로그인필요</FollowButton>
-                                    )
-                                ) : isLogin ? (
-                                    <FollowButton
-                                        type="cancel"
-                                        onClick={unFollow}
-                                    >
-                                        팔로우취소
+                        </UserProfile>
+                    </UserInfo>
+                    <div>
+                        {loginUser !== userId && (
+                            !possibleFollow ? (
+                                isLogin ? (
+                                    <FollowButton onClick={makeFollow}>
+                                        Follow
                                     </FollowButton>
                                 ) : (
                                     <FollowButton>로그인필요</FollowButton>
                                 )
+                            ) : isLogin ? (
+                                <FollowButton
+                                    type="cancel"
+                                    onClick={unFollow}
+                                >
+                                    Unfollow
+                                </FollowButton>
                             ) : (
-                                <></>
-                            )}
-                        </UserProfile>
-                    </UserInfo>
+                                <FollowButton>로그인필요</FollowButton>
+                            )
+                        )}
+                    </div>
                 </Header>
                 <Introduce>
                     <Title>소개</Title>
@@ -185,15 +185,15 @@ const Header = styled.div`
     background-size: cover;
     color: white;
     display: grid;
-    grid-template-rows: 7fr 2fr;
+    grid-template-rows: 6fr 2fr 2fr;
     padding: 0 20px;
 `;
 
-const PostButton = materialStyled(Button)(() => ({
+const FollowButton = materialStyled(Button)((props) => ({
     width: "140px",
     height: "40px",
     backgroundColor: "rgba(0,0,0,0)",
-    color: "white",
+    color: `${props.type === "cancel" ? "gray" : "white"}`,
     fontSize: "0.8rem",
     border: "1px solid white",
     borderRadius: "0",
@@ -260,12 +260,4 @@ const CardView = styled.div`
     ::-webkit-scrollbar {
         display: none;
     }
-`;
-
-const FollowButton = styled.button`
-    background-color: transparent;
-    color: ${(props) => (props.type === "cancel" ? "red" : "#fff")};
-    border: 1px solid #fff;
-    margin-top: 3px;
-    padding: 5px 0;
 `;
