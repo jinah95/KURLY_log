@@ -12,6 +12,7 @@ import { UserStateContext, DispatchContext } from "../pages/_app";
 
 const Navbar = () => {
     const router = useRouter();
+    const currentURL = router.asPath;
     const productId = router.query?.item;
     const pathName = router.pathname;
     const dispatch = useContext(DispatchContext);
@@ -144,7 +145,11 @@ const Navbar = () => {
                                 alt="login"
                                 width={25}
                                 height={25}
-                                onClick={() => router.push("/login")}
+                                onClick={() =>
+                                    router.push(
+                                        `/login/?returnUrl=${currentURL}`
+                                    )
+                                }
                             />
                         ) : (
                             <Image
@@ -279,7 +284,7 @@ const Navbar = () => {
                                 </PageATag>
                             </Link>
                         ) : (
-                            <Link href={`/login`} passHref>
+                            <Link href={`/login/?returnUrl=mykurly`} passHref>
                                 <PageATag
                                     onClick={(e) => setTargetTab(e.target.id)}
                                 >
