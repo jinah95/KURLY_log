@@ -47,7 +47,6 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
     // };
 
     // productId로 상품 정보 조회
-
     const getProductInfo = async () => {
         try {
             const res = await get("/goods/", postInfo.product_id);

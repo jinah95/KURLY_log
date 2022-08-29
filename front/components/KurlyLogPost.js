@@ -95,11 +95,11 @@ const KurlyLogPost = () => {
     const deletePost = async () => {
         try {
             const res = await deleteItem(`/logs/${reviewId}`);
-            const user_id = userInfo.user_id;
+            const userId = userInfo.user_id;
             router.push({
-                pathname: `/kurlylog/userInfo?userId=${user_id}`,
+                pathname: "/kurlylog/userInfo",
                 query: {
-                    user_id,
+                    userId,
                 },
             });
         } catch (err) {
