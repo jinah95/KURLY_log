@@ -154,7 +154,7 @@ const KurlyLogPost = () => {
                 </LikeCount>
             </Contents>
             <ProductInfo
-                onClick={() => router.push(`/product/productInfo?productId=${postInfo.product_id}`)}
+                onClick={() => router.push(`/product/${postInfo.product_id}`)}
             >
                 [{product.detail}] 사러가기
             </ProductInfo>
