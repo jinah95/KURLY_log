@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styled from "styled-components";
-import plusStar from "../public/plusStar.png";
+import noImg from "../public/noimg.png";
 
 const Loader = ({ style }) => (
     <div style={style} className="list-group-loader">
@@ -26,7 +26,7 @@ const Item = ({ items, style, router }) => (
         <ContentsWrapper>
             <div className="avatar">
                 <Image
-                    src={items.image[0] ? items.image[0] : plusStar}
+                    src={items.image[0] ? items.image[0] : noImg}
                     alt="product"
                     width={100}
                     height={100}
