@@ -30,7 +30,7 @@ const Navbar = () => {
             ? "login"
             : pathName === "/product/[item]" || pathName === "/review/[item]"
             ? "product"
-            : pathName === "/kurlyLog/post/[review_id]"
+            : pathName === "/kurlyLog/post/[reviewId]"
             ? "kurlioncer"
             : undefined
     );
