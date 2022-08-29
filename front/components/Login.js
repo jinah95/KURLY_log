@@ -23,7 +23,6 @@ const Login = () => {
             });
             // 유저 정보는 response의 data임.
             const user = res.data.data;
-
             // JWT 토큰은 유저 정보의 token임.
             const jwtToken = user.token;
             // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
