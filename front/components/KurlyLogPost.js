@@ -100,10 +100,7 @@ const KurlyLogPost = () => {
             const res = await deleteItem(`/logs/${reviewId}`);
             const userId = userInfo.user_id;
             router.push({
-                pathname: "/kurlylog/userInfo",
-                query: {
-                    userId,
-                },
+                pathname: `/kurlyLog/${userId}`,
             });
         } catch (err) {
             // console.error("error message: ", err);
@@ -161,7 +158,7 @@ const KurlyLogPost = () => {
             >
                 [{product.detail}] 사러가기
             </ProductInfo>
-            <Link href={`/kurlylog/userInfo?userId=${userInfo.user_id}`} passHref>
+            <Link href={`/kurlyLog/${userInfo.user_id}`} passHref>
                 <UserInfo>
                     <UserImage>
                         {userInfo.picture && (

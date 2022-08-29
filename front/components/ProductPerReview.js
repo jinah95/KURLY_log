@@ -83,7 +83,7 @@ const ProductPerReview = () => {
                                     <ModalButtonWrapper>
                                         <MovingButton type="kurly">
                                             <Link
-                                                href={`/kurlylog/new/productInfo?productId=${productId}`}
+                                                href={`/kurlyLog/new/${productId}`}
                                                 passHref
                                             >
                                                 컬리log 후기 쓰러가기

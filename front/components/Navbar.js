@@ -30,7 +30,7 @@ const Navbar = () => {
             ? "login"
             : pathName === "/product/[item]" || pathName === "/review/[item]"
             ? "product"
-            : pathName === "/kurlylog/post/[review_id]"
+            : pathName === "/kurlyLog/post/[review_id]"
             ? "kurlioncer"
             : undefined
     );
@@ -266,7 +266,7 @@ const Navbar = () => {
                         pathName === "/" ? (
                             <></>
                         ) : isLogin ? (
-                            <Link href={`/kurlylog/${userId}`} passHref>
+                            <Link href={`/kurlyLog/${userId}`} passHref>
                                 <PageATag
                                     onClick={(e) => setTargetTab(e.target.id)}
                                 >

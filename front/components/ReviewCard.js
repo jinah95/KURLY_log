@@ -16,7 +16,7 @@ const Loader = ({ style }) => (
 const Item = ({ style, items, router }) => (
     <CardWrapper
         style={{ ...style, width: "99.89%" }}
-        onClick={() => router.push(`/kurlylog/post/reviewInfo?reviewId=${items.review_id}`)}
+        onClick={() => router.push(`/kurlyLog/post/${items.review_id}`)}
     >
         <Padding>
             <HashTagWrapper>

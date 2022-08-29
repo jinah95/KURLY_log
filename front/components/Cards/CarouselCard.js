@@ -23,7 +23,7 @@ const CarouselCard = ({ post }) => {
     }, [post]);
 
     return (
-        <Link href={`/kurlylog/post/reviewInfo?reviewId=${post.review_id}`} passHref>
+        <Link href={`/kurlyLog/post/${post.review_id}`} passHref>
             <CardWrapper>
                 <div>
                     <CardInfo>
