@@ -65,11 +65,11 @@ const NewKurlyLog = () => {
         });
 
         // 작성한 게시물로 이동
-        const review_id = data.data.data.review_id;
+        const reviewId = data.data.data.review_id;
         router.push({
-            pathname: `/kurlylog/post/reviewInfo?reviewId=${review_id}`,
+            pathname: "/kurlylog/post/reviewInfo",
             query: {
-                review_id,
+                reviewId,
             },
         });
     };
