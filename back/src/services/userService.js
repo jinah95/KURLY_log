@@ -14,13 +14,9 @@ const UserService = {
       throw new Error("해당 유저가 없습니다.");
     }
 
-    const [followers, reviews, likes] = await Promise.all([
-      Follow.countByFilter({ follower_id: userId }),
-      Review.countByFilter({ user_id: userId }),
-      Like.countByFilter({ user_id: userId }),
-    ]);
+    const { user_id, nickname, picture, grade, intro } = user;
 
-    const data = { ...user.dataValues, followers, reviews, likes };
+    const data = { userId: user_id, nickname, picture, grade, intro };
 
     return { message: "success", data };
   },
