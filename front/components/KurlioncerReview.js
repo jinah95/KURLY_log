@@ -7,7 +7,7 @@ const KurlioncerReview = ({ item }) => {
 
     return (
         <ReviewContainer
-            onClick={() => router.push(`/kurlylog/post/reviewInfo?reviewId=${item.review_id}`)}
+            onClick={() => router.push(`/kurlyLog/post/${item.review_id}`)}
         >
             <ReviewTitle>
                 <MyKurlyName>{item.nickname}&apos;s 컬리log</MyKurlyName>
