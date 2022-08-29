@@ -26,6 +26,24 @@ const LikeService = {
     return { message: "success", data: newLike };
   },
 
+  checkLike: async ({ userId, reviewId }) => {
+    const review = await Review.findById(reviewId);
+
+    if (!review || userId === review.user_id) {
+      throw new Error("유효하지 않은 게시글입니다.");
+    }
+
+    const like = { user_id: userId, review_id: reviewId };
+
+    const likeOrNot = await Like.findByFilter(like);
+
+    if (likeOrNot) {
+      return { message: "success", data: true };
+    } else {
+      return { message: "success", data: false };
+    }
+  },
+
   unlikeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 
