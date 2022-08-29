@@ -20,7 +20,7 @@ const KurlyLogPost = () => {
     const [otherPosts, setOtherPosts] = useState([]);
     const [createdAt, setCreatedAt] = useState("");
     const [product, setProduct] = useState({});
-    const [like, setLike] = useState(false);
+    const [like, setLike] = useState(false);    // get요청: 내가 좋아요 했는지 확인
     const router = useRouter();
     const reviewId = router.query?.reviewId;
     const userState = useContext(UserStateContext);
@@ -44,15 +44,17 @@ const KurlyLogPost = () => {
     };
 
     const changeLikesCount = async () => {
-        // console.log('like: ', like);
-        // if (like) {
-        //     const res = await deleteItem("/likes/", reviewId);
-        //     console.log(res.data);
-        // } else {
-        //     const res = await post(`/likes/${reviewId}`);
-        //     console.log(res.data);
-        // }
-        // setLike((current) => !current);
+        if (loginUser == userInfo.user_id) {
+            return
+        }
+
+        if (like) {
+            const res = await deleteItem("/likes/", reviewId);
+        } else {
+            const res = await post(`/likes/${reviewId}`);
+            console.log(res.data);
+        }
+        setLike((current) => !current);
     };
 
     // reviewId로 해당 컬리log 조회
