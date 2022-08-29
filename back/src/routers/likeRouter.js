@@ -18,6 +18,19 @@ likeRouter.post("/:reviewId", loginRequired, async (req, res, next) => {
   }
 });
 
+likeRouter.get("/:reviewId", loginRequired, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
+    const reviewId = req.params.reviewId;
+
+    const likeOrNot = await LikeService.checkLike({ userId, reviewId });
+
+    res.status(200).json(likeOrNot);
+  } catch (error) {
+    next(error);
+  }
+});
+
 likeRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
