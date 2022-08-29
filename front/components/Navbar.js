@@ -266,7 +266,7 @@ const Navbar = () => {
                         pathName === "/" ? (
                             <></>
                         ) : isLogin ? (
-                            <Link href={`/kurlylog/userInfo?userId=${userId}`} passHref>
+                            <Link href={`/kurlylog/${userId}`} passHref>
                                 <PageATag
                                     onClick={(e) => setTargetTab(e.target.id)}
                                 >

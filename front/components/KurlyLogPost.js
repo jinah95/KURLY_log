@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -11,6 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
 import Modal from "./Modal";
 import { get, post, deleteItem } from "../api";
+import { UserStateContext } from "../pages/_app";
 
 const KurlyLogPost = () => {
     const [write, setWrite] = useState(false);
@@ -22,6 +23,8 @@ const KurlyLogPost = () => {
     const [like, setLike] = useState(false);
     const router = useRouter();
     const reviewId = router.query?.reviewId;
+    const userState = useContext(UserStateContext);
+    const loginUser = userState.user?.userId;
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -118,9 +121,13 @@ const KurlyLogPost = () => {
             <Home>{userInfo.nickname}&apos;s 컬리log</Home>
             <Contents>
                 <h3>{postInfo.title}</h3>
-                {createdAt} |{" "}
-                <span onClick={() => setWrite(true)}>수정하기</span> |{" "}
-                <span onClick={handleOpen}>삭제하기</span>
+                {createdAt} 
+                {loginUser == userInfo.user_id && (
+                    <EditContents>
+                        {" "}|{" "}<span onClick={() => setWrite(true)}>수정하기</span>
+                        {" "}|{" "}<span onClick={handleOpen}>삭제하기</span>
+                    </EditContents>
+                )}
                 {open && (
                     <Modal
                         open={open}
@@ -214,6 +221,10 @@ const Contents = styled.div`
     background: white;
     margin-top: 10px;
     padding: 20px;
+`;
+
+const EditContents = styled.span`
+    cursor: pointer;
 `;
 
 const ImageWrapper = styled.div`
