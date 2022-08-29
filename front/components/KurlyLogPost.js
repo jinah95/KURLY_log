@@ -21,7 +21,7 @@ const KurlyLogPost = () => {
     const [product, setProduct] = useState({});
     const [like, setLike] = useState(false);
     const router = useRouter();
-    const reviewId = router.query?.review_id;
+    const reviewId = router.query?.reviewId;
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -97,7 +97,7 @@ const KurlyLogPost = () => {
             const res = await deleteItem(`/logs/${reviewId}`);
             const user_id = userInfo.user_id;
             router.push({
-                pathname: `/kurlylog/${user_id}`,
+                pathname: `/kurlylog/userInfo?userId=${user_id}`,
                 query: {
                     user_id,
                 },
@@ -150,11 +150,11 @@ const KurlyLogPost = () => {
                 </LikeCount>
             </Contents>
             <ProductInfo
-                onClick={() => router.push(`/product/${postInfo.product_id}`)}
+                onClick={() => router.push(`/product/productInfo?productId=${postInfo.product_id}`)}
             >
                 [{product.detail}] 사러가기
             </ProductInfo>
-            <Link href={`/kurlylog/${userInfo.user_id}`} passHref>
+            <Link href={`/kurlylog/userInfo?userId=${userInfo.user_id}`} passHref>
                 <UserInfo>
                     <UserImage>
                         {userInfo.picture && (

@@ -9,7 +9,7 @@ const PreviewCard = ({ post }) => {
     const created_at = moment((post.created_at).substr(0, 10), "YYYY-MM-DD").format("YYYY-MM-DD")
 
     return (
-        <Link href={`/kurlylog/post/${post.review_id}`} passHref>
+        <Link href={`/kurlylog/post/reviewInfo?reviewId=${post.review_id}`} passHref>
         <CardWrapper>
             <CardDate>{created_at}</CardDate>
             <CardActionArea>
