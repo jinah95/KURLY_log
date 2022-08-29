@@ -21,7 +21,7 @@ const NewKurlyLog = () => {
     const [htmlStr, setHtmlStr] = useState("");
     const [productInfo, setProductInfo] = useState({});
     const router = useRouter();
-    const productId = router.query?.product_id;
+    const productId = router.query?.productId;
 
     const [imgList, setImgList] = useState([]);
     const [score, setScore] = useState(1);
@@ -67,7 +67,7 @@ const NewKurlyLog = () => {
         // 작성한 게시물로 이동
         const review_id = data.data.data.review_id;
         router.push({
-            pathname: `/kurlylog/post/${review_id}`,
+            pathname: `/kurlylog/post/reviewInfo?reviewId=${review_id}`,
             query: {
                 review_id,
             },

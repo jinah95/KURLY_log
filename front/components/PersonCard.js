@@ -12,7 +12,7 @@ const PersonCard = ({ item, index }) => {
     const router = useRouter();
     return (
         <PersonContainer
-            onClick={() => router.push(`/kurlylog/${item.user_id}`)}
+            onClick={() => router.push(`/kurlylog/userInfo?userId=${item.user_id}`)}
         >
             <Profile>
                 <GradeNumber>{index + 1}</GradeNumber>

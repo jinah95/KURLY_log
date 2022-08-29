@@ -4,7 +4,6 @@ import KurlyLogPost from "../../../components/KurlyLogPost";
 export async function getServerSideProps() {
     return {
         props: {},
-        fallback: true, 
     };
 }
 

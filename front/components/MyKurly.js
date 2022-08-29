@@ -17,7 +17,7 @@ const MyKurly = () => {
     const [bestPosts, setBestPosts] = useState([]);
     const [possibleFollow, setPossibleFollow] = useState(false);
     const router = useRouter();
-    const userId = router.query?.user_id;
+    const userId = router.query?.userId;
     const userState = useContext(UserStateContext);
     const isLogin = !!userState.user;
     const loginUser = userState.user?.userId;
