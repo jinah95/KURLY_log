@@ -14,7 +14,7 @@ const Reviews = ({ reviewInitial, productId }) => {
     });
 
     const loadMore = async () => {
-        const per = 2;
+        const per = 5;
         const res = await getPost(
             `/logs/goods/${productId}?page=${page + 1}&perPage=${per}`
         );
