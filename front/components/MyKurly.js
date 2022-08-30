@@ -138,8 +138,7 @@ const MyKurly = () => {
                 </Popular>
                 <Contents>
                     <Title>전체글</Title>
-                    {/* <Content data={posts}/> */}
-                    {posts.map((post, index) => (
+                    {posts?.map((post, index) => (
                         <PreviewCard key={index} post={post} />
                     ))}
                 </Contents>
