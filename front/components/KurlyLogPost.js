@@ -20,7 +20,7 @@ const KurlyLogPost = () => {
     const [otherPosts, setOtherPosts] = useState([]);
     const [createdAt, setCreatedAt] = useState("");
     const [product, setProduct] = useState({});
-    const [like, setLike] = useState(false); 
+    const [like, setLike] = useState(false);
     const router = useRouter();
     const reviewId = router.query?.reviewId;
     const userState = useContext(UserStateContext);
@@ -45,7 +45,7 @@ const KurlyLogPost = () => {
 
     // 좋아요 가능 여부 확인
     const canLikes = async () => {
-        if (loginUser !== userInfo.user_id) {
+        if (loginUser === userInfo.user_id) {
             return;
         } else {
             const res = await get(`/likes/${reviewId}`);
@@ -75,10 +75,9 @@ const KurlyLogPost = () => {
         getOtherPosts(res.data.data.product_id);
         getProductInfo(res.data.data.product_id);
         setCreatedAt(
-            moment(
-                res.data.data.created_at.substr(0, 10),
+            moment(res.data.data.created_at.substr(0, 10), "YYYY-MM-DD").format(
                 "YYYY-MM-DD"
-            ).format("YYYY-MM-DD")
+            )
         );
     };
 
@@ -109,6 +108,10 @@ const KurlyLogPost = () => {
             canLikes();
         }
     }, [reviewId, write, like]);
+
+    useEffect(() => {
+        canLikes();
+    }, []);
 
     return write ? (
         <KurlyLogWrite changeWrite={changeWrite} postInfo={postInfo} />
