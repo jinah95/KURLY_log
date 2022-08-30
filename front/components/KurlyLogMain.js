@@ -1,10 +1,13 @@
 import React from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import Kurlioncer from "./Kurlioncer";
 import KurlioncerReviews from "./KurlioncerReviews";
 import Footer from "./Footer";
 
 const KurlyLogMain = () => {
+    const router = useRouter();
+
     return (
         <Wrapper>
             <Header></Header>
@@ -13,7 +16,12 @@ const KurlyLogMain = () => {
                     <PageMoveWrapper>
                         <PageMoveFirst>
                             <PageMoveTitle>주간 BEST 컬리언서</PageMoveTitle>
-                            <MoreButton> + 상위 15위 보기</MoreButton>
+                            <MoreButton
+                                onClick={() => router.push(`/moreKulioncer`)}
+                            >
+                                {" "}
+                                + 더보기
+                            </MoreButton>
                             <PageMoveSubTitle>
                                 인기있는 컬리언서는 ?
                             </PageMoveSubTitle>
@@ -93,6 +101,7 @@ const PageMoveTitle = styled.span`
 
 const MoreButton = styled.span`
     font-size: 12px;
+    cursor: pointer;
 `;
 
 const PageMoveSubTitle = styled.span`

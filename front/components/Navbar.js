@@ -32,14 +32,16 @@ const Navbar = () => {
             : currentURL === "/kurlioncer" ||
               pathName === "/risingreview" ||
               pathName === "/kurlyLog/[userId]" ||
-              pathName === "/kurlyLog/post/[reviewId]"
+              pathName === "/kurlyLog/post/[reviewId]" ||
+              pathName === "/moreKulioncer"
             ? "kurlyLog"
             : undefined
     );
     const [targetTab, setTargetTab] = useState(
         pathName === "/" ||
             pathName === "/product/[item]" ||
-            pathName === "/kurlioncer"
+            pathName === "/kurlioncer" ||
+            pathName === "/moreKulioncer"
             ? "1"
             : pathName === "/kurlyLog/[userId]" ||
               pathName === "/kurlyLog/post/[reviewId]"
