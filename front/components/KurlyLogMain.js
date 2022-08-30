@@ -35,7 +35,6 @@ const KurlyLogMain = () => {
                     <PageMoveWrapper>
                         <PageMoveFirst>
                             <PageMoveTitle>주간 BEST 리뷰</PageMoveTitle>
-                            <MoreButton> + 더보기</MoreButton>
                             <PageMoveSubTitle>
                                 컬리언서가 쓴 재미난 리뷰!
                             </PageMoveSubTitle>
