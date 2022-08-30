@@ -32,12 +32,14 @@ const CarouselCard = ({ post }) => {
                         <SubTitle>{post.content}</SubTitle>
                     </CardInfo>
                 </div>
-                <CardMedia
-                    component="img"
-                    height="100"
-                    image={post.image?.[0]}
-                    alt="img"
-                />
+                {post.image?.[0] && (
+                    <CardMedia
+                        component="img"
+                        height="100"
+                        image={post.image?.[0]}
+                        alt="img"
+                    />
+                )}
             </CardWrapper>
         </Link>
     );
