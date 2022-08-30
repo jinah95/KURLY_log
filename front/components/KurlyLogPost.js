@@ -20,7 +20,7 @@ const KurlyLogPost = () => {
     const [otherPosts, setOtherPosts] = useState([]);
     const [createdAt, setCreatedAt] = useState("");
     const [product, setProduct] = useState({});
-    const [like, setLike] = useState(false); // get요청: 내가 좋아요 했는지 확인
+    const [like, setLike] = useState(false); 
     const router = useRouter();
     const reviewId = router.query?.reviewId;
     const userState = useContext(UserStateContext);
@@ -172,14 +172,10 @@ const KurlyLogPost = () => {
                     <LikeCount onClick={changeLikesCount}>
                         {postInfo.likesCount} 💜
                     </LikeCount>
-                ) : loginUser !== userInfo.user_id ? (
+                ) : loginUser !== userInfo.user_id && (
                     <LikeCount onClick={changeLikesCount}>
                         {postInfo.likesCount} 🖤
                         <span>좋아요를 눌러주세요!</span>
-                    </LikeCount>
-                ) : (
-                    <LikeCount onClick={changeLikesCount}>
-                        {postInfo.likesCount} 💜
                     </LikeCount>
                 )}
             </Contents>
