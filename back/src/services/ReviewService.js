@@ -100,10 +100,6 @@ const ReviewService = {
       return { message: "fail", data: errorMessage };
     }
 
-    // const result = {
-    //   logs,
-    //   bestLogs: logs.slice(0, 3),
-    // };
     return { message: "success", data: logs };
   },
 
