@@ -25,10 +25,6 @@ followRouter.get("/:userId", loginRequired, async (req, res, next) => {
     const userId = req.currentUserId;
     const kurlyencerId = req.params.userId;
 
-    if (userId === kurlyencerId) {
-      throw new Error("스스로를 팔로우할 수 없습니다.");
-    }
-
     const followOrNot = await FollowService.checkFollow({
       userId,
       kurlyencerId,

@@ -30,7 +30,8 @@ const LikeService = {
     const review = await Review.findById(reviewId);
 
     if (!review || userId === review.user_id) {
-      throw new Error("유효하지 않은 게시글입니다.");
+      const errorMessage = "유효하지 않은 게시글입니다.";
+      return { message: "fail", data: errorMessage };
     }
 
     const like = { user_id: userId, review_id: reviewId };

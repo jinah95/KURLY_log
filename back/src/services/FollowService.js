@@ -26,6 +26,10 @@ const FollowService = {
   },
 
   checkFollow: async ({ userId, kurlyencerId }) => {
+    if (userId === kurlyencerId) {
+      const errorMessage = "스스로를 팔로우할 수 없습니다.";
+      return { message: "fail", data: errorMessage };
+    }
     const user = await User.findById(kurlyencerId);
 
     if (!user) {
