@@ -20,7 +20,7 @@ const KurlyLogPost = () => {
     const [otherPosts, setOtherPosts] = useState([]);
     const [createdAt, setCreatedAt] = useState("");
     const [product, setProduct] = useState({});
-    const [like, setLike] = useState(false);    // get요청: 내가 좋아요 했는지 확인
+    const [like, setLike] = useState(false); // get요청: 내가 좋아요 했는지 확인
     const router = useRouter();
     const reviewId = router.query?.reviewId;
     const userState = useContext(UserStateContext);
@@ -43,18 +43,32 @@ const KurlyLogPost = () => {
         setWrite((current) => !current);
     };
 
-    const changeLikesCount = async () => {
-        if (loginUser == userInfo.user_id) {
-            return
+    // 좋아요 가능 여부 확인
+    const canLikes = async () => {
+        try {
+            if (loginUser !== userInfo.user_id) {
+                return;
+            } else {
+                const res = await get(`/likes/${reviewId}`);
+                setLike(res.data.data);
+            }
+        } catch (err) {
+            // console.error("error message: ", err);
         }
+    };
 
-        if (like) {
-            const res = await deleteItem("/likes/", reviewId);
+    // 좋아요 안 좋아요 변경
+    const changeLikesCount = async () => {
+        if (loginUser === userInfo.user_id) {
+            return;
         } else {
-            const res = await post(`/likes/${reviewId}`);
-            console.log(res.data);
+            if (like) {
+                await deleteItem(`/likes/${reviewId}`);
+            } else {
+                await post(`/likes/${reviewId}`);
+            }
+            setLike((current) => !current);
         }
-        setLike((current) => !current);
     };
 
     // reviewId로 해당 컬리log 조회
@@ -111,6 +125,7 @@ const KurlyLogPost = () => {
 
     useEffect(() => {
         getPostInfo();
+        canLikes();
     }, [reviewId, write, like]);
 
     return write ? (
@@ -120,11 +135,13 @@ const KurlyLogPost = () => {
             <Home>{userInfo.nickname}&apos;s 컬리log</Home>
             <Contents>
                 <h3>{postInfo.title}</h3>
-                {createdAt} 
+                {createdAt}
                 {loginUser == userInfo.user_id && (
                     <EditContents>
-                        {" "}|{" "}<span onClick={() => setWrite(true)}>수정하기</span>
-                        {" "}|{" "}<span onClick={handleOpen}>삭제하기</span>
+                        {" "}
+                        | <span onClick={() => setWrite(true)}>
+                            수정하기
+                        </span> | <span onClick={handleOpen}>삭제하기</span>
                     </EditContents>
                 )}
                 {open && (
@@ -151,9 +168,20 @@ const KurlyLogPost = () => {
                 </ImageWrapper>
                 <Content>{postInfo.content}</Content>
                 <Line />
-                <LikeCount onClick={changeLikesCount}>
-                    {postInfo.likesCount} 💜
-                </LikeCount>
+                {like ? (
+                    <LikeCount onClick={changeLikesCount}>
+                        {postInfo.likesCount} 💜
+                    </LikeCount>
+                ) : loginUser !== userInfo.user_id ? (
+                    <LikeCount onClick={changeLikesCount}>
+                        {postInfo.likesCount} 🖤
+                        <span>좋아요를 눌러주세요!</span>
+                    </LikeCount>
+                ) : (
+                    <LikeCount onClick={changeLikesCount}>
+                        {postInfo.likesCount} 💜
+                    </LikeCount>
+                )}
             </Contents>
             <ProductInfo
                 onClick={() => router.push(`/product/${postInfo.product_id}`)}
