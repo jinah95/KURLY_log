@@ -45,15 +45,16 @@ const KurlyLogPost = () => {
 
     // 좋아요 가능 여부 확인
     const canLikes = async () => {
-        try {
-            if (loginUser !== userInfo.user_id) {
-                return;
-            } else {
+        if (loginUser === userInfo.user_id) {
+            return;
+        } else {
+            try {
                 const res = await get(`/likes/${reviewId}`);
                 setLike(res.data.data);
+            } catch (err) {
+                // console.error("error message: ", err);
+                // console.log(err.response.data);
             }
-        } catch (err) {
-            // console.error("error message: ", err);
         }
     };
 
@@ -125,7 +126,9 @@ const KurlyLogPost = () => {
 
     useEffect(() => {
         getPostInfo();
-        canLikes();
+        if (loginUser !== userInfo.user_id) {
+            canLikes();
+        }
     }, [reviewId, write, like]);
 
     return write ? (
