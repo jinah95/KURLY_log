@@ -10,12 +10,8 @@ const CarouselCard = ({ post }) => {
     const [userInfo, setUserInfo] = useState({});
 
     const getUserInfo = async () => {
-        try {
-            const res = await get("/users/", post.user_id);
-            setUserInfo(res.data.data);
-        } catch (err) {
-            console.error("error message: ", err);
-        }
+        const res = await get("/users/", post.user_id);
+        setUserInfo(res.data.data);
     };
 
     useEffect(() => {

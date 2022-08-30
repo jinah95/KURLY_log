@@ -6,8 +6,6 @@ import { styled as materialStyled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import PreviewMiniCard from "./Cards/PreviewMiniCard";
 import PreviewCard from "./Cards/PreviewCard";
-// import MyKurlyPostAll from "./MyKurlyPostAll";
-// import Content from "./Content";
 import { get, getPost, post, deleteItem } from "../api";
 import { UserStateContext } from "../pages/_app";
 
@@ -34,57 +32,37 @@ const MyKurly = () => {
 
     // 유저의 컬리로그 인기글
     const getBestPosts = async () => {
-        try {
-            const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
-            setBestPosts(res.data.data);
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
+        setBestPosts(res.data.data);
     };
 
     // 유저의 컬리로그 전체글
     const getPosts = async () => {
-        try {
-            const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
-            setPosts(res.data.data);
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await getPost(`/logs/user/${userId}?page=1&perPage=5`);
+        setPosts(res.data.data);
     };
 
     // 팔로우 가능 여부 확인
     const canFollow = async () => {
-        try {
-            if (loginUser !== userId) {
-                const res = await get(`/follows/${userId}`);
-                setPossibleFollow(res.data.data);
-            }
-        } catch (err) {
-            // console.error("error message: ", err);
+        if (loginUser !== userId) {
+            const res = await get(`/follows/${userId}`);
+            setPossibleFollow(res.data.data);
         }
     };
 
     // 팔로우
     const makeFollow = async () => {
-        try {
-            if (loginUser !== userId) {
-                const res = await post(`/follows/${userId}`);
-                setPossibleFollow(true);
-            }
-        } catch (err) {
-            // console.error(err);
+        if (loginUser !== userId) {
+            const res = await post(`/follows/${userId}`);
+            setPossibleFollow(true);
         }
     };
 
     // 언팔로우
     const unFollow = async () => {
-        try {
-            if (loginUser !== userId) {
-                const res = await deleteItem(`/follows/${userId}`);
-                setPossibleFollow(false);
-            }
-        } catch (err) {
-            // console.error(err);
+        if (loginUser !== userId) {
+            const res = await deleteItem(`/follows/${userId}`);
+            setPossibleFollow(false);
         }
     };
 
