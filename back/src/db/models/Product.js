@@ -1,9 +1,6 @@
 import db from "..";
 const productModel = db.product;
-const reviewModel = db.review;
-const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.Op;
 
 const Product = {
   findById: async (productId) => {

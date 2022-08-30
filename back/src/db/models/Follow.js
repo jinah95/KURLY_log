@@ -1,8 +1,5 @@
 import db from "..";
 const followModel = db.follow;
-const Sequelize = db.Sequelize;
-const sequelize = db.sequelize;
-const Op = db.sequelize.Op;
 
 const Follow = {
   create: async ({ follow }) => {

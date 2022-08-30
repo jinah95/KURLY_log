@@ -2,6 +2,7 @@ import { Like } from "../db/models/Like";
 import { Review } from "../db/models/Review";
 
 const LikeService = {
+  // 좋아요
   likeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 
@@ -26,6 +27,7 @@ const LikeService = {
     return { message: "success", data: newLike };
   },
 
+  // 좋아요 여부 확인
   checkLike: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 
@@ -45,6 +47,7 @@ const LikeService = {
     }
   },
 
+  // 좋아요 취소
   unlikeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 

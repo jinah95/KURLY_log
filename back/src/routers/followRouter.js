@@ -4,6 +4,7 @@ import loginRequired from "../middlewares/loginRequired";
 
 const followRouter = Router();
 
+// 팔로우
 followRouter.post("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
@@ -20,6 +21,7 @@ followRouter.post("/:userId", loginRequired, async (req, res, next) => {
   }
 });
 
+// 팔로우 여부 확인
 followRouter.get("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
@@ -35,6 +37,7 @@ followRouter.get("/:userId", loginRequired, async (req, res, next) => {
   }
 });
 
+// 팔로우 취소
 followRouter.delete("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;

@@ -1,8 +1,8 @@
 import { Follow } from "../db/models/Follow";
 import { User } from "../db/models/User";
-import { v4 as uuidv4 } from "uuid";
 
 const FollowService = {
+  // 팔로우
   followUser: async ({ userId, kurlyencerId }) => {
     const user = await User.findById(kurlyencerId);
 
@@ -25,11 +25,13 @@ const FollowService = {
     return { message: "success", data: newFollow };
   },
 
+  // 팔로우 여부 확인
   checkFollow: async ({ userId, kurlyencerId }) => {
     if (userId === kurlyencerId) {
       const errorMessage = "스스로를 팔로우할 수 없습니다.";
       return { message: "fail", data: errorMessage };
     }
+
     const user = await User.findById(kurlyencerId);
 
     if (!user) {
@@ -50,6 +52,7 @@ const FollowService = {
     }
   },
 
+  // 팔로우 취소
   unfollowUser: async ({ userId, kurlyencerId }) => {
     const user = await User.findById(kurlyencerId);
 

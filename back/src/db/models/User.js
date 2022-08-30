@@ -1,11 +1,6 @@
 import db from "..";
 const userModel = db.user;
-const followModel = db.follow;
-const likeModel = db.like;
-const reviewModel = db.review;
-const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.sequelize.Op;
 
 const User = {
   findByNickname: async (nickname) => {

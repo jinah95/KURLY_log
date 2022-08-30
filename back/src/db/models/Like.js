@@ -1,6 +1,5 @@
 import db from "..";
 const likeModel = db.like;
-const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
 
