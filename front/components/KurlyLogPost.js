@@ -105,7 +105,9 @@ const KurlyLogPost = () => {
 
     useEffect(() => {
         getPostInfo();
-        canLikes();
+        if (loginUser !== userInfo.user_id) {
+            canLikes();
+        }
     }, [reviewId, write, like]);
 
     return write ? (
