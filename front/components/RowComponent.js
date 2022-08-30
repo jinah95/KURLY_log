@@ -113,7 +113,7 @@ const ContentsWrapper = styled.div`
 `;
 
 const ReviewsContents = styled.div`
-    font-size: 12px;
+    font-size: 10px;
     height: 100px;
     font-weight: 400;
     color: rgb(51, 51, 51);
@@ -124,7 +124,7 @@ const ReviewsContents = styled.div`
     overflow: hidden;
     word-break: keep-all;
     padding: 0 10px;
-    margin-top: 10x;
+    // margin-top: 10x;
 `;
 
 const EtcWrapper = styled.div`
@@ -149,8 +149,8 @@ const ReviewContainer = styled.div`
 `;
 
 const ReviewTitleP = styled.div`
-    padding: 5px 15px;
-    margin-bottom: 5px;
+    padding: 0px 15px;
+    margin-bottom: 2px;
     font-weight: bold;
     letter-spacing: normal;
     text-overflow: ellipsis;
