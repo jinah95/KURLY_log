@@ -152,20 +152,22 @@ const KurlyLogPost = () => {
                     />
                 )}
                 <Line />
-                <ImageWrapper>
-                    <ImageCardWrapper>
-                        {postInfo.image?.map((img, index) => (
-                            <ImageCard
-                                key={index}
-                                src={img}
-                                alt={`image-${index}`}
-                                width={150}
-                                height={150}
-                                unoptimized={true}
-                            />
-                        ))}
-                    </ImageCardWrapper>
-                </ImageWrapper>
+                {postInfo.image?.[0] && (
+                    <ImageWrapper>
+                        <ImageCardWrapper>
+                            {postInfo.image?.map((img, index) => (
+                                <ImageCard
+                                    key={index}
+                                    src={img}
+                                    alt={`image-${index}`}
+                                    width={150}
+                                    height={150}
+                                    unoptimized={true}
+                                />
+                            ))}
+                        </ImageCardWrapper>
+                    </ImageWrapper>
+                )}
                 <Content>{postInfo.content}</Content>
                 <Line />
                 {like ? (
