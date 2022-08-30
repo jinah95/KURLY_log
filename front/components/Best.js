@@ -4,21 +4,8 @@ import BestProduct from "./BestProduct";
 import Footer from "./Footer";
 import { getPost } from "../api";
 
-const Best = () => {
-    const [productList, setProductList] = useState([]);
-
-    const getProduct = async () => {
-        try {
-            const res = await getPost("/goods");
-            const newArr = res.data.data;
-            setProductList([...newArr]);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    useEffect(() => {
-        getProduct();
-    }, []);
+const Best = ({ newArr }) => {
+    const [productList, setProductList] = useState(newArr);
 
     return (
         <Wrapper>
