@@ -1,8 +1,8 @@
 import Content from "./Content";
-import { getPost } from "../api";
+// import { getPost } from "../api";
 
 export default function MyKurlyPostAll(props) {
-    console.log(props.data);
+
     return (
         <Content data={props.data} />
     );
