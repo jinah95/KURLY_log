@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styled from "styled-components";
-import plusStar from "../public/plusStar.png";
+import noImg from "../public/noimg.png";
 
 const Loader = ({ style }) => (
     <div style={style} className="list-group-loader">
@@ -26,7 +26,7 @@ const Item = ({ items, style, router }) => (
         <ContentsWrapper>
             <div className="avatar">
                 <Image
-                    src={items.image[0] ? items.image[0] : plusStar}
+                    src={items.image[0] ? items.image[0] : noImg}
                     alt="product"
                     width={100}
                     height={100}
@@ -113,7 +113,7 @@ const ContentsWrapper = styled.div`
 `;
 
 const ReviewsContents = styled.div`
-    font-size: 12px;
+    font-size: 10px;
     height: 100px;
     font-weight: 400;
     color: rgb(51, 51, 51);
@@ -124,7 +124,7 @@ const ReviewsContents = styled.div`
     overflow: hidden;
     word-break: keep-all;
     padding: 0 10px;
-    margin-top: 10x;
+    // margin-top: 10x;
 `;
 
 const EtcWrapper = styled.div`
@@ -149,8 +149,8 @@ const ReviewContainer = styled.div`
 `;
 
 const ReviewTitleP = styled.div`
-    padding: 5px 15px;
-    margin-bottom: 5px;
+    padding: 0px 15px;
+    margin-bottom: 2px;
     font-weight: bold;
     letter-spacing: normal;
     text-overflow: ellipsis;

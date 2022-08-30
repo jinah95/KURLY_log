@@ -20,7 +20,9 @@ const UserService = {
       Like.countByFilter({ user_id: userId }),
     ]);
 
-    const data = { ...user.dataValues, followers, reviews, likes };
+    const { user_id, ...rest } = user.dataValues;
+
+    const data = { userId, ...rest, followers, reviews, likes };
 
     return { message: "success", data };
   },

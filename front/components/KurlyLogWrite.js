@@ -28,24 +28,6 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
     const [image, setImage] = useState(postInfo.image);
     const [content, setContent] = useState(postInfo.content);
 
-    // const [kurlyLog, setKurlyLog] = useState({
-    //     score: postInfo.score,
-    //     good : postInfo.good,
-    //     bad : postInfo.bad,
-    //     title : postInfo.title,
-    //     image : postInfo.image,
-    //     content : postInfo.content,
-    // });
-
-    // const changeKurlyLog = (key, value) => {
-    //     setKurlyLog((current) => {
-    //         let newKurlyLog = { ...current };
-    //         newKurlyLog[key] = value;
-    //         // console.log("업데이트 데이터: ", newKurlyLog);
-    //         return newKurlyLog;
-    //     });
-    // };
-
     // productId로 상품 정보 조회
     const getProductInfo = async () => {
         try {

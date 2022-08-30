@@ -55,8 +55,10 @@ const MyKurly = () => {
     // 팔로우 가능 여부 확인
     const canFollow = async () => {
         try {
-            const res = await get(`/follows/${userId}`);
-            setPossibleFollow(res.data.data);
+            if (loginUser !== userId) {
+                const res = await get(`/follows/${userId}`);
+                setPossibleFollow(res.data.data);
+            }
         } catch (err) {
             // console.error("error message: ", err);
         }
@@ -65,8 +67,10 @@ const MyKurly = () => {
     // 팔로우
     const makeFollow = async () => {
         try {
-            const res = await post(`/follows/${userId}`);
-            setPossibleFollow(true);
+            if (loginUser !== userId) {
+                const res = await post(`/follows/${userId}`);
+                setPossibleFollow(true);
+            }
         } catch (err) {
             // console.error(err);
         }
@@ -75,8 +79,10 @@ const MyKurly = () => {
     // 언팔로우
     const unFollow = async () => {
         try {
-            const res = await deleteItem(`/follows/${userId}`);
-            setPossibleFollow(false);
+            if (loginUser !== userId) {
+                const res = await deleteItem(`/follows/${userId}`);
+                setPossibleFollow(false);
+            }
         } catch (err) {
             // console.error(err);
         }
@@ -122,8 +128,8 @@ const MyKurly = () => {
                         </UserProfile>
                     </UserInfo>
                     <div>
-                        {loginUser !== userId && (
-                            !possibleFollow ? (
+                        {loginUser !== userId &&
+                            (!possibleFollow ? (
                                 isLogin ? (
                                     <FollowButton onClick={makeFollow}>
                                         Follow
@@ -132,16 +138,12 @@ const MyKurly = () => {
                                     <FollowButton>로그인필요</FollowButton>
                                 )
                             ) : isLogin ? (
-                                <FollowButton
-                                    type="cancel"
-                                    onClick={unFollow}
-                                >
+                                <FollowButton type="cancel" onClick={unFollow}>
                                     Unfollow
                                 </FollowButton>
                             ) : (
                                 <FollowButton>로그인필요</FollowButton>
-                            )
-                        )}
+                            ))}
                     </div>
                 </Header>
                 <Introduce>

@@ -7,17 +7,25 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 
 const PreviewMiniCard = ({ post }) => {
-
+    
     return (
         <Link href={`/kurlyLog/post/${post.review_id}`} passHref>
         <CardWrapper>
             <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="150"
-                    image={post.image?.[0]}
-                    alt="img"
-                />
+                {post.image?.[0] ? (
+                    <CardMedia
+                        component="img"
+                        height="150"
+                        image={post.image?.[0]}
+                        alt="img"
+                    />) : (
+                    <CardMedia
+                        component="img"
+                        height="150"
+                        image="/alter.jpg"
+                        alt="img"
+                    />
+                )}
                 <CardInfo>
                     <Title>{post.title}</Title>
                     {/* <SubTitle>기타</SubTitle> */}
@@ -38,7 +46,6 @@ const CardWrapper = materialStyled(Card)(
         display: "inline-block",
     })
 );
-
 
 const CardInfo = styled.div`
     width: 100%;

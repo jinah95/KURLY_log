@@ -20,7 +20,7 @@ const KurlyLogPost = () => {
     const [otherPosts, setOtherPosts] = useState([]);
     const [createdAt, setCreatedAt] = useState("");
     const [product, setProduct] = useState({});
-    const [like, setLike] = useState(false);    // get요청: 내가 좋아요 했는지 확인
+    const [like, setLike] = useState(false); 
     const router = useRouter();
     const reviewId = router.query?.reviewId;
     const userState = useContext(UserStateContext);
@@ -43,18 +43,33 @@ const KurlyLogPost = () => {
         setWrite((current) => !current);
     };
 
-    const changeLikesCount = async () => {
-        if (loginUser == userInfo.user_id) {
-            return
-        }
-
-        if (like) {
-            const res = await deleteItem("/likes/", reviewId);
+    // 좋아요 가능 여부 확인
+    const canLikes = async () => {
+        if (loginUser === userInfo.user_id) {
+            return;
         } else {
-            const res = await post(`/likes/${reviewId}`);
-            console.log(res.data);
+            try {
+                const res = await get(`/likes/${reviewId}`);
+                setLike(res.data.data);
+            } catch (err) {
+                // console.error("error message: ", err);
+                // console.log(err.response.data);
+            }
         }
-        setLike((current) => !current);
+    };
+
+    // 좋아요 안 좋아요 변경
+    const changeLikesCount = async () => {
+        if (loginUser === userInfo.user_id) {
+            return;
+        } else {
+            if (like) {
+                await deleteItem(`/likes/${reviewId}`);
+            } else {
+                await post(`/likes/${reviewId}`);
+            }
+            setLike((current) => !current);
+        }
     };
 
     // reviewId로 해당 컬리log 조회
@@ -111,6 +126,9 @@ const KurlyLogPost = () => {
 
     useEffect(() => {
         getPostInfo();
+        if (loginUser !== userInfo.user_id) {
+            canLikes();
+        }
     }, [reviewId, write, like]);
 
     return write ? (
@@ -120,11 +138,13 @@ const KurlyLogPost = () => {
             <Home>{userInfo.nickname}&apos;s 컬리log</Home>
             <Contents>
                 <h3>{postInfo.title}</h3>
-                {createdAt} 
+                {createdAt}
                 {loginUser == userInfo.user_id && (
                     <EditContents>
-                        {" "}|{" "}<span onClick={() => setWrite(true)}>수정하기</span>
-                        {" "}|{" "}<span onClick={handleOpen}>삭제하기</span>
+                        {" "}
+                        | <span onClick={() => setWrite(true)}>
+                            수정하기
+                        </span> | <span onClick={handleOpen}>삭제하기</span>
                     </EditContents>
                 )}
                 {open && (
@@ -135,25 +155,34 @@ const KurlyLogPost = () => {
                     />
                 )}
                 <Line />
-                <ImageWrapper>
-                    <ImageCardWrapper>
-                        {postInfo.image?.map((img, index) => (
-                            <ImageCard
-                                key={index}
-                                src={img}
-                                alt={`image-${index}`}
-                                width={150}
-                                height={150}
-                                unoptimized={true}
-                            />
-                        ))}
-                    </ImageCardWrapper>
-                </ImageWrapper>
+                {postInfo.image?.[0] && (
+                    <ImageWrapper>
+                        <ImageCardWrapper>
+                            {postInfo.image?.map((img, index) => (
+                                <ImageCard
+                                    key={index}
+                                    src={img}
+                                    alt={`image-${index}`}
+                                    width={150}
+                                    height={150}
+                                    unoptimized={true}
+                                />
+                            ))}
+                        </ImageCardWrapper>
+                    </ImageWrapper>
+                )}
                 <Content>{postInfo.content}</Content>
                 <Line />
-                <LikeCount onClick={changeLikesCount}>
-                    {postInfo.likesCount} 💜
-                </LikeCount>
+                {like ? (
+                    <LikeCount onClick={changeLikesCount}>
+                        {postInfo.likesCount} 💜
+                    </LikeCount>
+                ) : loginUser !== userInfo.user_id && (
+                    <LikeCount onClick={changeLikesCount}>
+                        {postInfo.likesCount} 🖤
+                        <span>좋아요를 눌러주세요!</span>
+                    </LikeCount>
+                )}
             </Contents>
             <ProductInfo
                 onClick={() => router.push(`/product/${postInfo.product_id}`)}

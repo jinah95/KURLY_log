@@ -11,6 +11,7 @@ const Login = () => {
 
     const dispatch = useContext(DispatchContext);
     const router = useRouter();
+    const { returnUrl } = router.query;
 
     const LoginHandler = async (e) => {
         e.preventDefault();
@@ -22,7 +23,6 @@ const Login = () => {
             });
             // 유저 정보는 response의 data임.
             const user = res.data.data;
-
             // JWT 토큰은 유저 정보의 token임.
             const jwtToken = user.token;
             // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
@@ -33,12 +33,15 @@ const Login = () => {
                 payload: user,
             });
 
-            // // 새로고침;
-            router.push("/");
+            if (returnUrl !== "mykurly") {
+                router.push(returnUrl);
+            } else {
+                router.push(`/kurlyLog/${user.userId}`);
+            }
             setNickname("");
             setPassword("");
         } catch (err) {
-            alert("로그인에 실패하였습니다", err);
+            console.error("로그인에 실패하였습니다", err);
             setNickname("");
             setPassword("");
         }

@@ -13,12 +13,14 @@ const PreviewCard = ({ post }) => {
         <CardWrapper>
             <CardDate>{created_at}</CardDate>
             <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="100"
-                    image={post.image?.[0]}
-                    alt="img"
-                />
+                {post.image?.[0] && (
+                    <CardMedia
+                        component="img"
+                        height="100"
+                        image={post.image?.[0]}
+                        alt="img"
+                    />
+                )}
                 <CardInfo>
                     <Title>{post.title}</Title>
                     <SubTitle>{post.content}</SubTitle> {/* 게시물 내용 가져오기 */}

@@ -4,21 +4,8 @@ import BestProduct from "./BestProduct";
 import Footer from "./Footer";
 import { getPost } from "../api";
 
-const Best = () => {
-    const [productList, setProductList] = useState([]);
-
-    const getProduct = async () => {
-        try {
-            const res = await getPost("/goods");
-            const newArr = res.data.data;
-            setProductList([...newArr]);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    useEffect(() => {
-        getProduct();
-    }, []);
+const Best = ({ newArr }) => {
+    const [productList, setProductList] = useState(newArr);
 
     return (
         <Wrapper>
@@ -87,9 +74,10 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
     width: 100%;
-    height: 40%;
+    height: 45%;
     background: url("/best_main.jpg");
     background-size: cover;
+    background-position: center center;
     color: white;
     display: grid;
     grid-template-rows: 8fr 2fr;

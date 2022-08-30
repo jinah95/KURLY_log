@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
@@ -12,7 +12,10 @@ import { UserStateContext, DispatchContext } from "../pages/_app";
 
 const Navbar = () => {
     const router = useRouter();
-    const productId = router.query?.item;
+    const currentURL = router.asPath;
+    const productId = router.query?.item
+        ? router.query?.item
+        : router.query?.productId;
     const pathName = router.pathname;
     const dispatch = useContext(DispatchContext);
     const userState = useContext(UserStateContext);
@@ -20,34 +23,30 @@ const Navbar = () => {
     const userId = userState?.user?.userId;
 
     const [targetPage, setTargetPage] = useState(
-        pathName === "/" || pathName === "/event"
+        currentURL === "/" ||
+            pathName === "/product/[item]" ||
+            pathName === "/review/[item]"
             ? "market"
-            : pathName === "/kurlioncer" || pathName === "/risingreview"
-            ? "kurlioncer"
-            : pathName === "/beauty"
+            : currentURL === "/beauty"
             ? "beauty"
-            : pathName === "/login"
-            ? "login"
-            : pathName === "/product/[item]" || pathName === "/review/[item]"
-            ? "product"
-            : pathName === "/kurlyLog/post/[reviewId]"
-            ? "kurlioncer"
+            : currentURL === "/kurlioncer" ||
+              pathName === "/risingreview" ||
+              pathName === "/kurlyLog/[userId]" ||
+              pathName === "/kurlyLog/post/[reviewId]" ||
+              pathName === "/moreKulioncer"
+            ? "kurlyLog"
             : undefined
     );
     const [targetTab, setTargetTab] = useState(
-        pathName === "/" || pathName === "/best"
-            ? "best"
-            : pathName === "/event"
-            ? "event"
-            : pathName === "/risingreview"
-            ? "rising"
-            : pathName === "/kurlioncer"
-            ? "kurlioncer"
-            : pathName === "/product/[item]"
-            ? "detail"
-            : pathName === "/review/[item]"
-            ? "review"
-            : "kurlylog"
+        pathName === "/" ||
+            pathName === "/product/[item]" ||
+            pathName === "/kurlioncer" ||
+            pathName === "/moreKulioncer"
+            ? "1"
+            : pathName === "/kurlyLog/[userId]" ||
+              pathName === "/kurlyLog/post/[reviewId]"
+            ? "kurlyLog"
+            : "2"
     );
 
     const logout = () => {
@@ -56,6 +55,10 @@ const Navbar = () => {
         // dispatch 함수를 이용해 로그아웃함.
         dispatch({ type: "LOGOUT" });
     };
+
+    // useEffect(() => {
+
+    // }, []);
 
     return (
         <>
@@ -74,21 +77,11 @@ const Navbar = () => {
                         <WrapLabel
                             htmlFor="market"
                             id="market"
-                            targetPage={
-                                targetPage === "product" || pathName === "/"
-                                    ? "market"
-                                    : pathName === "/product/[item]"
-                                    ? "market"
-                                    : targetPage === "kurlioncer"
-                                    ? "kurlioncer"
-                                    : targetPage === "beauty"
-                                    ? "beauty"
-                                    : "market"
-                            }
+                            targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
                                 router.push("/");
-                                setTargetTab("best");
+                                setTargetTab("1");
                             }}
                         >
                             <PageTitle
@@ -118,20 +111,18 @@ const Navbar = () => {
                         <WrapLabel
                             color="#fff"
                             htmlFor="review"
-                            id="kurlioncer"
-                            targetPage={
-                                pathName === "/" ? "market" : targetPage
-                            }
+                            id="kurlyLog"
+                            targetPage={targetPage}
                             onClick={(e) => {
                                 setTargetPage(e.target.id);
                                 router.push("/kurlioncer");
-                                setTargetTab("kurlioncer");
+                                setTargetTab("1");
                             }}
                         >
                             <PageTitle
                                 type="radio"
                                 value="REVIEW"
-                                id="kurlioncer"
+                                id="kurlyLog"
                             />
                             컬리로그
                         </WrapLabel>
@@ -144,7 +135,12 @@ const Navbar = () => {
                                 alt="login"
                                 width={25}
                                 height={25}
-                                onClick={() => router.push("/login")}
+                                onClick={() =>
+                                    router.push(
+                                        `/login/?returnUrl=${currentURL}`,
+                                        `/login`
+                                    )
+                                }
                             />
                         ) : (
                             <Image
@@ -164,10 +160,12 @@ const Navbar = () => {
                     <MenuNav targetPage={targetPage} pathName={pathName}>
                         <Link
                             href={
-                                targetPage === "market"
+                                pathName === "/" || pathName === "/event"
                                     ? "/"
-                                    : targetPage === "product" ||
-                                      targetPage === "review"
+                                    : pathName === "/product/[item]" ||
+                                      pathName === "/review/[item]" ||
+                                      pathName === "/review/simple/[item]" ||
+                                      pathName === "/kurlyLog/new/[productId]"
                                     ? `/product/${productId}`
                                     : "/kurlioncer"
                             }
@@ -176,58 +174,29 @@ const Navbar = () => {
                             <PageATag
                                 onClick={(e) => setTargetTab(e.target.id)}
                             >
-                                <PageNameSpan
-                                    id={
-                                        targetPage === "market"
-                                            ? "best"
-                                            : targetPage === "kurlioncer"
-                                            ? "kurlioncer"
-                                            : targetTab === "detail"
-                                            ? "detail"
-                                            : pathName === "/"
-                                            ? "best"
-                                            : targetTab === "review"
-                                            ? "kurlioncer"
-                                            : targetPage === "product"
-                                            ? "best"
-                                            : "rising"
-                                    }
-                                    targetTab={
-                                        targetPage === "kurlioncer" &&
-                                        targetTab === "kurlioncer"
-                                            ? "kurlioncer"
-                                            : targetTab === "detail"
-                                            ? "detail"
-                                            : pathName === "/"
-                                            ? "best"
-                                            : pathName === "kurlioncer"
-                                            ? "kurlioncer"
-                                            : targetPage === "product"
-                                            ? "best"
-                                            : targetTab
-                                    }
-                                >
-                                    {(targetPage === "product" &&
-                                        pathName !== "/") ||
-                                    pathName === "/product/[item]" ||
-                                    targetPage === "product" ||
-                                    pathName === "/review/[item]"
-                                        ? "상품정보"
-                                        : targetPage === "market" ||
-                                          pathName === "/"
+                                <PageNameSpan id="1" targetTab={targetTab}>
+                                    {pathName === "/" || pathName === "/event"
                                         ? "베스트"
+                                        : pathName === "/product/[item]" ||
+                                          pathName === "/review/[item]" ||
+                                          pathName ===
+                                              "/review/simple/[item]" ||
+                                          pathName ===
+                                              "/kurlyLog/new/[productId]"
+                                        ? "상품정보"
                                         : "컬리 언서"}
                                 </PageNameSpan>
                             </PageATag>
                         </Link>
                         <Link
                             href={
-                                targetPage === "product" ||
-                                pathName === "/product/[item]" ||
-                                targetPage === "review"
+                                pathName === "/" || pathName === "/event"
+                                    ? "/event"
+                                    : pathName === "/product/[item]" ||
+                                      pathName === "/review/[item]" ||
+                                      pathName === "/review/simple/[item]" ||
+                                      pathName === "/kurlyLog/new/[productId]"
                                     ? `/review/${productId}`
-                                    : targetPage === "market"
-                                    ? `/event`
                                     : "/risingreview"
                             }
                             passHref
@@ -235,28 +204,16 @@ const Navbar = () => {
                             <PageATag
                                 onClick={(e) => setTargetTab(e.target.id)}
                             >
-                                <PageNameSpan
-                                    id={
-                                        targetPage === "market"
-                                            ? "event"
-                                            : targetPage === "product" ||
-                                              pathName === "/review/[item]"
-                                            ? "review"
-                                            : "rising"
-                                    }
-                                    targetTab={
-                                        pathName === "/" ? "" : targetTab
-                                    }
-                                >
-                                    {(targetPage === "product" &&
-                                        pathName !== "/") ||
-                                    pathName === "/product/[item]" ||
-                                    pathName === "/review/[item]" ||
-                                    targetPage === "review"
-                                        ? "후기"
-                                        : targetPage === "market" ||
-                                          pathName === "/"
+                                <PageNameSpan id="2" targetTab={targetTab}>
+                                    {pathName === "/" || pathName === "/event"
                                         ? "이벤트"
+                                        : pathName === "/product/[item]" ||
+                                          pathName === "/review/[item]" ||
+                                          pathName ===
+                                              "/review/simple/[item]" ||
+                                          pathName ===
+                                              "/kurlyLog/new/[productId]"
+                                        ? "후기"
                                         : "샛별 리뷰"}
                                 </PageNameSpan>
                             </PageATag>
@@ -279,7 +236,7 @@ const Navbar = () => {
                                 </PageATag>
                             </Link>
                         ) : (
-                            <Link href={`/login`} passHref>
+                            <Link href={`/login/?returnUrl=mykurly`} passHref>
                                 <PageATag
                                     onClick={(e) => setTargetTab(e.target.id)}
                                 >

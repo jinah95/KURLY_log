@@ -74,9 +74,10 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
     width: 100%;
-    height: 40%;
+    height: 45%;
     background: url("/risingAD.jpg");
     background-size: cover;
+    background-position: center center;
     color: white;
     display: grid;
     grid-template-rows: 8fr 2fr;
