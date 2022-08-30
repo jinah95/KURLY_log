@@ -156,10 +156,14 @@ const KurlyLogPost = () => {
                     <LikeCount onClick={changeLikesCount}>
                         {postInfo.likesCount} 💜
                     </LikeCount>
-                ) : loginUser !== userInfo.user_id && (
+                ) : loginUser !== userInfo.user_id ? (
                     <LikeCount onClick={changeLikesCount}>
                         {postInfo.likesCount} 🖤
                         <span>좋아요를 눌러주세요!</span>
+                    </LikeCount>
+                ) : (
+                    <LikeCount onClick={changeLikesCount}>
+                        {postInfo.likesCount} 💜
                     </LikeCount>
                 )}
             </Contents>
