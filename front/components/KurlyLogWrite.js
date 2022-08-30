@@ -30,12 +30,8 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
 
     // productId로 상품 정보 조회
     const getProductInfo = async () => {
-        try {
-            const res = await get("/goods/", postInfo.product_id);
-            setProductInfo(res.data.data);
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await get("/goods/", postInfo.product_id);
+        setProductInfo(res.data.data);
     };
 
     // 게시물 수정 업로드
@@ -95,9 +91,10 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
     const convertURLtoFile = async (url) => {
         const response = await fetch(url);
         const data = await response.blob();
-        const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
 
-        const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+        // url 구조에 맞게 수정할 것
+        const ext = url.split(".").pop(); 
+        const filename = url.split("/").pop();
 
         const metadata = { type: `image/${ext}` };
         return new File([data], filename, metadata);
@@ -119,7 +116,6 @@ const KurlyLogWrite = ({ changeWrite, postInfo }) => {
         <Wrapper>
             {preview ? (
                 <div>
-                    {/* 제목 이미지 등 보이기 */}
                     <ViewContainer ref={viewContainerRef} />
                     <ButtonWrapper>
                         <ConfirmButton onClick={() => setPreview(false)}>

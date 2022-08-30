@@ -33,12 +33,8 @@ const NewKurlyLog = () => {
 
     // productId로 상품 정보 조회
     const getProductInfo = async () => {
-        try {
-            const res = await get("/goods/", productId);
-            setProductInfo(res.data.data);
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await get("/goods/", productId);
+        setProductInfo(res.data.data);
     };
     
     // 게시물 작성 업로드

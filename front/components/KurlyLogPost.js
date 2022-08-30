@@ -45,20 +45,15 @@ const KurlyLogPost = () => {
 
     // 좋아요 가능 여부 확인
     const canLikes = async () => {
-        if (loginUser === userInfo.user_id) {
+        if (loginUser !== userInfo.user_id) {
             return;
         } else {
-            try {
-                const res = await get(`/likes/${reviewId}`);
-                setLike(res.data.data);
-            } catch (err) {
-                // console.error("error message: ", err);
-                // console.log(err.response.data);
-            }
+            const res = await get(`/likes/${reviewId}`);
+            setLike(res.data.data);
         }
     };
 
-    // 좋아요 안 좋아요 변경
+    // 좋아요
     const changeLikesCount = async () => {
         if (loginUser === userInfo.user_id) {
             return;
@@ -74,54 +69,38 @@ const KurlyLogPost = () => {
 
     // reviewId로 해당 컬리log 조회
     const getPostInfo = async () => {
-        try {
-            const res = await get("/logs/log/", reviewId);
-            setPostInfo(res.data.data);
-            setUserInfo(res.data.data.user);
-            getOtherPosts(res.data.data.product_id);
-            getProductInfo(res.data.data.product_id);
-            setCreatedAt(
-                moment(
-                    res.data.data.created_at.substr(0, 10),
-                    "YYYY-MM-DD"
-                ).format("YYYY-MM-DD")
-            );
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await get("/logs/log/", reviewId);
+        setPostInfo(res.data.data);
+        setUserInfo(res.data.data.user);
+        getOtherPosts(res.data.data.product_id);
+        getProductInfo(res.data.data.product_id);
+        setCreatedAt(
+            moment(
+                res.data.data.created_at.substr(0, 10),
+                "YYYY-MM-DD"
+            ).format("YYYY-MM-DD")
+        );
     };
 
     // 해당 상품 다른 사람의 컬리log 조회
     const getOtherPosts = async (producId) => {
-        try {
-            const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
-            setOtherPosts(res.data.data.reviews);
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await get(`/logs/goods/${producId}?page=1&perPage=7`);
+        setOtherPosts(res.data.data.reviews);
     };
 
     // 해당 상품 조회
     const getProductInfo = async (producId) => {
-        try {
-            const res = await get("/goods/", producId);
-            setProduct(res.data.data);
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await get("/goods/", producId);
+        setProduct(res.data.data);
     };
 
     // 게시물 삭제
     const deletePost = async () => {
-        try {
-            const res = await deleteItem(`/logs/${reviewId}`);
-            const userId = userInfo.user_id;
-            router.push({
-                pathname: `/kurlyLog/${userId}`,
-            });
-        } catch (err) {
-            // console.error("error message: ", err);
-        }
+        const res = await deleteItem(`/logs/${reviewId}`);
+        const userId = userInfo.user_id;
+        router.push({
+            pathname: `/kurlyLog/${userId}`,
+        });
     };
 
     useEffect(() => {
