@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { FollowService } from "../services/FollowService";
 import loginRequired from "../middlewares/loginRequired";
 import { LikeService } from "../services/LikeService";
 
 const likeRouter = Router();
 
+// 좋아요
 likeRouter.post("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
@@ -18,6 +18,7 @@ likeRouter.post("/:reviewId", loginRequired, async (req, res, next) => {
   }
 });
 
+// 좋아요 여부 확인
 likeRouter.get("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
@@ -31,6 +32,7 @@ likeRouter.get("/:reviewId", loginRequired, async (req, res, next) => {
   }
 });
 
+// 좋아요 취소
 likeRouter.delete("/:reviewId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;

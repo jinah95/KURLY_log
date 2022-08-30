@@ -97,7 +97,7 @@ const ReviewService = {
 
     if (!logs || !logs.length) {
       const errorMessage = "아직 로그를 작성하지 않았습니다.";
-      return { message: "fail", data: errorMessage };
+      return { message: "fail", data: logs };
     }
 
     return { message: "success", data: logs };

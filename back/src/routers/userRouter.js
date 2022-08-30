@@ -3,6 +3,7 @@ import { UserService } from "../services/userService";
 import loginRequired from "../middlewares/loginRequired";
 const userRouter = Router();
 
+// 현재 유저 정보 조회
 userRouter.get("/users/current", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
@@ -13,6 +14,7 @@ userRouter.get("/users/current", loginRequired, async (req, res, next) => {
   }
 });
 
+// 로그인
 userRouter.post("/login", async (req, res, next) => {
   try {
     const { nickname, password } = req.body;
@@ -25,6 +27,7 @@ userRouter.post("/login", async (req, res, next) => {
   }
 });
 
+// 상위 3명의 컬리언서 조회
 userRouter.get("/users/best", async (req, res, next) => {
   try {
     const bestUsers = await UserService.getBestUsers();
@@ -34,6 +37,7 @@ userRouter.get("/users/best", async (req, res, next) => {
   }
 });
 
+// 상위 15명의 컬리언서 조회
 userRouter.get("/users/more", async (req, res, next) => {
   try {
     const moreUsers = await UserService.getMoreUsers();
@@ -43,6 +47,7 @@ userRouter.get("/users/more", async (req, res, next) => {
   }
 });
 
+// 특정 사용자의 정보 조회
 userRouter.get("/users/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
@@ -53,6 +58,7 @@ userRouter.get("/users/:userId", async (req, res, next) => {
   }
 });
 
+// 현재 유저 정보 수정
 userRouter.patch("/users/:userId", loginRequired, async (req, res, next) => {
   try {
     const loginId = req.currentUserId;

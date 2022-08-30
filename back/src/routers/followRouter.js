@@ -4,6 +4,7 @@ import loginRequired from "../middlewares/loginRequired";
 
 const followRouter = Router();
 
+// 팔로우
 followRouter.post("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
@@ -20,14 +21,11 @@ followRouter.post("/:userId", loginRequired, async (req, res, next) => {
   }
 });
 
+// 팔로우 여부 확인
 followRouter.get("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const kurlyencerId = req.params.userId;
-
-    if (userId === kurlyencerId) {
-      throw new Error("스스로를 팔로우할 수 없습니다.");
-    }
 
     const followOrNot = await FollowService.checkFollow({
       userId,
@@ -39,6 +37,7 @@ followRouter.get("/:userId", loginRequired, async (req, res, next) => {
   }
 });
 
+// 팔로우 취소
 followRouter.delete("/:userId", loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;

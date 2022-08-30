@@ -2,6 +2,7 @@ import { Like } from "../db/models/Like";
 import { Review } from "../db/models/Review";
 
 const LikeService = {
+  // 좋아요
   likeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 
@@ -26,11 +27,13 @@ const LikeService = {
     return { message: "success", data: newLike };
   },
 
+  // 좋아요 여부 확인
   checkLike: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 
     if (!review || userId === review.user_id) {
-      throw new Error("유효하지 않은 게시글입니다.");
+      const errorMessage = "유효하지 않은 게시글입니다.";
+      return { message: "fail", data: errorMessage };
     }
 
     const like = { user_id: userId, review_id: reviewId };
@@ -44,6 +47,7 @@ const LikeService = {
     }
   },
 
+  // 좋아요 취소
   unlikeReview: async ({ userId, reviewId }) => {
     const review = await Review.findById(reviewId);
 

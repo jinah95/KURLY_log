@@ -8,6 +8,7 @@ const imgUploadRouter = Router();
 
 imgUploadRouter.use(loginRequired);
 
+// 사진 한 장
 imgUploadRouter.post(
   "/single",
   uploadMiddleware.single("img"),
@@ -23,6 +24,7 @@ imgUploadRouter.post(
   }
 );
 
+// 사진 여러 장
 imgUploadRouter.post(
   "/multi",
   uploadMiddleware.array("img"),

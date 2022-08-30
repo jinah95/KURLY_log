@@ -2,10 +2,7 @@ import db from "..";
 const reviewModel = db.review;
 const userModel = db.user;
 const likeModel = db.like;
-const productModel = db.product;
-const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
-const Op = db.Sequelize.Op;
 
 const Review = {
   findById: async (reviewId) => {

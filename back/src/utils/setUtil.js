@@ -1,4 +1,5 @@
 const setUtil = {
+  // 기존 값과 새로운 값을 비교하여 수정된 내용만 반환
   compareValues: (updateData, originData) => {
     let toUpdate = {};
 
